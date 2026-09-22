@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mini Postman API Client Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Send GET, POST, PUT, PATCH and DELETE requests with query params, headers and a JSON body. See status, time, size, headers and pretty JSON. Save requests to collections, reuse history, use variables and export cURL. Free source.">
+<meta name="keywords" content="rest api client javascript, postman alternative, fetch api tester, http request builder, curl export, abortcontroller timeout">
+<meta property="og:title" content="Build a Postman-style REST API Client in Vanilla JavaScript (Fetch, Timeout, History, cURL)">
+<meta property="og:description" content="Send GET, POST, PUT, PATCH and DELETE requests with query params, headers and a JSON body. See status, time, size, headers and pretty JSON. Save requests to collections, reuse history, use variables and export cURL. Free source.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#E8590C">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23E8590C'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Mini Postman API Client", "description": "Send GET, POST, PUT, PATCH and DELETE requests with query params, headers and a JSON body. See status, time, size, headers and pretty JSON. Save requests to collections, reuse history, use variables and export cURL. Free source.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "rest api client javascript, postman alternative, fetch api tester, http request builder, curl export, abortcontroller timeout"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+:root{--accent:#E8590C}
+.pm{display:grid;grid-template-columns:220px 1fr;gap:16px}
+.side{border:1px solid var(--line);border-radius:var(--r-md);background:var(--sunk);padding:10px;max-height:680px;overflow:auto}
+.side h3{font:700 12px var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:10px 4px 6px}
+.side button.it{all:unset;display:block;cursor:pointer;padding:6px 8px;border-radius:6px;font:12.5px var(--code);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;box-sizing:border-box}
+.side button.it:hover{background:var(--panel)}
+.m-GET{color:#2B8A3E}.m-POST{color:#E8590C}.m-PUT{color:#1971C2}.m-PATCH{color:#AE3EC9}.m-DELETE{color:#E03131}
+.urlrow{display:flex;gap:8px}.urlrow select{width:auto;font:700 14px var(--code)}.urlrow input{font:14px var(--code)}
+.subtabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:14px 0 10px}
+.subtabs button{all:unset;cursor:pointer;padding:8px 12px;font-weight:700;font-size:14px;border-bottom:3px solid transparent}.subtabs button[aria-selected=true]{border-color:var(--accent)}
+.kv{width:100%;border-collapse:collapse}.kv td{padding:3px}.kv input{font:13px var(--code);padding:7px 9px}.kv .del{background:none;border:0;color:var(--muted);cursor:pointer;font-size:18px}
+.bodyta{font:13px/1.5 var(--code);min-height:150px}
+.respbar{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:16px 0 8px;font-size:14px}
+.code2{font:800 20px var(--display)}.code2.ok{color:var(--ok)}.code2.bad{color:var(--err)}.code2.warn{color:var(--warn)}
+.resp{max-height:420px;overflow:auto;font-size:13px}
+.jk{color:#9C36B5}.js{color:#2B8A3E}.jn{color:#1971C2}.jb{color:#E8590C}
+@media (max-width:800px){.pm{grid-template-columns:1fr}.side{max-height:200px}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="7" fill="var(--ink)"/><path d="M10 21V11h5.5a3 3 0 0 1 0 6H10m5.5 0 4.5 4" stroke="var(--paper)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="10" r="2.6" fill="var(--accent)"/></svg>Vanilla JS Projects</a>
+  <nav><span>Project 49 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 49, Developer tools</p>
+    <h1>Mini Postman API Client</h1>
+    <p class="lede">Test any API from the browser. Build a request, send it, and read a clean response with timing. Save the ones you use often and copy them as cURL.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A request card sending to a server and a response coming back">
+  <rect x="16" y="40" width="130" height="80" rx="10" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/><rect x="28" y="54" width="40" height="18" rx="4" fill="var(--accent)"/><text x="48" y="67" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="var(--code)">GET</text><rect x="76" y="58" width="58" height="10" rx="5" fill="var(--line)"/><rect x="28" y="86" width="100" height="8" rx="4" fill="var(--line)"/>
+  <path d="M150 80h60m-12-12 12 12-12 12" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="220" y="40" width="84" height="120" rx="10" fill="var(--ink)"/><g fill="#8CE99A"><circle cx="236" cy="58" r="4"/><circle cx="236" cy="78" r="4"/></g><g fill="#5C6B82"><rect x="246" y="54" width="44" height="8" rx="4"/><rect x="246" y="74" width="34" height="8" rx="4"/></g>
+  <path d="M210 190h-60m12-12-12 12 12 12" stroke="#2B8A3E" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="16" y="160" width="130" height="70" rx="10" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/><text x="30" y="188" font-family="var(--display)" font-weight="800" font-size="18" fill="#2B8A3E">200 OK</text><text x="30" y="210" font-family="var(--code)" font-size="12" fill="var(--muted)">142 ms · 1.2 KB</text>
+</svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>Fetch with AbortController</dd></div><div><dt>Saves to</dt><dd>localStorage</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <h2 id="w-title" class="sr-only">API client</h2>
+  <div class="pm">
+    <aside class="side" id="side" aria-label="Saved requests"></aside>
+    <div>
+      <div class="urlrow"><label class="sr-only" for="method">Method</label><select id="method"><option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option></select>
+        <label class="sr-only" for="url">URL</label><input type="text" id="url" spellcheck="false"><button class="btn primary" id="send" type="button">Send</button></div>
+      <div class="row" style="margin-top:8px"><button class="btn" id="save" type="button">Save to collection</button><button class="btn" id="curl" type="button">Copy as cURL</button><label class="small">Timeout <select id="to"><option value="5000">5 s</option><option value="15000" selected>15 s</option><option value="60000">60 s</option></select></label></div>
+      <div class="subtabs" role="tablist"><button role="tab" data-t="params" aria-selected="true" type="button">Params</button><button role="tab" data-t="headers" aria-selected="false" type="button">Headers</button><button role="tab" data-t="body" aria-selected="false" type="button">Body</button><button role="tab" data-t="env" aria-selected="false" type="button">Variables</button></div>
+      <div data-p="params"><table class="kv" id="params"></table></div>
+      <div data-p="headers" hidden><table class="kv" id="headers"></table></div>
+      <div data-p="body" hidden><div class="row small" style="margin-bottom:8px"><label><input type="radio" name="bt" value="json" checked> JSON</label><label><input type="radio" name="bt" value="form"> Form</label><label><input type="radio" name="bt" value="raw"> Raw text</label><label><input type="radio" name="bt" value="none"> None</label></div><textarea class="bodyta" id="body" spellcheck="false" aria-label="Request body"></textarea></div>
+      <div data-p="env" hidden><p class="small muted">Use these as {{name}} in the URL, params, headers or body.</p><table class="kv" id="env"></table></div>
+      <div class="respbar" aria-live="polite"><span class="code2" id="code">Ready</span><span id="time"></span><span id="size"></span><div class="progress" id="bar" hidden style="flex:1;min-width:120px"><span></span></div></div>
+      <div class="subtabs" role="tablist"><button role="tab" data-r="pretty" aria-selected="true" type="button">Response</button><button role="tab" data-r="rawr" aria-selected="false" type="button">Raw</button><button role="tab" data-r="rh" aria-selected="false" type="button">Headers</button></div>
+      <pre class="resp" id="resp"><span class="muted">Send a request to see the response.</span></pre>
+    </div>
+  </div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Build the request</strong><span>The URL, params, headers and body are combined, and {{variables}} are filled in from the environment.</span></li><li><strong>Send with limits</strong><span>fetch runs with a signal that aborts on your timeout or when you press Cancel.</span></li><li><strong>Read the response</strong><span>The body is streamed to count bytes and show progress, then shown as pretty JSON or plain text.</span></li></ol></div>
+  <pre><code><span class="k">const</span> controller = <span class="k">new</span> AbortController();
+<span class="k">const</span> signal = AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]);
+<span class="k">const</span> t0 = performance.now();
+<span class="k">const</span> res = <span class="k">await</span> fetch(url, { method, headers, body, signal });
+
+<span class="k">let</span> bytes = 0; <span class="k">const</span> chunks = [];
+<span class="k">const</span> reader = res.body.getReader();
+<span class="k">for</span> (<span class="k">let</span> r; !(r = <span class="k">await</span> reader.read()).done; ) { chunks.push(r.value); bytes += r.value.length; }
+<span class="k">const</span> text = <span class="k">new</span> TextDecoder().decode(<span class="k">await</span> <span class="k">new</span> Blob(chunks).arrayBuffer());
+show(res.status, performance.now() - t0, bytes, text, [...res.headers]);
+<span class="c">// Cancel button: controller.abort()</span></code></pre>
+</section>
+</main>
+<footer class="foot"><span>Mini Postman API Client. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/07-developer-tools/049-mini-postman">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+let st = store("vjl-pm") || { hist: [], cols: [{ name: "JSONPlaceholder", items: [
+  { method: "GET", url: "{{baseUrl}}/posts/1", params: [], headers: [["Accept", "application/json"]], bt: "none", body: "" },
+  { method: "GET", url: "{{baseUrl}}/comments", params: [["postId", "1"]], headers: [], bt: "none", body: "" },
+  { method: "POST", url: "{{baseUrl}}/posts", params: [], headers: [["Content-Type", "application/json"]], bt: "json", body: '{\n  "title": "Hello",\n  "body": "Sent from Vanilla JS Lab",\n  "userId": 1\n}' },
+  { method: "DELETE", url: "{{baseUrl}}/posts/1", params: [], headers: [], bt: "none", body: "" }] }], env: [["baseUrl", "https://jsonplaceholder.typicode.com"]] };
+let ctl = null, last = null, rview = "pretty"; const save = () => store("vjl-pm", st);
+support(!!window.AbortController, "Supported");
+function kv(el, rows, ph) { rows = [...rows, ["", ""]]; $(el).innerHTML = rows.map(([k, v]) => `<tr><td><input type="text" value="${esc(k)}" placeholder="${ph[0]}" aria-label="${ph[0]}"></td><td><input type="text" value="${esc(v)}" placeholder="${ph[1]}" aria-label="${ph[1]}"></td><td><button class="del" type="button" aria-label="Remove row">×</button></td></tr>`).join(""); }
+const read = (el) => [...$$(el + " tr")].map((tr) => [...tr.querySelectorAll("input")].map((i) => i.value)).filter(([k]) => k.trim());
+[["#params", ["key", "value"]], ["#headers", ["Header", "Value"]], ["#env", ["name", "value"]]].forEach(([el, ph]) => { $(el).addEventListener("input", (e) => { const rows = $$(el + " tr"); if (e.target.closest("tr") === rows[rows.length - 1]) kv(el, read(el), ph), $$(el + " tr")[rows.length - 1].querySelectorAll("input")[e.target.parentNode.cellIndex].focus(); if (el === "#env") { st.env = read("#env"); save(); } if (el === "#params") syncUrl(); });
+  $(el).addEventListener("click", (e) => { if (e.target.matches(".del")) { e.target.closest("tr").remove(); if (!$$(el + " tr").length) kv(el, [], ph); if (el === "#env") { st.env = read("#env"); save(); } if (el === "#params") syncUrl(); } }); });
+function syncUrl() { const u = $("#url").value.split("?")[0], q = new URLSearchParams(read("#params")).toString(); $("#url").value = u + (q ? "?" + q : ""); }
+$("#url").addEventListener("change", () => { const [, q] = $("#url").value.split("?"); kv("#params", q ? [...new URLSearchParams(q)] : [], ["key", "value"]); });
+function load(r) { $("#method").value = r.method; $("#url").value = r.url; kv("#params", r.params || [], ["key", "value"]); if (r.params?.length && !r.url.includes("?")) syncUrl(); kv("#headers", r.headers || [], ["Header", "Value"]); $(`[name=bt][value=${r.bt || "none"}]`).checked = true; $("#body").value = r.body || ""; }
+const current = () => ({ method: $("#method").value, url: $("#url").value.split("?")[0], params: read("#params"), headers: read("#headers"), bt: $("[name=bt]:checked").value, body: $("#body").value });
+const fill = (s) => s.replace(/\{\{(\w+)\}\}/g, (m, k) => st.env.find(([n]) => n === k)?.[1] ?? m);
+function side() { $("#side").innerHTML = st.cols.map((c, ci) => `<h3>${esc(c.name)}</h3>${c.items.map((r, i) => `<button class="it" data-c="${ci}" data-i="${i}" type="button"><b class="m-${r.method}">${r.method}</b> ${esc(r.url.replace("{{baseUrl}}", ""))}</button>`).join("")}`).join("") + `<h3>History</h3>${st.hist.map((r, i) => `<button class="it" data-h="${i}" type="button"><b class="m-${r.method}">${r.method}</b> ${esc(r.url)} <span class="muted">${r.status || ""}</span></button>`).join("") || '<p class="small muted" style="margin:4px 8px">Empty</p>'}`; }
+$("#side").onclick = (e) => { const b = e.target.closest(".it"); if (!b) return; load(b.dataset.h != null ? st.hist[b.dataset.h] : st.cols[b.dataset.c].items[b.dataset.i]); };
+function build() { const r = current(), url = new URL(fill(r.url)); r.params.forEach(([k, v]) => url.searchParams.append(fill(k), fill(v))); const h = new Headers(r.headers.map(([k, v]) => [fill(k), fill(v)])); let body;
+  if (!["GET", "HEAD"].includes(r.method) && r.bt !== "none") { if (r.bt === "json") { body = fill(r.body); if (!h.has("Content-Type")) h.set("Content-Type", "application/json"); } else if (r.bt === "form") { body = new URLSearchParams(fill(r.body).split("\n").filter(Boolean).map((l) => l.split("=").map((x) => x.trim()))); } else body = fill(r.body); }
+  return { r, url, h, body }; }
+function pretty(t) { try { const j = JSON.stringify(JSON.parse(t), null, 2); return esc(j).replace(/(&quot;(?:\\.|[^&]|&(?!quot;))*?&quot;)(\s*:)?|\b(true|false|null)\b|(-?\d+(?:\.\d+)?(?:e[+-]?\d+)?)/gi, (m, s, colon, b, n) => s ? `<span class="${colon ? "jk" : "js"}">${s}</span>${colon || ""}` : b ? `<span class="jb">${b}</span>` : `<span class="jn">${n}</span>`); } catch { return esc(t); } }
+function showResp() { if (!last) return; $("#resp").innerHTML = rview === "pretty" ? pretty(last.text) : rview === "rawr" ? esc(last.text) : last.headers.map(([k, v]) => `<span class="jk">${esc(k)}</span>: ${esc(v)}`).join("\n"); }
+$("#send").onclick = async () => {
+  if (ctl) { ctl.abort(); return; }
+  let b; try { b = build(); } catch { return toast("That URL is not valid"); }
+  ctl = new AbortController(); const signal = AbortSignal.any ? AbortSignal.any([ctl.signal, AbortSignal.timeout(+$("#to").value)]) : ctl.signal; $("#send").textContent = "Cancel";
+  $("#code").className = "code2"; $("#code").textContent = "Sending…"; $("#time").textContent = $("#size").textContent = ""; setProgress($("#bar"), null); const t0 = performance.now(); let status = 0;
+  try {
+    const res = await fetch(b.url, { method: b.r.method, headers: b.h, body: b.body, signal }); status = res.status; const total = +res.headers.get("content-length") || 0;
+    const rd = res.body.getReader(), chunks = []; let n = 0; for (let x; !(x = await rd.read()).done; ) { chunks.push(x.value); n += x.value.length; if (total) setProgress($("#bar"), n / total); }
+    const ms = performance.now() - t0, text = new TextDecoder().decode(await new Blob(chunks).arrayBuffer());
+    last = { text, headers: [...res.headers] }; $("#code").className = "code2 " + (res.ok ? "ok" : res.status < 500 ? "warn" : "bad"); $("#code").textContent = `${res.status} ${res.statusText || (res.ok ? "OK" : "")}`;
+    $("#time").textContent = Math.round(ms) + " ms"; $("#size").textContent = n < 1024 ? n + " B" : (n / 1024).toFixed(1) + " KB"; showResp();
+  } catch (e) { $("#code").className = "code2 bad"; $("#code").textContent = e.name === "TimeoutError" ? "Timed out" : e.name === "AbortError" ? "Cancelled" : "Network or CORS error";
+    $("#resp").textContent = e.name === "TypeError" ? "The request failed. Common causes: the server is down, the URL is wrong, or the API does not allow requests from other sites (CORS)." : e.message; }
+  setProgress($("#bar"), null); ctl = null; $("#send").textContent = "Send";
+  st.hist.unshift({ ...current(), url: $("#url").value, status }); st.hist = st.hist.slice(0, 30); save(); side();
+};
+$("#url").onkeydown = (e) => e.key === "Enter" && $("#send").click();
+$("#save").onclick = () => { const name = prompt("Collection name", st.cols[0]?.name || "My requests"); if (!name) return; let c = st.cols.find((x) => x.name === name); if (!c) st.cols.push((c = { name, items: [] })); c.items.push(current()); save(); side(); toast("Saved to " + name); };
+$("#curl").onclick = () => { try { const b = build(); let s = `curl -X ${b.r.method} '${b.url}'`; b.h.forEach((v, k) => (s += ` \\\n  -H '${k}: ${v}'`)); if (typeof b.body === "string" && b.body) s += ` \\\n  --data '${b.body.replace(/'/g, "'\\''")}'`; else if (b.body) s += ` \\\n  --data '${b.body}'`; copyText(s); } catch { toast("That URL is not valid"); } };
+$$("[data-t]").forEach((t) => t.onclick = () => { $$("[data-t]").forEach((x) => x.setAttribute("aria-selected", x === t)); $$("[data-p]").forEach((p) => (p.hidden = p.dataset.p !== t.dataset.t)); });
+$$("[data-r]").forEach((t) => t.onclick = () => { rview = t.dataset.r; $$("[data-r]").forEach((x) => x.setAttribute("aria-selected", x === t)); showResp(); });
+kv("#env", st.env, ["name", "value"]); load(st.cols[0].items[0]); side();
+</script>
+</body>
+</html>

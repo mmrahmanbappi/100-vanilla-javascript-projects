@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Performance Monitor Widget Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="A live performance panel for any page: Core Web Vitals LCP, CLS and INP, plus FCP, TTFB, long tasks, FPS and memory, all measured with PerformanceObserver. Buttons create layout shifts and slow tasks so you can watch the numbers react. Free source.">
+<meta name="keywords" content="core web vitals javascript, performanceobserver, measure lcp cls inp, long tasks api, web performance monitor, fps meter">
+<meta property="og:title" content="Measure Core Web Vitals (LCP, CLS, INP) with PerformanceObserver: Live Monitor Widget">
+<meta property="og:description" content="A live performance panel for any page: Core Web Vitals LCP, CLS and INP, plus FCP, TTFB, long tasks, FPS and memory, all measured with PerformanceObserver. Buttons create layout shifts and slow tasks so you can watch the numbers react. Free source.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/044-performance-monitor/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/044-performance-monitor/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2F9E44">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232F9E44'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Performance Monitor Widget", "description": "A live performance panel for any page: Core Web Vitals LCP, CLS and INP, plus FCP, TTFB, long tasks, FPS and memory, all measured with PerformanceObserver. Buttons create layout shifts and slow tasks so you can watch the numbers react. Free source.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "core web vitals javascript, performanceobserver, measure lcp cls inp, long tasks api, web performance monitor, fps meter"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+:root{--accent:#2F9E44}
+.vitals{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.vital{border:1px solid var(--line);border-radius:var(--r-md);padding:16px;background:var(--sunk);border-top:5px solid var(--line)}
+.vital.good{border-top-color:var(--ok)}.vital.ni{border-top-color:var(--warn)}.vital.poor{border-top-color:var(--err)}
+.vital .k{font-weight:700}.vital .v{font:800 36px/1.1 var(--display);margin:4px 0}.vital .r{font-size:13px;font-weight:700}
+.good .r{color:var(--ok)}.ni .r{color:var(--warn)}.poor .r{color:var(--err)}
+.small3{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:12px 0}
+.small3 div{border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px;font-size:13px;color:var(--muted)}.small3 b{display:block;font:700 20px var(--display);color:var(--ink)}
+.acts3{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+#shiftbox{height:0;overflow:hidden;background:color-mix(in srgb,var(--warn) 20%,transparent);border-radius:8px;transition:none}
+.fps{border:1px solid var(--line);border-radius:var(--r-md);padding:8px;background:var(--panel)}.fps canvas{width:100%;height:90px;display:block}
+.lt{list-style:none;padding:0;margin:0;font:13px var(--code);max-height:160px;overflow:auto}.lt li{padding:4px 0;border-bottom:1px solid var(--line)}
+.mini{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:30;background:#0F1A2C;color:#E9EEF6;font:12px/1.5 var(--code);padding:8px 12px;border-radius:10px;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+.mini b{color:#8CE99A}
+@media (max-width:700px){.vitals{grid-template-columns:1fr}.small3{grid-template-columns:1fr 1fr}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="7" fill="var(--ink)"/><path d="M10 21V11h5.5a3 3 0 0 1 0 6H10m5.5 0 4.5 4" stroke="var(--paper)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="10" r="2.6" fill="var(--accent)"/></svg>Vanilla JS Projects</a>
+  <nav><span>Project 44 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 44, Hardware and performance</p>
+    <h1>Performance Monitor Widget</h1>
+    <p class="lede">Watch this page&#x27;s Core Web Vitals update live. Press the buttons to cause a layout shift or a slow task and see exactly how the scores change.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="Three gauges for web vitals">
+  <g fill="none" stroke-width="14" stroke-linecap="round"><path d="M30 150a50 50 0 0 1 100 0" stroke="var(--line)"/><path d="M30 150a50 50 0 0 1 80-40" stroke="var(--accent)"/>
+  <path d="M190 150a50 50 0 0 1 100 0" stroke="var(--line)"/><path d="M190 150a50 50 0 0 1 60-47" stroke="#F59F00"/></g>
+  <text x="80" y="146" text-anchor="middle" font-family="var(--display)" font-weight="800" font-size="20" fill="var(--ink)">1.2s</text><text x="240" y="146" text-anchor="middle" font-family="var(--display)" font-weight="800" font-size="20" fill="var(--ink)">0.08</text>
+  <text x="80" y="174" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="var(--body)">LCP</text><text x="240" y="174" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="var(--body)">CLS</text>
+  <path d="M30 230l30-20 30 10 30-30 30 16 30-24 30 18 30-12 40 6" stroke="var(--accent)" stroke-width="4" fill="none"/>
+</svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>PerformanceObserver</dd></div><div><dt>Measures</dt><dd>LCP, CLS, INP, FCP, TTFB</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <h2 id="w-title">Core Web Vitals for this page</h2>
+  <p class="sub">INP needs you to interact, so click the buttons below.</p>
+  <div class="vitals"><div class="vital" id="v-lcp"><div class="k">LCP, loading</div><div class="v">–</div><div class="r">Waiting</div></div><div class="vital" id="v-cls"><div class="k">CLS, visual stability</div><div class="v">0</div><div class="r">Waiting</div></div><div class="vital" id="v-inp"><div class="k">INP, responsiveness</div><div class="v">–</div><div class="r">Click something</div></div></div>
+  <div class="small3"><div><b id="fcp">–</b>First paint (FCP)</div><div><b id="ttfb">–</b>Server response (TTFB)</div><div><b id="fps">–</b>Frames per second</div><div><b id="mem">–</b>JS memory</div></div>
+  <div class="acts3"><button class="btn" id="shift" type="button">Cause a layout shift</button><button class="btn" id="slow" type="button">Run a 300 ms task</button><button class="btn" id="slowclick" type="button">Slow click handler (INP)</button><button class="btn" id="fast" type="button">Fast click handler</button></div>
+  <div id="shiftbox"><p style="padding:10px;margin:0">This box appeared without reserved space, which moves the content below it.</p></div>
+  <div class="grid2"><div><h3 style="font:700 16px var(--display);margin:6px 0">Frame rate</h3><div class="fps"><canvas id="fpsc"></canvas></div></div>
+    <div><h3 style="font:700 16px var(--display);margin:6px 0">Long tasks (over 50 ms)</h3><ul class="lt" id="lt"><li class="muted">None yet</li></ul></div></div>
+  <div class="mini" id="mini" aria-hidden="true"></div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Observe entries</strong><span>A PerformanceObserver subscribes to each entry type. buffered: true replays what happened before the script ran.</span></li><li><strong>Compute the metric</strong><span>CLS groups shifts into session windows. INP takes the slowest interaction. LCP takes the last large paint.</span></li><li><strong>Rate it</strong><span>Each value is compared with the official thresholds, for example LCP is good under 2.5 seconds.</span></li></ol></div>
+  <pre><code><span class="k">new</span> PerformanceObserver((list) =&gt; {
+  <span class="k">const</span> last = list.getEntries().at(-1);
+  report(&quot;LCP&quot;, last.startTime);                        <span class="c">// good under 2500 ms</span>
+}).observe({ type: &quot;largest-contentful-paint&quot;, buffered: true });
+
+<span class="k">let</span> cls = 0;
+<span class="k">new</span> PerformanceObserver((list) =&gt; {
+  <span class="k">for</span> (<span class="k">const</span> e <span class="k">of</span> list.getEntries()) <span class="k">if</span> (!e.hadRecentInput) cls += e.value;
+  report(&quot;CLS&quot;, cls);                                   <span class="c">// good under 0.1</span>
+}).observe({ type: &quot;layout-shift&quot;, buffered: true });
+
+<span class="k">new</span> PerformanceObserver((list) =&gt; {
+  <span class="k">for</span> (<span class="k">const</span> e <span class="k">of</span> list.getEntries()) <span class="k">if</span> (e.interactionId) inp = Math.max(inp, e.duration);
+}).observe({ type: &quot;event&quot;, durationThreshold: 16, buffered: true });</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Performance Monitor Widget. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/06-hardware-and-performance/044-performance-monitor">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+const T = { lcp: [2500, 4000], cls: [0.1, 0.25], inp: [200, 500] }, val = { lcp: null, cls: 0, inp: null };
+const sup = PerformanceObserver.supportedEntryTypes || []; support(sup.includes("largest-contentful-paint") ? true : null, sup.includes("layout-shift") ? "All vitals" : "Some metrics");
+const fmt = (k, v) => (v == null ? "–" : k === "cls" ? v.toFixed(3) : v >= 1000 ? (v / 1000).toFixed(2) + " s" : Math.round(v) + " ms");
+function show(k) { const v = val[k], el = $("#v-" + k); if (v == null) return; const [g, p] = T[k], cls = v <= g ? "good" : v <= p ? "ni" : "poor"; el.className = "vital " + cls; $(".v", el).textContent = fmt(k, v); $(".r", el).textContent = { good: "Good", ni: "Needs improvement", poor: "Poor" }[cls]; mini(); }
+const obs = (type, fn, extra = {}) => { if (!sup.includes(type)) return false; new PerformanceObserver((l) => fn(l.getEntries())).observe({ type, buffered: true, ...extra }); return true; };
+obs("largest-contentful-paint", (es) => { val.lcp = es.at(-1).startTime; show("lcp"); }) || ($("#v-lcp .r").textContent = "Not supported here");
+let win = [], winSum = 0;
+obs("layout-shift", (es) => { for (const e of es) { if (e.hadRecentInput) continue; const last = win.at(-1); if (last && (e.startTime - last.startTime > 1000 || e.startTime - win[0].startTime > 5000)) { win = []; winSum = 0; } win.push(e); winSum += e.value; val.cls = Math.max(val.cls, winSum); } show("cls"); }) || ($("#v-cls .r").textContent = "Not supported here");
+obs("event", (es) => { for (const e of es) if (e.interactionId) val.inp = Math.max(val.inp || 0, e.duration); show("inp"); }, { durationThreshold: 16 }) || ($("#v-inp .r").textContent = "Not supported here");
+obs("paint", (es) => { const f = es.find((e) => e.name === "first-contentful-paint"); if (f) $("#fcp").textContent = fmt("x", f.startTime); });
+const nav = performance.getEntriesByType("navigation")[0]; if (nav) $("#ttfb").textContent = fmt("x", nav.responseStart);
+obs("longtask", (es) => { if ($("#lt .muted")) $("#lt").innerHTML = ""; es.forEach((e) => { const li = document.createElement("li"); li.textContent = `${Math.round(e.duration)} ms at ${(e.startTime / 1000).toFixed(1)} s`; $("#lt").prepend(li); }); }) || ($("#lt").innerHTML = "<li class='muted'>Long Tasks API not supported here</li>");
+const block = (ms) => { const t = performance.now(); while (performance.now() - t < ms); };
+$("#shift").onclick = () => { const b = $("#shiftbox"); setTimeout(() => (b.style.height = b.style.height ? "" : "60px"), 600); toast("Shift coming in 0.6 s, after the click grace period"); };
+$("#slow").onclick = () => setTimeout(() => block(300), 50);
+$("#slowclick").onclick = (e) => { block(350); e.target.textContent = "Done, check INP"; };
+$("#fast").onclick = (e) => { e.target.textContent = "Clicked " + new Date().toLocaleTimeString(); };
+const fpsHist = []; let frames = 0, t0 = performance.now();
+(function tick(now) { frames++; if (now - t0 >= 500) { const f = Math.round((frames * 1000) / (now - t0)); frames = 0; t0 = now; fpsHist.push(f); if (fpsHist.length > 120) fpsHist.shift(); $("#fps").textContent = f; if (performance.memory) $("#mem").textContent = (performance.memory.usedJSHeapSize / 1048576).toFixed(1) + " MB"; else $("#mem").textContent = "n/a"; drawFps(); mini(); } requestAnimationFrame(tick); })(t0);
+function drawFps() { const c = $("#fpsc"), r = c.getBoundingClientRect(), d = devicePixelRatio; c.width = r.width * d; c.height = r.height * d; const g = c.getContext("2d"); g.scale(d, d);
+  const W = r.width, H = r.height; g.strokeStyle = "rgba(128,140,160,.3)"; g.beginPath(); g.moveTo(0, H - (60 / 70) * H); g.lineTo(W, H - (60 / 70) * H); g.stroke();
+  const bw = W / 120; fpsHist.forEach((f, i) => { g.fillStyle = f >= 50 ? "#2F9E44" : f >= 30 ? "#F59F00" : "#E03131"; const h = (Math.min(70, f) / 70) * H; g.fillRect(i * bw, H - h, bw - 1, h); }); }
+function mini() { $("#mini").innerHTML = `LCP <b>${fmt("lcp", val.lcp)}</b> · CLS <b>${fmt("cls", val.cls)}</b> · INP <b>${fmt("inp", val.inp)}</b> · <b>${fpsHist.at(-1) || "–"}</b> fps`; }
+</script>
+</body>
+</html>

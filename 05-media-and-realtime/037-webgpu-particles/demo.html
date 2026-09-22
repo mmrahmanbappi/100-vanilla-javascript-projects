@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WebGPU Particle Playground Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Push up to a million glowing particles around with your mouse. A WebGPU compute shader moves every particle each frame and a render pipeline draws them with additive blending. Falls back to Canvas 2D. Free WGSL and JS source.">
+<meta name="keywords" content="webgpu tutorial, wgsl compute shader, particle system javascript, gpu simulation browser, webgpu particles, canvas fallback">
+<meta property="og:title" content="WebGPU Particle Simulation: 1 Million Particles with Compute Shaders (Vanilla JS, WGSL)">
+<meta property="og:description" content="Push up to a million glowing particles around with your mouse. A WebGPU compute shader moves every particle each frame and a render pipeline draws them with additive blending. Falls back to Canvas 2D. Free WGSL and JS source.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/037-webgpu-particles/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/037-webgpu-particles/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0CA678">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230CA678'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "WebGPU Particle Playground", "description": "Push up to a million glowing particles around with your mouse. A WebGPU compute shader moves every particle each frame and a render pipeline draws them with additive blending. Falls back to Canvas 2D. Free WGSL and JS source.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "webgpu tutorial, wgsl compute shader, particle system javascript, gpu simulation browser, webgpu particles, canvas fallback"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+:root{--accent:#0CA678}
+.gpu{position:relative;background:#0B0F1C;border-radius:var(--r-md);overflow:hidden;height:520px;touch-action:none}
+.gpu canvas{width:100%;height:100%;display:block;cursor:crosshair}
+.hud2{position:absolute;left:12px;top:12px;color:#E9EEF6;font:13px var(--code);background:rgba(0,0,0,.45);padding:6px 10px;border-radius:6px}
+.knobs{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:14px}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="7" fill="var(--ink)"/><path d="M10 21V11h5.5a3 3 0 0 1 0 6H10m5.5 0 4.5 4" stroke="var(--paper)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="10" r="2.6" fill="var(--accent)"/></svg>Vanilla JS Projects</a>
+  <nav><span>Project 37 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 37, Media and real-time</p>
+    <h1>WebGPU Particle Playground</h1>
+    <p class="lede">Move your mouse or finger over the canvas and the particles follow. With WebGPU your graphics card moves every one of them, every frame.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A swirl of glowing particles">
+  <rect x="10" y="10" width="300" height="240" rx="16" fill="#0B0F1C"/>
+  <g fill="var(--accent)"><circle cx="160" cy="130" r="5"/><circle cx="180" cy="110" r="3"/><circle cx="140" cy="150" r="3"/><circle cx="200" cy="140" r="4"/><circle cx="120" cy="110" r="4"/><circle cx="170" cy="170" r="3"/><circle cx="150" cy="90" r="3"/><circle cx="220" cy="100" r="2"/><circle cx="100" cy="160" r="2"/><circle cx="210" cy="180" r="2"/><circle cx="90" cy="90" r="2"/><circle cx="240" cy="150" r="2"/></g>
+  <g fill="#8CE99A" opacity=".7"><circle cx="190" cy="125" r="2"/><circle cx="130" cy="125" r="2"/><circle cx="160" cy="160" r="2"/><circle cx="165" cy="100" r="2"/><circle cx="60" cy="130" r="1.5"/><circle cx="260" cy="120" r="1.5"/></g>
+  <path d="M160 130m-60 0a60 40 0 1 0 120 0a60 40 0 1 0-120 0" stroke="var(--accent)" stroke-width="1.5" fill="none" opacity=".5"/>
+</svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>WebGPU</dd></div><div><dt>Shaders</dt><dd>WGSL compute and render</dd></div><div><dt>Fallback</dt><dd>Canvas 2D</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <h2 id="w-title">Particles</h2>
+  <p class="sub" id="engine">Starting</p>
+  <div class="gpu" id="stage"><canvas id="c"></canvas><div class="hud2" id="hud">0 fps</div></div>
+  <div class="knobs">
+    <label class="field">Particles <select id="count"></select></label>
+    <label class="field">Gravity <input type="range" id="grav" min="0" max="2" step="0.05" value="0.3"></label>
+    <label class="field">Pointer pull <input type="range" id="pull" min="0" max="3" step="0.1" value="1"></label>
+    <label class="field">Size <input type="range" id="size" min="1" max="8" step="0.5" value="2"></label>
+    <label class="field">Color <input type="range" id="hue" min="0" max="360" value="160"></label>
+    <div class="field">&nbsp;<button class="btn primary" id="burst" type="button">Burst</button></div>
+  </div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Fill a buffer</strong><span>Each particle is 4 floats: position and velocity. They all live in one GPU storage buffer.</span></li><li><strong>Simulate on the GPU</strong><span>A compute shader runs once per particle, in groups of 64, adding gravity and the pull toward the pointer.</span></li><li><strong>Draw</strong><span>The render pass reads the same buffer and draws a small glowing quad per particle, colored by speed.</span></li></ol></div>
+  <pre><code>@compute @workgroup_size(64)
+fn simulate(@builtin(global_invocation_id) id: vec3u) {
+  <span class="k">let</span> i = id.x;
+  <span class="k">if</span> (i &gt;= u.count) { <span class="k">return</span>; }
+  var p = particles[i];
+  <span class="k">let</span> d = u.mouse - p.pos;
+  p.vel += normalize(d) * u.pull / (dot(d, d) + 0.05) * u.dt;  <span class="c">// pull to pointer</span>
+  p.vel.y -= u.gravity * u.dt;
+  p.vel *= 0.995;
+  p.pos += p.vel * u.dt;
+  particles[i] = p;
+}</code></pre>
+</section>
+</main>
+<footer class="foot"><span>WebGPU Particle Playground. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/05-media-and-realtime/037-webgpu-particles">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+const c = $("#c"), stage = $("#stage"); let W = 1, H = 1, mouse = [0, 0], pull = 0, push = false, frames = 0, fpsT = performance.now(), burstReq = false;
+const opt = (list) => ($("#count").innerHTML = list.map((n, i) => `<option value="${n}" ${i === 2 ? "selected" : ""}>${n.toLocaleString()}</option>`).join(""));
+function size() { const r = stage.getBoundingClientRect(), d = Math.min(2, devicePixelRatio); W = c.width = Math.round(r.width * d); H = c.height = Math.round(r.height * d); }
+new ResizeObserver(size).observe(stage); size();
+const ptr = (e) => { const r = c.getBoundingClientRect(); mouse = [((e.clientX - r.left) / r.width) * 2 - 1, 1 - ((e.clientY - r.top) / r.height) * 2]; };
+c.addEventListener("pointermove", (e) => { ptr(e); pull = 1; push = e.shiftKey || e.buttons === 2; });
+c.addEventListener("pointerdown", (e) => { ptr(e); pull = 1; push = e.shiftKey || e.button === 2; }); c.addEventListener("pointerup", () => (push = false));
+c.addEventListener("pointerleave", () => (pull = 0)); c.addEventListener("contextmenu", (e) => e.preventDefault());
+$("#burst").onclick = () => (burstReq = true);
+const fps = (n) => { frames++; const now = performance.now(); if (now - fpsT > 500) { $("#hud").textContent = `${Math.round((frames * 1000) / (now - fpsT))} fps, ${(+n).toLocaleString()} particles`; frames = 0; fpsT = now; } };
+const seed = (n) => { const a = new Float32Array(n * 4); for (let i = 0; i < n; i++) { const r = Math.sqrt(Math.random()) * 0.8, t = Math.random() * 6.283; a[i * 4] = Math.cos(t) * r; a[i * 4 + 1] = Math.sin(t) * r; a[i * 4 + 2] = -Math.sin(t) * 0.3; a[i * 4 + 3] = Math.cos(t) * 0.3; } return a; };
+const WGSL = /* wgsl */ `
+struct P { pos: vec2f, vel: vec2f };
+struct U { dt: f32, gravity: f32, mouse: vec2f, pull: f32, aspect: f32, count: u32, size: f32, hue: f32, burst: f32, p0: f32, p1: f32 };
+@group(0) @binding(1) var<uniform> u: U;
+@group(0) @binding(0) var<storage, read_write> ps: array<P>;
+fn hash(n: u32) -> f32 { var x = n * 747796405u + 2891336453u; x = ((x >> ((x >> 28u) + 4u)) ^ x) * 277803737u; return f32((x >> 22u) ^ x) / 4294967295.0; }
+@compute @workgroup_size(64) fn sim(@builtin(global_invocation_id) id: vec3u) {
+  let i = id.x; if (i >= u.count) { return; }
+  var p = ps[i];
+  if (u.burst > 0.5) { let a = hash(i) * 6.2832; let s = 0.5 + hash(i + 99u) * 2.0; p.pos = vec2f(0.0); p.vel = vec2f(cos(a), sin(a)) * s; }
+  let d = (u.mouse - p.pos) * vec2f(u.aspect, 1.0);
+  p.vel += normalize(d + vec2f(1e-5)) * u.pull / (dot(d, d) + 0.05) * u.dt;
+  p.vel.y -= u.gravity * u.dt; p.vel *= 0.992; p.pos += p.vel * u.dt;
+  if (p.pos.x < -1.0 || p.pos.x > 1.0) { p.pos.x = clamp(p.pos.x, -1.0, 1.0); p.vel.x *= -0.7; }
+  if (p.pos.y < -1.0 || p.pos.y > 1.0) { p.pos.y = clamp(p.pos.y, -1.0, 1.0); p.vel.y *= -0.7; }
+  ps[i] = p;
+}`;
+const RWGSL = /* wgsl */ `
+struct P { pos: vec2f, vel: vec2f };
+struct U { dt: f32, gravity: f32, mouse: vec2f, pull: f32, aspect: f32, count: u32, size: f32, hue: f32, burst: f32, p0: f32, p1: f32 };
+@group(0) @binding(0) var<storage, read> ps: array<P>;
+@group(0) @binding(1) var<uniform> u: U;
+struct VO { @builtin(position) pos: vec4f, @location(0) uv: vec2f, @location(1) col: vec3f };
+fn hsv(h: f32, s: f32, v: f32) -> vec3f { let k = vec3f(1.0, 2.0 / 3.0, 1.0 / 3.0); let p = abs(fract(vec3f(h) + k) * 6.0 - 3.0); return v * mix(vec3f(1.0), clamp(p - 1.0, vec3f(0.0), vec3f(1.0)), s); }
+@vertex fn vs(@builtin(vertex_index) vi: u32, @builtin(instance_index) ii: u32) -> VO {
+  var q = array<vec2f, 6>(vec2f(-1, -1), vec2f(1, -1), vec2f(-1, 1), vec2f(-1, 1), vec2f(1, -1), vec2f(1, 1));
+  let p = ps[ii]; let s = u.size * 0.0025; var o: VO;
+  o.pos = vec4f(p.pos + q[vi] * vec2f(s / u.aspect, s), 0.0, 1.0); o.uv = q[vi];
+  let sp = clamp(length(p.vel) * 0.6, 0.0, 1.0); o.col = hsv(u.hue / 360.0 + sp * 0.25, 0.8 - sp * 0.4, 0.6 + sp * 0.4); return o;
+}
+@fragment fn fs(i: VO) -> @location(0) vec4f { let a = max(0.0, 1.0 - dot(i.uv, i.uv)); return vec4f(i.col * a * 0.55, a * 0.55); }`;
+async function startGPU() {
+  if (!navigator.gpu) return false; const adapter = await navigator.gpu.requestAdapter(); if (!adapter) return false;
+  const dev = await adapter.requestDevice(), ctx = c.getContext("webgpu"), fmt = navigator.gpu.getPreferredCanvasFormat(); ctx.configure({ device: dev, format: fmt, alphaMode: "opaque" });
+  opt([10000, 100000, 250000, 500000, 1000000]); const MAX = 1000000;
+  const pbuf = dev.createBuffer({ size: MAX * 16, usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST }), ubuf = dev.createBuffer({ size: 48, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST });
+  dev.queue.writeBuffer(pbuf, 0, seed(MAX));
+  const sim = dev.createComputePipeline({ layout: "auto", compute: { module: dev.createShaderModule({ code: WGSL }), entryPoint: "sim" } });
+  const rmod = dev.createShaderModule({ code: RWGSL });
+  const draw = dev.createRenderPipeline({ layout: "auto", vertex: { module: rmod, entryPoint: "vs" }, fragment: { module: rmod, entryPoint: "fs", targets: [{ format: fmt, blend: { color: { srcFactor: "one", dstFactor: "one" }, alpha: { srcFactor: "one", dstFactor: "one" } } }] }, primitive: { topology: "triangle-list" } });
+  const bgS = dev.createBindGroup({ layout: sim.getBindGroupLayout(0), entries: [{ binding: 0, resource: { buffer: pbuf } }, { binding: 1, resource: { buffer: ubuf } }] });
+  const bgR = dev.createBindGroup({ layout: draw.getBindGroupLayout(0), entries: [{ binding: 0, resource: { buffer: pbuf } }, { binding: 1, resource: { buffer: ubuf } }] });
+  const u = new ArrayBuffer(48), f = new Float32Array(u), ui = new Uint32Array(u); let last = performance.now();
+  const frame = (now) => {
+    const dt = Math.min(0.033, (now - last) / 1000); last = now; const n = +$("#count").value;
+    f[0] = dt; f[1] = +$("#grav").value; f[2] = mouse[0]; f[3] = mouse[1]; f[4] = pull * +$("#pull").value * (push ? -1 : 1); f[5] = W / H; ui[6] = n; f[7] = +$("#size").value; f[8] = +$("#hue").value; f[9] = burstReq ? 1 : 0; burstReq = false;
+    dev.queue.writeBuffer(ubuf, 0, u); const enc = dev.createCommandEncoder();
+    const cp = enc.beginComputePass(); cp.setPipeline(sim); cp.setBindGroup(0, bgS); cp.dispatchWorkgroups(Math.ceil(n / 64)); cp.end();
+    const rp = enc.beginRenderPass({ colorAttachments: [{ view: ctx.getCurrentTexture().createView(), clearValue: { r: 0.043, g: 0.059, b: 0.11, a: 1 }, loadOp: "clear", storeOp: "store" }] });
+    rp.setPipeline(draw); rp.setBindGroup(0, bgR); rp.draw(6, n); rp.end(); dev.queue.submit([enc.finish()]); fps(n); requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame); return true;
+}
+function start2D() {
+  opt([2000, 5000, 10000, 20000]); const g = c.getContext("2d"); let n = 0, a = seed(20000), last = performance.now();
+  const frame = (now) => {
+    const dt = Math.min(0.033, (now - last) / 1000); last = now; n = +$("#count").value; const grav = +$("#grav").value, pl = pull * +$("#pull").value * (push ? -1 : 1), asp = W / H, hue = +$("#hue").value, sz = +$("#size").value;
+    if (burstReq) { for (let i = 0; i < n; i++) { const t = Math.random() * 6.283, s = 0.5 + Math.random() * 2; a[i * 4] = a[i * 4 + 1] = 0; a[i * 4 + 2] = Math.cos(t) * s; a[i * 4 + 3] = Math.sin(t) * s; } burstReq = false; }
+    g.globalCompositeOperation = "source-over"; g.fillStyle = "#0B0F1C"; g.fillRect(0, 0, W, H); g.globalCompositeOperation = "lighter";
+    for (let i = 0; i < n; i++) { const j = i * 4; let dx = (mouse[0] - a[j]) * asp, dy = mouse[1] - a[j + 1]; const d2 = dx * dx + dy * dy + 0.05, l = Math.sqrt(dx * dx + dy * dy) || 1e-5;
+      a[j + 2] += (dx / l) * (pl / d2) * dt; a[j + 3] += (dy / l) * (pl / d2) * dt - grav * dt; a[j + 2] *= 0.992; a[j + 3] *= 0.992; a[j] += a[j + 2] * dt; a[j + 1] += a[j + 3] * dt;
+      if (a[j] < -1 || a[j] > 1) { a[j] = Math.max(-1, Math.min(1, a[j])); a[j + 2] *= -0.7; } if (a[j + 1] < -1 || a[j + 1] > 1) { a[j + 1] = Math.max(-1, Math.min(1, a[j + 1])); a[j + 3] *= -0.7; }
+      const sp = Math.min(1, Math.hypot(a[j + 2], a[j + 3]) * 0.6); g.fillStyle = `hsla(${hue + sp * 90},80%,${55 + sp * 25}%,.55)`; g.fillRect(((a[j] + 1) / 2) * W, ((1 - a[j + 1]) / 2) * H, sz * 1.5, sz * 1.5); }
+    fps(n); requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+}
+startGPU().catch(() => false).then((ok) => { support(ok ? true : null, ok ? "WebGPU" : "Canvas 2D fallback"); $("#engine").textContent = ok ? "Running on your GPU with WebGPU compute shaders. Try a million." : "WebGPU is not available here, so a smaller Canvas 2D version runs on the CPU."; if (!ok) start2D(); });
+</script>
+</body>
+</html>

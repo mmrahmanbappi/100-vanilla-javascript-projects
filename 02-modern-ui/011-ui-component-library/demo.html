@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UI Component Library Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Six reusable UI components built with Web Components and Shadow DOM: button, toggle switch, tabs, star rating, progress ring and accordion. Framework free, works in React, Vue or plain HTML. Free source.">
+<meta name="keywords" content="web components, custom elements, shadow dom, ui component library javascript, framework free components, vanilla js ui kit">
+<meta property="og:title" content="Build a UI Component Library with Web Components and Shadow DOM (Vanilla JS)">
+<meta property="og:description" content="Six reusable UI components built with Web Components and Shadow DOM: button, toggle switch, tabs, star rating, progress ring and accordion. Framework free, works in React, Vue or plain HTML. Free source.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/011-ui-component-library/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/011-ui-component-library/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#3D5AFE">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%233D5AFE'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "UI Component Library", "description": "Six reusable UI components built with Web Components and Shadow DOM: button, toggle switch, tabs, star rating, progress ring and accordion. Framework free, works in React, Vue or plain HTML. Free source.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "web components, custom elements, shadow dom, ui component library javascript, framework free components, vanilla js ui kit"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+:root{--accent:#3D5AFE}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.demo{border:1px solid var(--line);border-radius:var(--r-md);padding:18px;background:var(--sunk)}
+.demo h3{margin:0 0 4px;font:700 17px var(--display)}
+.demo code{font-family:var(--code);font-size:13px;color:var(--muted);display:block;margin-bottom:14px}
+.demo .stage{display:flex;gap:12px;flex-wrap:wrap;align-items:center;min-height:60px}
+.evlog{font:13px var(--code);color:var(--muted);margin-top:10px;min-height:18px}
+ui-button.danger{--ui-accent:#C0282E}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="7" fill="var(--ink)"/><path d="M10 21V11h5.5a3 3 0 0 1 0 6H10m5.5 0 4.5 4" stroke="var(--paper)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="10" r="2.6" fill="var(--accent)"/></svg>Vanilla JS Projects</a>
+  <nav><span>Project 11 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 11, Modern UI</p>
+    <h1>UI Component Library</h1>
+    <p class="lede">Six components you can drop into any page, with or without a framework. Each one is a custom HTML tag with its own styles, attributes and events.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="Interlocking puzzle blocks labeled with tags">
+  <rect x="24" y="30" width="126" height="90" rx="12" fill="var(--accent)"/><rect x="170" y="30" width="126" height="90" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+  <rect x="24" y="140" width="126" height="90" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/><rect x="170" y="140" width="126" height="90" rx="12" fill="var(--ink)"/>
+  <circle cx="160" cy="75" r="14" fill="var(--accent)"/><circle cx="87" cy="130" r="14" fill="var(--accent)"/><circle cx="233" cy="130" r="14" fill="var(--ink)"/>
+  <g font-family="var(--code)" font-size="15" font-weight="700"><text x="44" y="82" fill="#fff">&lt;ui-tabs&gt;</text><text x="186" y="82" fill="var(--ink)">&lt;ui-rate&gt;</text><text x="40" y="192" fill="var(--ink)">&lt;ui-ring&gt;</text><text x="184" y="192" fill="var(--paper)">&lt;ui-btn&gt;</text></g>
+</svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>Custom Elements v1</dd></div><div><dt>Styling</dt><dd>Shadow DOM, CSS parts</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <h2 id="w-title">Live components</h2>
+  <p class="sub">Every block below is a real custom element. Click, type and use the keyboard. Events show underneath.</p>
+  <div class="row" style="margin-bottom:18px"><label class="field" style="flex-direction:row;align-items:center;gap:8px">Accent color <input type="color" id="accent" value="#3D5AFE"></label></div>
+  <div class="gallery">
+    <div class="demo"><h3>Button</h3><code>&lt;ui-button variant="solid"&gt;</code><div class="stage"><ui-button>Save changes</ui-button><ui-button variant="outline">Cancel</ui-button><ui-button class="danger">Delete</ui-button><ui-button loading>Saving</ui-button></div><div class="evlog"></div></div>
+    <div class="demo"><h3>Toggle</h3><code>&lt;ui-toggle checked label="…"&gt;</code><div class="stage"><ui-toggle checked label="Email alerts"></ui-toggle><ui-toggle label="Dark mode"></ui-toggle></div><div class="evlog"></div></div>
+    <div class="demo"><h3>Rating</h3><code>&lt;ui-rating value="3"&gt;</code><div class="stage"><ui-rating value="3"></ui-rating></div><div class="evlog"></div></div>
+    <div class="demo"><h3>Progress ring</h3><code>&lt;ui-progress value="64"&gt;</code><div class="stage"><ui-progress value="64" id="ring"></ui-progress><input type="range" id="ringr" value="64" aria-label="Progress value"></div><div class="evlog"></div></div>
+    <div class="demo"><h3>Tabs</h3><code>&lt;ui-tabs&gt;&lt;section title="…"&gt;</code><div class="stage" style="display:block"><ui-tabs><section title="Overview">A short summary of the project.</section><section title="Specs">Single file, 0 dependencies, MIT.</section><section title="Reviews">“Simple and fast.”</section></ui-tabs></div><div class="evlog"></div></div>
+    <div class="demo"><h3>Accordion</h3><code>&lt;ui-accordion heading="…"&gt;</code><div class="stage" style="display:block"><ui-accordion heading="What is Shadow DOM?">A private DOM tree whose styles do not leak in or out.</ui-accordion><ui-accordion heading="Can I use these in React?">Yes. They are plain HTML tags, so any framework can render them.</ui-accordion></div><div class="evlog"></div></div>
+  </div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Define a class</strong><span>Each component extends HTMLElement and builds its markup inside an open shadow root.</span></li><li><strong>Watch attributes</strong><span>observedAttributes lists what to watch, and attributeChangedCallback re-renders when one changes.</span></li><li><strong>Talk to the page</strong><span>Components fire CustomEvents such as change, so any framework can listen with a normal event listener.</span></li></ol></div>
+  <pre><code>class UiToggle extends HTMLElement {
+  static observedAttributes = [&quot;checked&quot;, &quot;label&quot;];
+  constructor() {
+    super();
+    this.attachShadow({ mode: &quot;open&quot; });
+  }
+  attributeChangedCallback() { this.render(); }
+  toggle() {
+    this.toggleAttribute(&quot;checked&quot;);
+    this.dispatchEvent(<span class="k">new</span> CustomEvent(&quot;change&quot;, { detail: this.hasAttribute(&quot;checked&quot;) }));
+  }
+  render() { /* build markup inside this.shadowRoot */ }
+}
+customElements.define(&quot;ui-toggle&quot;, UiToggle);</code></pre>
+</section>
+</main>
+<footer class="foot"><span>UI Component Library. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/02-modern-ui/011-ui-component-library">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+const CSS = `:host{--a:var(--ui-accent,var(--accent,#3D5AFE));font-family:inherit} *{box-sizing:border-box} :focus-visible{outline:3px solid var(--a);outline-offset:2px}`;
+const sheet = (s) => `<style>${CSS}${s}</style>`;
+class UiButton extends HTMLElement {
+  static observedAttributes = ["variant", "loading", "disabled"];
+  constructor() { super(); this.attachShadow({ mode: "open" }); }
+  connectedCallback() { this.render(); }
+  attributeChangedCallback() { this.render(); }
+  render() {
+    const load = this.hasAttribute("loading");
+    this.shadowRoot.innerHTML = sheet(`button{font:700 15px/1 inherit;padding:11px 18px;border-radius:8px;border:2px solid var(--a);cursor:pointer;display:inline-flex;gap:8px;align-items:center;background:var(--a);color:#fff}
+      :host([variant=outline]) button{background:transparent;color:var(--a)} button:disabled{opacity:.6;cursor:wait}
+      .s{width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:r .7s linear infinite}@keyframes r{to{transform:rotate(360deg)}}`)
+      + `<button part="button" ${load || this.hasAttribute("disabled") ? "disabled" : ""}>${load ? '<span class="s"></span>' : ""}<slot></slot></button>`;
+  }
+}
+class UiToggle extends HTMLElement {
+  static observedAttributes = ["checked", "label"];
+  constructor() { super(); this.attachShadow({ mode: "open" }); }
+  connectedCallback() { this.render(); }
+  attributeChangedCallback() { this.render(); }
+  get checked() { return this.hasAttribute("checked"); }
+  toggle() { this.toggleAttribute("checked"); this.dispatchEvent(new CustomEvent("change", { detail: this.checked, bubbles: true })); }
+  render() {
+    this.shadowRoot.innerHTML = sheet(`button{all:unset;display:inline-flex;align-items:center;gap:10px;cursor:pointer;font:15px inherit;color:inherit}
+      .t{width:46px;height:26px;border-radius:13px;background:#9AA5B5;position:relative;transition:background .2s}.t::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
+      [aria-checked=true] .t{background:var(--a)}[aria-checked=true] .t::after{transform:translateX(20px)}`)
+      + `<button role="switch" aria-checked="${this.checked}"><span class="t"></span>${this.getAttribute("label") || ""}</button>`;
+    this.shadowRoot.querySelector("button").onclick = () => this.toggle();
+  }
+}
+class UiRating extends HTMLElement {
+  static observedAttributes = ["value", "max"];
+  constructor() { super(); this.attachShadow({ mode: "open" }); }
+  connectedCallback() { this.render(); }
+  attributeChangedCallback() { this.render(); }
+  render() {
+    const v = +this.getAttribute("value") || 0, max = +this.getAttribute("max") || 5;
+    this.shadowRoot.innerHTML = sheet(`div{display:inline-flex;gap:4px}button{all:unset;cursor:pointer;line-height:0;color:#B8C0CC}button.on{color:#F5B301}`)
+      + `<div role="radiogroup" aria-label="Rating">${Array.from({ length: max }, (_, i) => `<button role="radio" aria-checked="${i + 1 === v}" aria-label="${i + 1} star" class="${i < v ? "on" : ""}" data-v="${i + 1}" tabindex="${i + 1 === (v || 1) ? 0 : -1}"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></button>`).join("")}</div>`;
+    this.shadowRoot.querySelectorAll("button").forEach((b) => {
+      b.onclick = () => this.set(+b.dataset.v);
+      b.onkeydown = (e) => { if (e.key === "ArrowRight") this.set(Math.min(max, v + 1), true); if (e.key === "ArrowLeft") this.set(Math.max(1, v - 1), true); };
+    });
+  }
+  set(n, focus) { this.setAttribute("value", n); this.dispatchEvent(new CustomEvent("change", { detail: n, bubbles: true })); if (focus) this.shadowRoot.querySelector(`[data-v="${n}"]`).focus(); }
+}
+class UiProgress extends HTMLElement {
+  static observedAttributes = ["value"];
+  constructor() { super(); this.attachShadow({ mode: "open" }); }
+  connectedCallback() { this.render(); }
+  attributeChangedCallback() { this.render(); }
+  render() {
+    const v = Math.max(0, Math.min(100, +this.getAttribute("value") || 0)), c = 2 * Math.PI * 26;
+    this.shadowRoot.innerHTML = sheet(`svg{width:72px;height:72px;transform:rotate(-90deg)}circle{fill:none;stroke-width:8}.bg{stroke:#D5DBE3}.fg{stroke:var(--a);stroke-linecap:round;transition:stroke-dashoffset .3s}div{position:relative;width:72px}span{position:absolute;inset:0;display:grid;place-items:center;font:700 16px inherit}`)
+      + `<div role="progressbar" aria-valuenow="${v}" aria-valuemin="0" aria-valuemax="100"><svg viewBox="0 0 64 64"><circle class="bg" cx="32" cy="32" r="26"/><circle class="fg" cx="32" cy="32" r="26" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - v / 100)}"/></svg><span>${v}%</span></div>`;
+  }
+}
+class UiTabs extends HTMLElement {
+  constructor() { super(); this.attachShadow({ mode: "open" }); }
+  connectedCallback() {
+    const panels = [...this.querySelectorAll(":scope > section")];
+    this.shadowRoot.innerHTML = sheet(`[role=tablist]{display:flex;gap:4px;border-bottom:1px solid #C9D1DC}button{all:unset;cursor:pointer;padding:8px 12px;font:700 14px inherit;border-bottom:3px solid transparent;margin-bottom:-1px}button[aria-selected=true]{border-color:var(--a)}::slotted(section){padding:12px 2px}::slotted([hidden]){display:none}`)
+      + `<div role="tablist">${panels.map((p, i) => `<button role="tab" aria-selected="${i === 0}" tabindex="${i ? -1 : 0}">${p.title}</button>`).join("")}</div><slot></slot>`;
+    const tabs = [...this.shadowRoot.querySelectorAll("button")];
+    const pick = (i) => { tabs.forEach((t, j) => { t.setAttribute("aria-selected", i === j); t.tabIndex = i === j ? 0 : -1; }); panels.forEach((p, j) => (p.hidden = i !== j)); tabs[i].focus(); this.dispatchEvent(new CustomEvent("change", { detail: panels[i].title, bubbles: true })); };
+    tabs.forEach((t, i) => { t.onclick = () => pick(i); t.onkeydown = (e) => { if (e.key === "ArrowRight") pick((i + 1) % tabs.length); if (e.key === "ArrowLeft") pick((i - 1 + tabs.length) % tabs.length); }; });
+    panels.forEach((p, j) => { p.hidden = j !== 0; p.removeAttribute("title"); });
+  }
+}
+class UiAccordion extends HTMLElement {
+  constructor() { super(); this.attachShadow({ mode: "open" }); }
+  connectedCallback() {
+    this.shadowRoot.innerHTML = sheet(`details{border-bottom:1px solid #C9D1DC}summary{cursor:pointer;padding:10px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between}summary::after{content:"+";font-size:20px;line-height:1}details[open] summary::after{content:"−"}div{padding:0 0 12px}`)
+      + `<details><summary>${this.getAttribute("heading") || ""}</summary><div><slot></slot></div></details>`;
+    this.shadowRoot.querySelector("details").ontoggle = (e) => this.dispatchEvent(new CustomEvent("change", { detail: e.target.open, bubbles: true }));
+  }
+}
+Object.entries({ "ui-button": UiButton, "ui-toggle": UiToggle, "ui-rating": UiRating, "ui-progress": UiProgress, "ui-tabs": UiTabs, "ui-accordion": UiAccordion }).forEach(([n, c]) => customElements.define(n, c));
+support(true, "Supported");
+$$(".demo").forEach((d) => {
+  const out = $(".evlog", d);
+  d.addEventListener("change", (e) => { if (e.detail !== undefined) out.textContent = `change: ${JSON.stringify(e.detail)}`; });
+  d.addEventListener("click", (e) => { const b = e.target.closest("ui-button"); if (b) out.textContent = `click: "${b.textContent}"`; });
+});
+$("#ringr").oninput = (e) => $("#ring").setAttribute("value", e.target.value);
+$("#accent").oninput = (e) => document.documentElement.style.setProperty("--accent", e.target.value);
+</script>
+</body>
+</html>

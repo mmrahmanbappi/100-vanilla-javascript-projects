@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Offline-first Todo PWA Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="An installable todo app that keeps working with no internet. A service worker caches the app shell, tasks are saved in IndexedDB, and an online indicator shows your connection. Free vanilla JavaScript PWA source code.">
+<meta name="keywords" content="progressive web app, service worker javascript, offline first app, installable pwa, cache api, todo app vanilla js">
+<meta property="og:title" content="Offline-first Todo App PWA with a Service Worker (Vanilla JavaScript)">
+<meta property="og:description" content="An installable todo app that keeps working with no internet. A service worker caches the app shell, tasks are saved in IndexedDB, and an online indicator shows your connection. Free vanilla JavaScript PWA source code.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/03-pwa-and-offline/021-offline-todo-pwa/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/03-pwa-and-offline/021-offline-todo-pwa/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2F9E44">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232F9E44'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>"><link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Offline-first Todo PWA", "description": "An installable todo app that keeps working with no internet. A service worker caches the app shell, tasks are saved in IndexedDB, and an online indicator shows your connection. Free vanilla JavaScript PWA source code.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "progressive web app, service worker javascript, offline first app, installable pwa, cache api, todo app vanilla js"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+:root{--accent:#2F9E44}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.net{font-weight:700;font-size:14px;padding:5px 12px;border-radius:999px;background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ok)}
+.net.off{background:color-mix(in srgb,var(--err) 15%,transparent);color:var(--err)}
+.add{display:flex;gap:10px}
+.todos{list-style:none;padding:0;margin:16px 0}
+.todos li{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line)}
+.todos input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent)}
+.todos li.done span{text-decoration:line-through;color:var(--muted)}
+.todos span{flex:1}.todos button{background:none;border:0;color:var(--muted);cursor:pointer;font-size:20px}
+.foot2{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:14px}
+.filters button[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.update{background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:var(--r-sm);display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="7" fill="var(--ink)"/><path d="M10 21V11h5.5a3 3 0 0 1 0 6H10m5.5 0 4.5 4" stroke="var(--paper)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="10" r="2.6" fill="var(--accent)"/></svg>Vanilla JS Projects</a>
+  <nav><span>Project 21 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 21, PWA and offline</p>
+    <h1>Offline-first Todo PWA</h1>
+    <p class="lede">Install it like an app, turn off your Wi-Fi, and keep working. The service worker serves the page from cache and your tasks never leave the device.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A checklist with a crossed out Wi-Fi symbol">
+  <rect x="30" y="20" width="170" height="220" rx="16" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+  <g stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="50" y="52" width="24" height="24" rx="6" stroke="var(--accent)" fill="var(--accent)"/><path d="M56 64l5 5 9-10" stroke="#fff"/><rect x="50" y="104" width="24" height="24" rx="6" stroke="var(--accent)" fill="var(--accent)"/><path d="M56 116l5 5 9-10" stroke="#fff"/><rect x="50" y="156" width="24" height="24" rx="6" stroke="var(--line)"/></g>
+  <g fill="var(--line)"><rect x="86" y="60" width="90" height="9" rx="4.5"/><rect x="86" y="112" width="70" height="9" rx="4.5"/><rect x="86" y="164" width="96" height="9" rx="4.5"/></g>
+  <g stroke="var(--ink)" stroke-width="7" fill="none" stroke-linecap="round"><path d="M220 110a70 70 0 0 1 90 0"/><path d="M236 132a44 44 0 0 1 58 0"/><path d="M252 154a18 18 0 0 1 26 0"/><path d="M225 90l80 90" stroke="var(--err)"/></g>
+</svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>Service Worker, Cache</dd></div><div><dt>Saves to</dt><dd>IndexedDB</dd></div><div><dt>Files</dt><dd>index.html, sw.js, manifest</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <div class="update" id="update" hidden><span>A new version is ready.</span><button class="btn" id="reload" type="button">Update now</button></div>
+  <div class="bar"><h2 id="w-title">Today</h2><div class="row"><span class="net" id="net">Online</span><button class="btn" id="install" type="button" hidden>Install app</button></div></div>
+  <p class="sub" id="swstate">Registering service worker</p>
+  <div class="add"><label class="sr-only" for="new">New task</label><input type="text" id="new" placeholder="What needs doing?"><button class="btn primary" id="addb" type="button">Add task</button></div>
+  <ul class="todos" id="list"></ul>
+  <div class="foot2"><span id="left"></span><div class="row filters"><button class="chip" data-f="all" aria-pressed="true" type="button">All</button><button class="chip" data-f="active" aria-pressed="false" type="button">Active</button><button class="chip" data-f="done" aria-pressed="false" type="button">Done</button></div><button class="btn" id="clear" type="button">Clear completed</button></div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Install the worker</strong><span>On first load, sw.js caches index.html, the manifest and the fonts.</span></li><li><strong>Serve from cache</strong><span>Every later request is answered from the cache first, so the page opens instantly and works with no network.</span></li><li><strong>Keep data local</strong><span>Tasks live in IndexedDB. There is no server, so offline and online behave the same.</span></li></ol></div>
+  <pre><code><span class="c">// sw.js: cache the app shell, then answer <span class="k">from</span> cache first</span>
+<span class="k">const</span> CACHE = &quot;todo-v1&quot;;
+self.addEventListener(&quot;install&quot;, (e) =&gt; {
+  e.waitUntil(caches.open(CACHE).then((c) =&gt; c.addAll([&quot;./&quot;, &quot;./index.html&quot;, &quot;./manifest.webmanifest&quot;])));
+});
+self.addEventListener(&quot;fetch&quot;, (e) =&gt; {
+  e.respondWith(caches.match(e.request).then((hit) =&gt; hit || fetch(e.request).then((res) =&gt; {
+    <span class="k">const</span> copy = res.clone(); caches.open(CACHE).then((c) =&gt; c.put(e.request, copy)); <span class="k">return</span> res;
+  })));
+});
+<span class="c">// index.html</span>
+navigator.serviceWorker.register(&quot;sw.js&quot;);</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Offline-first Todo PWA. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/03-pwa-and-offline/021-offline-todo-pwa">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+let todos = [], filter = "all", deferred = null;
+const dbp = new Promise((ok, no) => { const r = indexedDB.open("vjl-todo", 1); r.onupgradeneeded = () => r.result.createObjectStore("t", { keyPath: "id" }); r.onsuccess = () => ok(r.result); r.onerror = () => no(r.error); });
+const tx = async (m, f) => { const db = await dbp; return new Promise((ok, no) => { const t = db.transaction("t", m), r = f(t.objectStore("t")); t.oncomplete = () => ok(r?.result); t.onerror = () => no(t.error); }); };
+const save = (x) => tx("readwrite", (s) => s.put(x)), del = (id) => tx("readwrite", (s) => s.delete(id));
+async function load() { todos = (await tx("readonly", (s) => s.getAll())).sort((a, b) => a.id - b.id); if (!todos.length) { for (const t of ["Buy groceries", "Reply to Rafi's email", "Turn off Wi-Fi and test this app"]) { const x = { id: Date.now() + Math.random(), t, done: false }; await save(x); todos.push(x); } } render(); }
+function render() {
+  const list = todos.filter((x) => filter === "all" || (filter === "done") === x.done);
+  $("#list").innerHTML = list.map((x) => `<li class="${x.done ? "done" : ""}" data-id="${x.id}"><input type="checkbox" ${x.done ? "checked" : ""} aria-label="Mark ${esc(x.t)} done"><span>${esc(x.t)}</span><button type="button" aria-label="Delete ${esc(x.t)}">×</button></li>`).join("") || `<li class="empty" style="display:block">Nothing here.</li>`;
+  const n = todos.filter((x) => !x.done).length; $("#left").textContent = `${n} task${n === 1 ? "" : "s"} left`;
+}
+$("#addb").onclick = async () => { const t = $("#new").value.trim(); if (!t) return; const x = { id: Date.now(), t, done: false }; todos.push(x); await save(x); $("#new").value = ""; render(); };
+$("#new").onkeydown = (e) => e.key === "Enter" && $("#addb").click();
+$("#list").onclick = async (e) => { const li = e.target.closest("li[data-id]"); if (!li) return; const x = todos.find((t) => t.id == li.dataset.id);
+  if (e.target.matches("input")) { x.done = e.target.checked; await save(x); } if (e.target.matches("button")) { todos = todos.filter((t) => t !== x); await del(x.id); } render(); };
+$$(".filters button").forEach((b) => b.onclick = () => { filter = b.dataset.f; $$(".filters button").forEach((x) => x.setAttribute("aria-pressed", x === b)); render(); });
+$("#clear").onclick = async () => { for (const x of todos.filter((t) => t.done)) await del(x.id); todos = todos.filter((t) => !t.done); render(); };
+const net = () => { $("#net").textContent = navigator.onLine ? "Online" : "Offline"; $("#net").classList.toggle("off", !navigator.onLine); };
+addEventListener("online", net); addEventListener("offline", net); net();
+addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferred = e; $("#install").hidden = false; });
+$("#install").onclick = async () => { deferred.prompt(); await deferred.userChoice; deferred = null; $("#install").hidden = true; };
+if ("serviceWorker" in navigator) {
+  support(true, "Supported");
+  navigator.serviceWorker.register("sw.js").then((reg) => {
+    $("#swstate").textContent = navigator.serviceWorker.controller ? "Service worker active. This page works offline." : "Service worker installed. Reload once and the page works offline.";
+    reg.addEventListener("updatefound", () => { const w = reg.installing; w.addEventListener("statechange", () => { if (w.state === "installed" && navigator.serviceWorker.controller) { $("#update").hidden = false; $("#reload").onclick = () => w.postMessage("skip"); } }); });
+  }).catch((e) => ($("#swstate").textContent = "Service worker failed: " + e.message));
+  navigator.serviceWorker.addEventListener("controllerchange", () => location.reload());
+} else { support(false, "No service worker"); $("#swstate").textContent = "This browser has no service workers, so offline mode is off. Tasks still save."; }
+load();
+</script>
+</body>
+</html>

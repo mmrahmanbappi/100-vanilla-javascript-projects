@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Browser Video Editor Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Trim a clip, add a color filter and a title, and export a real MP4 file frame by frame with the WebCodecs VideoEncoder and mp4-muxer. Timeline thumbnails, live preview and a MediaRecorder fallback. Free vanilla JS source.">
+<meta name="keywords" content="webcodecs api, videoencoder javascript, trim video in browser, mp4 export javascript, video editor web app, mp4-muxer">
+<meta property="og:title" content="Browser Video Editor: Trim, Filter and Export MP4 with the WebCodecs API (Vanilla JS)">
+<meta property="og:description" content="Trim a clip, add a color filter and a title, and export a real MP4 file frame by frame with the WebCodecs VideoEncoder and mp4-muxer. Timeline thumbnails, live preview and a MediaRecorder fallback. Free vanilla JS source.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/034-browser-video-editor/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/034-browser-video-editor/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#AE3EC9">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23AE3EC9'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Browser Video Editor", "description": "Trim a clip, add a color filter and a title, and export a real MP4 file frame by frame with the WebCodecs VideoEncoder and mp4-muxer. Timeline thumbnails, live preview and a MediaRecorder fallback. Free vanilla JS source.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "webcodecs api, videoencoder javascript, trim video in browser, mp4 export javascript, video editor web app, mp4-muxer"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+:root{--accent:#AE3EC9}
+.pv{background:#0F1A2C;border-radius:var(--r-md);overflow:hidden;aspect-ratio:16/9;display:grid;place-items:center}
+.pv canvas{width:100%;height:100%;object-fit:contain}
+.tl{position:relative;height:64px;margin:16px 0 6px;border-radius:8px;overflow:hidden;display:flex;background:#0F1A2C;user-select:none}
+.tl img{flex:1;min-width:0;height:100%;object-fit:cover}
+.tl .shade{position:absolute;top:0;bottom:0;background:rgba(0,0,0,.6)}
+.tl .h{position:absolute;top:0;bottom:0;width:12px;background:#F59F00;cursor:ew-resize;border-radius:4px}
+.tl .play{position:absolute;top:0;bottom:0;width:2px;background:#fff}
+.times{display:flex;justify-content:space-between;font:13px var(--code);color:var(--muted)}
+.ctrl{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+@media (max-width:700px){.ctrl{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="7" fill="var(--ink)"/><path d="M10 21V11h5.5a3 3 0 0 1 0 6H10m5.5 0 4.5 4" stroke="var(--paper)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="10" r="2.6" fill="var(--accent)"/></svg>Vanilla JS Projects</a>
+  <nav><span>Project 34 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 34, Media and real-time</p>
+    <h1>Browser Video Editor</h1>
+    <p class="lede">Load a clip, drag the handles to trim it, pick a filter and a title, and export an MP4. Every frame is encoded in your browser with WebCodecs.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A film strip with trim handles">
+  <rect x="16" y="40" width="288" height="120" rx="12" fill="var(--ink)"/>
+  <g fill="var(--paper)"><rect x="28" y="50" width="14" height="10" rx="2"/><rect x="60" y="50" width="14" height="10" rx="2"/><rect x="92" y="50" width="14" height="10" rx="2"/><rect x="124" y="50" width="14" height="10" rx="2"/><rect x="156" y="50" width="14" height="10" rx="2"/><rect x="188" y="50" width="14" height="10" rx="2"/><rect x="220" y="50" width="14" height="10" rx="2"/><rect x="252" y="50" width="14" height="10" rx="2"/><rect x="284" y="50" width="12" height="10" rx="2"/></g>
+  <g fill="var(--accent)" opacity=".85"><rect x="30" y="72" width="60" height="64" rx="4" opacity=".4"/><rect x="96" y="72" width="60" height="64" rx="4"/><rect x="162" y="72" width="60" height="64" rx="4"/><rect x="228" y="72" width="60" height="64" rx="4" opacity=".4"/></g>
+  <rect x="90" y="30" width="8" height="140" rx="4" fill="#F59F00"/><rect x="222" y="30" width="8" height="140" rx="4" fill="#F59F00"/>
+  <rect x="100" y="190" width="120" height="40" rx="10" fill="var(--accent)"/><text x="160" y="216" text-anchor="middle" font-family="var(--display)" font-weight="800" font-size="16" fill="#fff">Export MP4</text>
+</svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>WebCodecs VideoEncoder</dd></div><div><dt>Container</dt><dd>mp4-muxer</dd></div><div><dt>Fallback</dt><dd>MediaRecorder</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <div class="row" style="justify-content:space-between"><h2 id="w-title">Edit a clip</h2><div class="row"><button class="btn" id="sample" type="button">Load sample clip</button><button class="btn" id="pick" type="button">Open video</button><input type="file" id="file" accept="video/*" hidden></div></div>
+  <p class="sub" id="engine"></p>
+  <div class="pv"><canvas id="c" width="1280" height="720" aria-label="Preview"></canvas></div>
+  <div class="tl" id="tl" aria-label="Timeline"><div class="shade" id="sl"></div><div class="shade" id="sr"></div><div class="h" id="hin" tabindex="0" role="slider" aria-label="Trim start"></div><div class="h" id="hout" tabindex="0" role="slider" aria-label="Trim end"></div><div class="play" id="ph"></div></div>
+  <div class="times"><span id="tin">0.0 s</span><span id="tlen"></span><span id="tout">0.0 s</span></div>
+  <div class="ctrl">
+    <label class="field">Filter<select id="filter" style="width:100%"><option value="none">None</option><option value="grayscale(1)">Black and white</option><option value="sepia(.8)">Sepia</option><option value="saturate(1.7) contrast(1.1)">Vivid</option><option value="brightness(1.15) contrast(.85) saturate(.7)">Faded</option><option value="blur(4px)">Blur</option></select></label>
+    <label class="field">Title text<input type="text" id="title" placeholder="Leave empty for no title" value="Spring, 2026"></label>
+  </div>
+  <div class="row"><button class="btn" id="playb" type="button" disabled>Play selection</button><button class="btn primary" id="export" type="button" disabled>Export MP4</button><span class="pill" id="status" data-state="idle">Load a video to start</span></div>
+  <div class="progress" id="bar" hidden><span></span></div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Pick frames</strong><span>The video plays from the in point to the out point. requestVideoFrameCallback hands over each frame as it is shown.</span></li><li><strong>Edit the frame</strong><span>Each frame is drawn on a canvas with the filter and title, then wrapped in a VideoFrame with its timestamp.</span></li><li><strong>Encode and pack</strong><span>VideoEncoder compresses the frames. mp4-muxer puts the chunks into an MP4 file you can download.</span></li></ol></div>
+  <pre><code><span class="k">import</span> { Muxer, ArrayBufferTarget } <span class="k">from</span> &quot;https://cdn.jsdelivr.net/npm/mp4-muxer@5.2.2/+esm&quot;;
+
+<span class="k">const</span> muxer = <span class="k">new</span> Muxer({ target: <span class="k">new</span> ArrayBufferTarget(), video: { codec: &quot;avc&quot;, width, height }, fastStart: &quot;in-memory&quot; });
+<span class="k">const</span> encoder = <span class="k">new</span> VideoEncoder({ output: (chunk, meta) =&gt; muxer.addVideoChunk(chunk, meta), error: console.error });
+encoder.configure({ codec: &quot;avc1.42001f&quot;, width, height, bitrate: 4e6, framerate: 30 });
+
+video.requestVideoFrameCallback(function onFrame(now, info) {
+  ctx.drawImage(video, 0, 0);                                   <span class="c">// plus filter and title</span>
+  <span class="k">const</span> frame = <span class="k">new</span> VideoFrame(canvas, { timestamp: (info.mediaTime - start) * 1e6 });
+  encoder.encode(frame, { keyFrame: n++ % 60 === 0 }); frame.close();
+  video.requestVideoFrameCallback(onFrame);
+});</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Browser Video Editor. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/05-media-and-realtime/034-browser-video-editor">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script type="module">
+import { Muxer, ArrayBufferTarget } from "https://cdn.jsdelivr.net/npm/mp4-muxer@5.2.2/+esm";
+const v = document.createElement("video"); v.crossOrigin = "anonymous"; v.muted = true; v.playsInline = true;
+const c = $("#c"), g = c.getContext("2d"), st = $("#status"); let tin = 0, tout = 0, busy = false, codec = null;
+const CODECS = [["avc1.42001f", "avc", "H.264"], ["vp09.00.10.08", "vp9", "VP9"], ["av01.0.04M.08", "av1", "AV1"]];
+(async () => { if (!("VideoEncoder" in window)) { support(null, "MediaRecorder fallback"); $("#engine").textContent = "No WebCodecs here, so export records the canvas with MediaRecorder as WebM."; return; }
+  for (const [cc, m, n] of CODECS) { try { if ((await VideoEncoder.isConfigSupported({ codec: cc, width: 1280, height: 720, bitrate: 4e6 })).supported) { codec = { cc, m, n }; break; } } catch {} }
+  support(codec ? true : null, codec ? "WebCodecs, " + codec.n : "Fallback"); $("#engine").textContent = codec ? `Export uses WebCodecs with ${codec.n} into an MP4 file.` : "WebCodecs cannot encode here, so export uses MediaRecorder."; })();
+function frame(time) { g.filter = $("#filter").value; g.drawImage(v, 0, 0, c.width, c.height); g.filter = "none"; const t = $("#title").value.trim();
+  if (t) { const a = Math.min(1, Math.max(0, (time - tin) / 0.5)) * Math.min(1, Math.max(0, (tin + 3 - time) / 0.5)); if (a > 0) { g.globalAlpha = a; g.font = `800 ${c.height / 11}px 'Bricolage Grotesque', sans-serif`; g.textAlign = "left"; g.fillStyle = "rgba(0,0,0,.35)"; g.fillRect(0, c.height * 0.72, c.width, c.height * 0.16); g.fillStyle = "#fff"; g.fillText(t, c.width * 0.05, c.height * 0.83); g.globalAlpha = 1; } } }
+const fmt = (s) => s.toFixed(1) + " s";
+function layout() { const W = $("#tl").clientWidth, d = v.duration || 1, a = (tin / d) * W, b = (tout / d) * W; $("#hin").style.left = a - 6 + "px"; $("#hout").style.left = b - 6 + "px"; $("#sl").style.cssText = `left:0;width:${a}px`; $("#sr").style.cssText = `left:${b}px;right:0`;
+  $("#tin").textContent = fmt(tin); $("#tout").textContent = fmt(tout); $("#tlen").textContent = "Selection " + fmt(tout - tin); }
+const seek = (t) => new Promise((ok) => { v.onseeked = () => ok(); v.currentTime = t; });
+async function load(src) {
+  setStatus(st, "busy", "Loading video"); v.src = src; await new Promise((ok, no) => { v.onloadeddata = ok; v.onerror = () => no(new Error("This video cannot be played in this browser")); }).catch((e) => { setStatus(st, "err", e.message); throw e; });
+  c.width = Math.min(1280, v.videoWidth) & ~1; c.height = Math.round((c.width * v.videoHeight) / v.videoWidth) & ~1; tin = 0; tout = v.duration;
+  const tl = $("#tl"); $$("img", tl).forEach((i) => i.remove()); const tc = document.createElement("canvas"); tc.width = 160; tc.height = 90;
+  for (let i = 0; i < 10; i++) { await seek((v.duration * (i + 0.5)) / 10); tc.getContext("2d").drawImage(v, 0, 0, 160, 90); const im = new Image(); im.src = tc.toDataURL("image/jpeg", 0.6); im.alt = ""; tl.insertBefore(im, $("#sl")); }
+  await seek(0); frame(0); layout(); $("#playb").disabled = $("#export").disabled = false; setStatus(st, "ok", `Loaded, ${v.videoWidth}×${v.videoHeight}, ${fmt(v.duration)}`);
+}
+function drag(h, which) { h.onpointerdown = (e) => { h.setPointerCapture(e.pointerId); h.onpointermove = (ev) => { const r = $("#tl").getBoundingClientRect(), t = Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width)) * v.duration;
+  if (which === "in") tin = Math.min(t, tout - 0.3); else tout = Math.max(t, tin + 0.3); layout(); v.currentTime = which === "in" ? tin : tout; }; h.onpointerup = () => (h.onpointermove = null); };
+  h.onkeydown = (e) => { const d = e.key === "ArrowRight" ? 0.1 : e.key === "ArrowLeft" ? -0.1 : 0; if (!d) return; if (which === "in") tin = Math.max(0, Math.min(tout - 0.3, tin + d)); else tout = Math.min(v.duration, Math.max(tin + 0.3, tout + d)); layout(); }; }
+drag($("#hin"), "in"); drag($("#hout"), "out");
+v.addEventListener("seeked", () => !busy && frame(v.currentTime));
+// Calls cb for each frame; cb(Infinity) once if the video ends before the out point
+const onFrames = (cb) => { let stop = false; const end = () => { if (!stop) { stop = true; cb(Infinity); } }; v.addEventListener("ended", end, { once: true });
+  const loop = (now, info) => { if (stop) return; if (cb(info.mediaTime) === false) { stop = true; v.removeEventListener("ended", end); } else v.requestVideoFrameCallback(loop); }; v.requestVideoFrameCallback(loop); };
+$("#playb").onclick = async () => { await seek(tin); busy = true; v.play(); onFrames((t) => { if (t === Infinity) { busy = false; return false; } frame(t); $("#ph").style.left = (t / v.duration) * 100 + "%"; if (t >= tout) { v.pause(); busy = false; return false; } }); };
+$("#filter").onchange = $("#title").oninput = () => !busy && frame(v.currentTime);
+$("#export").onclick = async () => {
+  busy = true; $("#export").disabled = true; setProgress($("#bar"), 0); await seek(tin); const W = c.width, H = c.height, t0 = tin, len = tout - tin;
+  const done = (blob, ext) => { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "edited." + ext; a.click(); setStatus(st, "ok", `Exported ${(blob.size / 1048576).toFixed(1)} MB ${ext.toUpperCase()}`); setProgress($("#bar"), null); busy = false; $("#export").disabled = false; };
+  if (codec) {
+    const muxer = new Muxer({ target: new ArrayBufferTarget(), video: { codec: codec.m, width: W, height: H }, fastStart: "in-memory", firstTimestampBehavior: "offset" });
+    const enc = new VideoEncoder({ output: (ch, meta) => muxer.addVideoChunk(ch, meta), error: (e) => setStatus(st, "err", e.message) });
+    enc.configure({ codec: codec.cc, width: W, height: H, bitrate: 4e6, framerate: 30 }); let n = 0;
+    setStatus(st, "busy", "Encoding frames"); v.play();
+    onFrames((t) => { if (t > tout) { v.pause(); enc.flush().then(() => { muxer.finalize(); done(new Blob([muxer.target.buffer], { type: "video/mp4" }), "mp4"); }); return false; }
+      frame(t); const f = new VideoFrame(c, { timestamp: Math.round((t - t0) * 1e6) }); enc.encode(f, { keyFrame: n++ % 60 === 0 }); f.close(); setProgress($("#bar"), (t - t0) / len); setStatus(st, "busy", `Encoding frame ${n}`); });
+  } else {
+    const chunks = [], r = new MediaRecorder(c.captureStream(30), { mimeType: "video/webm" }); r.ondataavailable = (e) => chunks.push(e.data); r.onstop = () => done(new Blob(chunks, { type: "video/webm" }), "webm");
+    r.start(); v.play(); setStatus(st, "busy", "Recording canvas"); onFrames((t) => { if (t === Infinity) { r.stop(); return false; } frame(t); setProgress($("#bar"), (t - t0) / len); if (t >= tout) { v.pause(); r.stop(); return false; } });
+  }
+};
+$("#sample").onclick = () => load("https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm").catch(() => {});
+$("#pick").onclick = () => $("#file").click(); $("#file").onchange = () => $("#file").files[0] && load(URL.createObjectURL($("#file").files[0])).catch(() => {});
+addEventListener("resize", () => v.duration && layout());
+g.fillStyle = "#0F1A2C"; g.fillRect(0, 0, c.width, c.height); g.fillStyle = "#98A4B7"; g.font = "32px 'Atkinson Hyperlegible', sans-serif"; g.textAlign = "center"; g.fillText("Load the sample clip or open your own video", c.width / 2, c.height / 2);
+</script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Client-side Password Manager Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="A local password vault encrypted with AES-GCM using a key derived from your master password with PBKDF2 (600,000 rounds). Includes a password generator, strength meter, auto lock and encrypted export. Free vanilla JavaScript source.">
+<meta name="keywords" content="web crypto api, aes-gcm javascript, pbkdf2 key derivation, password manager vanilla js, password generator, client side encryption">
+<meta property="og:title" content="Build an Encrypted Password Manager with the Web Crypto API (PBKDF2 and AES-GCM, Vanilla JS)">
+<meta property="og:description" content="A local password vault encrypted with AES-GCM using a key derived from your master password with PBKDF2 (600,000 rounds). Includes a password generator, strength meter, auto lock and encrypted export. Free vanilla JavaScript source.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/04-security-and-auth/029-password-manager/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/04-security-and-auth/029-password-manager/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#495057">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23495057'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Client-side Password Manager", "description": "A local password vault encrypted with AES-GCM using a key derived from your master password with PBKDF2 (600,000 rounds). Includes a password generator, strength meter, auto lock and encrypted export. Free vanilla JavaScript source.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "web crypto api, aes-gcm javascript, pbkdf2 key derivation, password manager vanilla js, password generator, client side encryption"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+:root{--accent:#495057}
+.lock{max-width:420px;margin:10px auto;text-align:center}
+.lock input{text-align:center;font-size:18px}
+.vault-top{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}.vault-top input{max-width:260px}
+.entries{list-style:none;padding:0;margin:0}
+.entries li{display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.entries .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:#fff;font-weight:800;font-family:var(--display)}
+.entries .pw{font:14px var(--code);color:var(--muted)}
+.entries .acts{display:flex;gap:6px}.entries .acts button{min-height:32px;padding:4px 10px;font-size:13px}
+.gen{border:1px solid var(--line);border-radius:var(--r-md);padding:16px;background:var(--sunk)}
+.gen output{display:block;font:18px var(--code);word-break:break-all;margin:8px 0;padding:10px;background:var(--panel);border-radius:6px;border:1px solid var(--line)}
+.meter{height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin:8px 0 4px}.meter span{display:block;height:100%}
+.form3{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;margin-top:14px}
+@media (max-width:760px){.form3{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="7" fill="var(--ink)"/><path d="M10 21V11h5.5a3 3 0 0 1 0 6H10m5.5 0 4.5 4" stroke="var(--paper)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="10" r="2.6" fill="var(--accent)"/></svg>Vanilla JS Projects</a>
+  <nav><span>Project 29 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 29, Security and auth</p>
+    <h1>Client-side Password Manager</h1>
+    <p class="lede">Keep logins in a vault that only your master password can open. Everything is encrypted in this tab before it is saved, so the stored data is unreadable on its own.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A vault door with a padlock">
+  <rect x="40" y="20" width="220" height="220" rx="20" fill="var(--ink)"/><circle cx="150" cy="130" r="72" fill="var(--panel)" stroke="var(--accent)" stroke-width="8"/>
+  <g stroke="var(--ink)" stroke-width="8" stroke-linecap="round"><path d="M150 70v20M150 170v20M90 130h20M190 130h20"/></g><circle cx="150" cy="130" r="18" fill="var(--ink)"/>
+  <rect x="240" y="150" width="64" height="54" rx="8" fill="#F5B301"/><path d="M252 150v-16a20 20 0 0 1 40 0v16" stroke="#F5B301" stroke-width="9" fill="none"/>
+</svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Encryption</dt><dd>AES-GCM 256</dd></div><div><dt>Key from</dt><dd>PBKDF2, 600k rounds</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <div id="locked"><div class="lock"><h2 id="w-title">Unlock your vault</h2><p class="sub" id="lockmsg"></p>
+    <label class="sr-only" for="master">Master password</label><input type="password" id="master" placeholder="Master password" autocomplete="current-password">
+    <div class="row" style="justify-content:center;margin-top:12px"><button class="btn primary" id="unlock" type="button">Unlock</button><button class="btn" id="wipe" type="button">Delete vault</button></div>
+    <p class="small muted" style="margin-top:14px" id="timing"></p></div></div>
+  <div id="open" hidden>
+    <div class="vault-top"><h2 style="margin:0">Vault</h2><input type="search" id="q" placeholder="Search" aria-label="Search entries"><span class="small muted" id="auto"></span><button class="btn" id="lockb" type="button" style="margin-left:auto">Lock now</button><button class="btn" id="exp" type="button">Export encrypted</button></div>
+    <div class="grid2">
+      <div><ul class="entries" id="list"></ul>
+        <div class="form3"><input type="text" id="site" placeholder="Site"><input type="text" id="login" placeholder="Username"><input type="text" id="pass" placeholder="Password"><button class="btn primary" id="add" type="button">Add</button></div></div>
+      <div class="gen"><h3 style="font:700 16px var(--display);margin:0">Password generator</h3><output id="out"></output><div class="meter"><span id="m"></span></div><div class="small" id="crack"></div>
+        <label class="field" style="margin-top:12px">Length <input type="range" id="len" min="8" max="48" value="20"></label>
+        <div class="row small" style="margin-top:8px"><label><input type="checkbox" id="up" checked> A-Z</label><label><input type="checkbox" id="num" checked> 0-9</label><label><input type="checkbox" id="sym" checked> Symbols</label></div>
+        <div class="row" style="margin-top:12px"><button class="btn" id="regen" type="button">New password</button><button class="btn" id="use" type="button">Use in form</button><button class="btn" id="cp" type="button">Copy</button></div></div>
+    </div>
+  </div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Stretch the password</strong><span>Your master password and a random salt go through PBKDF2 600,000 times to make a 256-bit key.</span></li><li><strong>Encrypt the vault</strong><span>The whole list is turned into JSON and encrypted with AES-GCM and a fresh random IV on every save.</span></li><li><strong>Unlock</strong><span>Only the salt, IV and ciphertext are stored. A wrong password fails the AES-GCM integrity check, so nothing is shown.</span></li></ol></div>
+  <pre><code><span class="k">const</span> salt = crypto.getRandomValues(<span class="k">new</span> Uint8Array(16));
+<span class="k">const</span> base = <span class="k">await</span> crypto.subtle.importKey(&quot;raw&quot;, <span class="k">new</span> TextEncoder().encode(master), &quot;PBKDF2&quot;, false, [&quot;deriveKey&quot;]);
+<span class="k">const</span> key = <span class="k">await</span> crypto.subtle.deriveKey(
+  { name: &quot;PBKDF2&quot;, salt, iterations: 600_000, hash: &quot;SHA-256&quot; },
+  base, { name: &quot;AES-GCM&quot;, length: 256 }, false, [&quot;encrypt&quot;, &quot;decrypt&quot;]);
+
+<span class="k">const</span> iv = crypto.getRandomValues(<span class="k">new</span> Uint8Array(12));   <span class="c">// <span class="k">new</span> IV every save</span>
+<span class="k">const</span> data = <span class="k">await</span> crypto.subtle.encrypt({ name: &quot;AES-GCM&quot;, iv }, key,
+  <span class="k">new</span> TextEncoder().encode(JSON.stringify(vault)));
+<span class="c">// Store salt + iv + data. A wrong password makes decrypt() throw.</span></code></pre>
+</section>
+</main>
+<footer class="foot"><span>Client-side Password Manager. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/04-security-and-auth/029-password-manager">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+const enc = new TextEncoder(), dec = new TextDecoder();
+const b64 = (u) => btoa(String.fromCharCode(...new Uint8Array(u))), unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+let key = null, vault = [], idle = null, left = 120;
+support(!!crypto.subtle, crypto.subtle ? "Web Crypto ready" : "Needs HTTPS");
+async function derive(pw, salt) { const t0 = performance.now(); const base = await crypto.subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveKey"]);
+  const k = await crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: 600000, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+  $("#timing").textContent = `Key derived in ${Math.round(performance.now() - t0)} ms. That delay is what makes guessing slow.`; return k; }
+async function persist() { const iv = crypto.getRandomValues(new Uint8Array(12)); const data = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, enc.encode(JSON.stringify(vault)));
+  const s = store("vjl-vault"); store("vjl-vault", { salt: s.salt, iv: b64(iv), data: b64(data), v: 1 }); }
+const stored = () => store("vjl-vault");
+function lockUI() { key = null; vault = []; clearInterval(idle); $("#open").hidden = true; $("#locked").hidden = false; $("#master").value = "";
+  $("#lockmsg").textContent = stored() ? "Enter your master password to decrypt the vault." : "No vault yet. Choose a master password to create one (at least 10 characters)."; $("#unlock").textContent = stored() ? "Unlock" : "Create vault"; $("#master").focus(); }
+$("#unlock").onclick = async () => {
+  const pw = $("#master").value; const s = stored(); $("#unlock").disabled = true;
+  try {
+    if (!s) { if (pw.length < 10) throw new Error("Use at least 10 characters"); const salt = crypto.getRandomValues(new Uint8Array(16)); store("vjl-vault", { salt: b64(salt) }); key = await derive(pw, salt);
+      vault = [{ site: "github.com", login: "rafi", pass: gen(), c: "#24292F" }, { site: "mail.example.com", login: "rafi@example.com", pass: gen(), c: "#C92A2A" }]; await persist(); }
+    else { key = await derive(pw, unb64(s.salt)); vault = JSON.parse(dec.decode(await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(s.iv) }, key, unb64(s.data)))); }
+    $("#locked").hidden = true; $("#open").hidden = false; render(); regen(); resetIdle();
+  } catch (e) { key = null; toast(e.name === "OperationError" ? "Wrong master password" : e.message); }
+  $("#unlock").disabled = false;
+};
+$("#master").onkeydown = (e) => e.key === "Enter" && $("#unlock").click();
+$("#wipe").onclick = () => { if (confirm("Delete the vault from this browser? This cannot be undone.")) { localStorage.removeItem("vjl-vault"); lockUI(); } };
+function render() { const q = $("#q").value.toLowerCase();
+  $("#list").innerHTML = vault.map((e, i) => ({ e, i })).filter(({ e }) => !q || (e.site + e.login).toLowerCase().includes(q)).map(({ e, i }) => `<li data-i="${i}"><span class="ic" style="background:${e.c || "#495057"}">${esc(e.site[0].toUpperCase())}</span><span><b>${esc(e.site)}</b><br><span class="small">${esc(e.login)}</span> <span class="pw" data-pw>••••••••••</span></span><span class="acts"><button class="btn" data-a="show" type="button">Show</button><button class="btn" data-a="copy" type="button">Copy</button><button class="btn" data-a="del" type="button">Delete</button></span></li>`).join("") || '<li class="empty" style="display:block">No entries.</li>'; }
+$("#list").onclick = async (e) => { const b = e.target.closest("button"); if (!b) return; const li = b.closest("li"), v = vault[+li.dataset.i];
+  if (b.dataset.a === "show") { const s = $("[data-pw]", li); const on = s.textContent.startsWith("•"); s.textContent = on ? v.pass : "••••••••••"; b.textContent = on ? "Hide" : "Show"; }
+  if (b.dataset.a === "copy") { copyText(v.pass); setTimeout(() => navigator.clipboard.writeText("").catch(() => {}), 30000); }
+  if (b.dataset.a === "del") { vault.splice(+li.dataset.i, 1); await persist(); render(); } };
+$("#add").onclick = async () => { const site = $("#site").value.trim(), login = $("#login").value.trim(), pass = $("#pass").value; if (!site || !pass) return toast("Site and password are needed");
+  vault.push({ site, login, pass, c: `hsl(${Math.floor(Math.random() * 360)} 55% 42%)` }); await persist(); render(); $("#site").value = $("#login").value = $("#pass").value = ""; toast("Saved and encrypted"); };
+function gen() { const len = +($("#len")?.value || 20); let set = "abcdefghijkmnopqrstuvwxyz"; if (!$("#up") || $("#up").checked) set += "ABCDEFGHJKLMNPQRSTUVWXYZ"; if (!$("#num") || $("#num").checked) set += "23456789"; if (!$("#sym") || $("#sym").checked) set += "!@#$%^&*-_=+?";
+  const r = crypto.getRandomValues(new Uint32Array(len)); return Array.from(r, (x) => set[x % set.length]).join(""); }
+function regen() { const p = gen(); $("#out").textContent = p; const pool = (/[a-z]/.test(p) ? 26 : 0) + (/[A-Z]/.test(p) ? 26 : 0) + (/\d/.test(p) ? 10 : 0) + (/[^\w]/.test(p) ? 14 : 0), bits = p.length * Math.log2(pool || 1);
+  const secs = 2 ** bits / 1e11; const t = secs < 60 ? "under a minute" : secs < 3.15e7 ? Math.round(secs / 86400) + " days" : secs < 3.15e13 ? Math.round(secs / 3.15e7).toLocaleString() + " years" : "longer than the age of the universe";
+  Object.assign($("#m").style, { width: Math.min(100, bits / 1.28) + "%", background: bits < 50 ? "var(--err)" : bits < 80 ? "var(--warn)" : "var(--ok)" }); $("#crack").textContent = `${Math.round(bits)} bits. At 100 billion guesses a second: ${t}.`; }
+["len", "up", "num", "sym"].forEach((id) => ($("#" + id).oninput = regen)); $("#regen").onclick = regen; $("#use").onclick = () => ($("#pass").value = $("#out").textContent); $("#cp").onclick = () => copyText($("#out").textContent);
+$("#q").oninput = render; $("#lockb").onclick = lockUI;
+$("#exp").onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(stored(), null, 2)], { type: "application/json" })); a.download = "vault-encrypted.json"; a.click(); };
+function resetIdle() { left = 120; clearInterval(idle); idle = setInterval(() => { left--; $("#auto").textContent = `Locks in ${left} s`; if (left <= 0) { lockUI(); toast("Vault locked after 2 minutes"); } }, 1000); }
+["pointerdown", "keydown"].forEach((ev) => addEventListener(ev, () => key && (left = 120)));
+lockUI();
+</script>
+</body>
+</html>

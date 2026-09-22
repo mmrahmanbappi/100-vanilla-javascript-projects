@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build a Postman Alternative in JavaScript: REST API Client (Free)</title>
+<meta name="description" content="Free API client in plain JavaScript. Send GET, POST, PUT, PATCH and DELETE with params, headers and body, see status, time and pretty JSON, save collections and copy cURL.">
+<meta name="keywords" content="postman alternative, rest api client javascript, api tester online, fetch api example, curl export">
+<meta name="author" content="mmrahmanbappi">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vanilla JavaScript Projects">
+<meta property="og:title" content="Build a Postman Alternative in JavaScript: REST API Client (Free)">
+<meta property="og:description" content="Free API client in plain JavaScript. Send GET, POST, PUT, PATCH and DELETE with params, headers and body, see status, time and pretty JSON, save collections and copy cURL.">
+<meta property="og:url" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Build a Postman Alternative in JavaScript: REST API Client (Free)">
+<meta name="twitter:description" content="Free API client in plain JavaScript. Send GET, POST, PUT, PATCH and DELETE with params, headers and body, see status, time and pretty JSON, save collections and copy cURL.">
+<meta name="twitter:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/preview.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317191f'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'%3EJS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#fbfbf8;--ink:#17191f;--muted:#5a5f6b;--line:#e4e3dc;--blue:#2445d6;--card:#fff}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Instrument Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:17px}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.bar{border-bottom:1px solid var(--line);background:#fff}
+.bar div{max-width:1120px;margin:0 auto;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.bar a.logo{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);text-decoration:none}
+.bar nav a{margin-left:18px;color:var(--ink);font-weight:600;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.crumbs{font-size:.9rem;color:var(--muted);padding:22px 0 0}
+.crumbs a{color:var(--muted)}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin:14px 0 14px;max-width:22ch}
+h2{font-size:1.6rem;margin:0 0 14px}
+h3{font-size:1.15rem}
+.lead{font-size:1.15rem;color:var(--muted);max-width:62ch}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:#fff}
+.btn.main{background:var(--ink);color:#fff}
+.shot{display:block;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 50px rgba(20,20,40,.12)}
+.shot img{display:block;width:100%;height:auto}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:50px;padding:60px 0}
+.cols p{margin-bottom:14px;max-width:65ch}
+ul.list{padding-left:20px}
+ul.list li{margin-bottom:6px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.code{position:relative;margin:0 0 60px}
+pre{background:#1d2030;color:#e8eaf3;border-radius:14px;padding:24px;overflow-x:auto;font-size:.9rem;line-height:1.6}
+.copy{position:absolute;top:12px;right:12px;font:inherit;font-size:.85rem;font-weight:700;border:0;border-radius:8px;padding:6px 12px;background:#fff;color:var(--ink);cursor:pointer}
+ol.steps{padding-left:22px;max-width:65ch;margin-bottom:60px}
+ol.steps li{margin-bottom:8px}
+details{border-top:1px solid var(--line);padding:16px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{font-weight:700;cursor:pointer;font-size:1.05rem}
+details p{margin-top:10px;color:var(--muted);max-width:70ch}
+.faq{margin-bottom:60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;margin:26px 0 60px}
+.tile{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tile img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+.tile div{padding:14px 16px}
+.tile small{color:var(--muted)}
+.tile:hover{border-color:var(--ink)}
+.cat{margin:50px 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.soon{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:20px 0 70px}
+.soon div{border:1px dashed #c9c7bd;border-radius:12px;padding:18px;color:var(--muted)}
+.soon b{color:var(--ink);display:block}
+.pager{display:flex;justify-content:space-between;gap:16px;margin:0 0 60px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;color:var(--muted);font-size:.95rem}
+@media(max-width:820px){.cols{grid-template-columns:1fr;gap:30px;padding:40px 0}.bar nav a:first-child{display:none}}
+.support{font-size:.95rem;color:var(--muted);margin-top:14px}
+.how{padding-left:22px;max-width:65ch;margin-bottom:40px}.how li{margin-bottom:10px}.how b{display:block}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/","name":"Build a Postman Alternative in JavaScript: REST API Client (Free)","description":"Free API client in plain JavaScript. Send GET, POST, PUT, PATCH and DELETE with params, headers and body, see status, time and pretty JSON, save collections and copy cURL.","isPartOf":{"@type":"WebSite","name":"Vanilla JavaScript Projects","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/preview.png","width":1280,"height":800},"datePublished":"2026-09-23","dateModified":"2026-09-23","inLanguage":"en"},{"@type":"SoftwareSourceCode","name":"Mini Postman API Client in Vanilla JavaScript","description":"Free API client in plain JavaScript. Send GET, POST, PUT, PATCH and DELETE with params, headers and body, see status, time and pretty JSON, save collections and copy cURL.","image":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/preview.png","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/","codeRepository":"https://github.com/mmrahmanbappi/vanilla-javascript-projects","programmingLanguage":["JavaScript","HTML","CSS"],"runtimePlatform":"Web browser","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"keywords":"postman alternative, rest api client javascript, api tester online, fetch api example, curl export","author":{"@type":"Person","name":"mmrahmanbappi","url":"https://github.com/mmrahmanbappi"}},{"@type":"SoftwareApplication","name":"Mini Postman API Client","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/demo.html","applicationCategory":"DeveloperApplication","operatingSystem":"Any modern web browser","image":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/preview.png","description":"Free API client in plain JavaScript. Send GET, POST, PUT, PATCH and DELETE with params, headers and body, see status, time and pretty JSON, save collections and copy cURL.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/"},{"@type":"ListItem","position":3,"name":"Mini Postman API Client","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why do some APIs fail with a CORS error?","acceptedAnswer":{"@type":"Answer","text":"Browsers block requests to sites that do not allow them. Public APIs usually allow it, private ones often need a proxy."}},{"@type":"Question","name":"Where are my requests saved?","acceptedAnswer":{"@type":"Answer","text":"History and collections are stored in localStorage in your browser."}},{"@type":"Question","name":"Can I use environment variables?","acceptedAnswer":{"@type":"Answer","text":"Yes. Add them in the Variables tab and use {{name}} in the URL, params, headers or body."}}]}]}</script>
+</head>
+<body>
+<header class="bar"><div><a class="logo" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Vanilla JavaScript Projects</a><nav><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/#categories">Categories</a><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">GitHub</a></nav></div></header>
+<main class="wrap">
+<p class="crumbs"><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Home</a> / <a href="../">Developer Tools</a> / Mini Postman API Client</p>
+<h1>Mini Postman API Client in JavaScript, Free with Live Demo</h1>
+<p class="lead">Free API client in plain JavaScript. Send GET, POST, PUT, PATCH and DELETE with params, headers and body, see status, time and pretty JSON, save collections and copy cURL.</p>
+<div class="actions"><a class="btn main" href="demo.html">Open live demo</a><a class="btn" href="demo.html" download="mini-postman.html">Download HTML file</a><a class="btn" href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/07-developer-tools/049-mini-postman">View code on GitHub</a></div>
+<a class="shot" href="demo.html"><img src="preview.png" alt="Mini Postman API Client JavaScript project: send API requests and read clean responses" width="1280" height="800"></a>
+<p class="support">Runs on: Fetch with AbortController. Every modern browser. The API you call must allow CORS; many public APIs do, private ones often need a proxy.</p>
+<section class="cols"><div><h2>What is the Mini Postman API Client?</h2><p>Test any API from the browser. Build a request with query params, headers and a body, send it, and read a clean response with status, time and size. Save the ones you use often and copy them as cURL.</p><p>Requests use fetch with an AbortSignal for the timeout and the Cancel button. The response body is streamed to count bytes, and variables like {{baseUrl}} are filled in before sending.</p></div>
+<div class="box"><h3>Good for</h3><ul class="list"><li>Testing your own APIs</li><li>Learning how HTTP requests work</li><li>Sharing requests as cURL</li><li>A lightweight tool with no account</li></ul></div></section>
+<section><h2>What this project does</h2><ul class="list" style="margin-bottom:40px"><li>Methods, params table, headers table and JSON, form or raw body</li><li>Response status, time, size, headers and highlighted JSON</li><li>Timeout and a Cancel button</li><li>History of the last 30 requests and named collections</li><li>Environment variables like {{baseUrl}} and cURL export</li></ul></section>
+<section><h2>How it works</h2><ol class="how"><li><b>Build the request</b>The URL, params, headers and body are combined, and {{variables}} are filled in from the environment.</li><li><b>Send with limits</b>fetch runs with a signal that aborts on your timeout or when you press Cancel.</li><li><b>Read the response</b>The body is streamed to count bytes and show progress, then shown as pretty JSON or plain text.</li></ol></section>
+<section><h2>The key JavaScript</h2><p style="margin-bottom:14px">This is the heart of the project. The full file has the rest, including the screen layout and error handling.</p>
+<div class="code"><button class="copy" type="button">Copy code</button><pre><code>const controller = new AbortController();
+const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]);
+const t0 = performance.now();
+const res = await fetch(url, { method, headers, body, signal });
+
+let bytes = 0; const chunks = [];
+const reader = res.body.getReader();
+for (let r; !(r = await reader.read()).done; ) { chunks.push(r.value); bytes += r.value.length; }
+const text = new TextDecoder().decode(await new Blob(chunks).arrayBuffer());
+show(res.status, performance.now() - t0, bytes, text, [...res.headers]);
+// Cancel button: controller.abort()</code></pre></div></section>
+<section><h2>How to use it</h2><ol class="steps"><li>Click Download HTML file above.</li><li>Open the file in a code editor, like VS Code.</li><li>Run it from a local server with <code>npx serve .</code> so the camera, microphone and AI features are allowed.</li><li>Change the text and colors, then upload it to GitHub Pages, Netlify or your own site. It is one file with no build step.</li></ol></section>
+<section class="faq"><h2>Questions people ask</h2><details><summary>Why do some APIs fail with a CORS error?</summary><p>Browsers block requests to sites that do not allow them. Public APIs usually allow it, private ones often need a proxy.</p></details><details><summary>Where are my requests saved?</summary><p>History and collections are stored in localStorage in your browser.</p></details><details><summary>Can I use environment variables?</summary><p>Yes. Add them in the Variables tab and use {{name}} in the URL, params, headers or body.</p></details></section>
+<nav class="pager" aria-label="More projects"><a href="../048-regex-tester/">Previous: Regex Tester</a><a href="../050-temporal-datetime/">Next: Temporal Date and Time Toolkit</a></nav>
+<section><h2>More Developer Tools projects</h2><div class="grid"><a class="tile" href="../047-json-formatter/"><img src="../047-json-formatter/preview.png" alt="JSON Formatter and Validator JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>047. JSON Formatter and Validator</h3><small>Format, check and browse JSON, even large files</small></div></a><a class="tile" href="../048-regex-tester/"><img src="../048-regex-tester/preview.png" alt="Regex Tester JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>048. Regex Tester</h3><small>Test regular expressions with live highlights and groups</small></div></a><a class="tile" href="../050-temporal-datetime/"><img src="../050-temporal-datetime/preview.png" alt="Temporal Date and Time Toolkit JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>050. Temporal Date and Time Toolkit</h3><small>Time zones, date math and Unix time with the new Temporal API</small></div></a></div></section>
+</main>
+<footer>Free under the MIT license. Made by <a href="https://github.com/mmrahmanbappi">mmrahmanbappi</a>. <a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">Star the repo on GitHub</a> to help more people find these projects.</footer>
+<script>document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.nextElementSibling.innerText).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy code',1500)})})</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image Compressor in JavaScript: Resize and Convert to WebP in the Browser</title>
+<meta name="description" content="Free bulk image compressor in plain JavaScript. Resize and convert photos to WebP, AVIF or JPEG in a Web Worker with OffscreenCanvas, and compare before and after.">
+<meta name="keywords" content="image compressor javascript, convert to webp javascript, offscreencanvas web worker, resize image browser, compress images online free">
+<meta name="author" content="mmrahmanbappi">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/038-image-compressor/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vanilla JavaScript Projects">
+<meta property="og:title" content="Image Compressor in JavaScript: Resize and Convert to WebP in the Browser">
+<meta property="og:description" content="Free bulk image compressor in plain JavaScript. Resize and convert photos to WebP, AVIF or JPEG in a Web Worker with OffscreenCanvas, and compare before and after.">
+<meta property="og:url" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/038-image-compressor/">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/038-image-compressor/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Image Compressor in JavaScript: Resize and Convert to WebP in the Browser">
+<meta name="twitter:description" content="Free bulk image compressor in plain JavaScript. Resize and convert photos to WebP, AVIF or JPEG in a Web Worker with OffscreenCanvas, and compare before and after.">
+<meta name="twitter:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/038-image-compressor/preview.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317191f'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'%3EJS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#fbfbf8;--ink:#17191f;--muted:#5a5f6b;--line:#e4e3dc;--blue:#2445d6;--card:#fff}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Instrument Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:17px}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.bar{border-bottom:1px solid var(--line);background:#fff}
+.bar div{max-width:1120px;margin:0 auto;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.bar a.logo{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);text-decoration:none}
+.bar nav a{margin-left:18px;color:var(--ink);font-weight:600;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.crumbs{font-size:.9rem;color:var(--muted);padding:22px 0 0}
+.crumbs a{color:var(--muted)}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin:14px 0 14px;max-width:22ch}
+h2{font-size:1.6rem;margin:0 0 14px}
+h3{font-size:1.15rem}
+.lead{font-size:1.15rem;color:var(--muted);max-width:62ch}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:#fff}
+.btn.main{background:var(--ink);color:#fff}
+.shot{display:block;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 50px rgba(20,20,40,.12)}
+.shot img{display:block;width:100%;height:auto}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:50px;padding:60px 0}
+.cols p{margin-bottom:14px;max-width:65ch}
+ul.list{padding-left:20px}
+ul.list li{margin-bottom:6px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.code{position:relative;margin:0 0 60px}
+pre{background:#1d2030;color:#e8eaf3;border-radius:14px;padding:24px;overflow-x:auto;font-size:.9rem;line-height:1.6}
+.copy{position:absolute;top:12px;right:12px;font:inherit;font-size:.85rem;font-weight:700;border:0;border-radius:8px;padding:6px 12px;background:#fff;color:var(--ink);cursor:pointer}
+ol.steps{padding-left:22px;max-width:65ch;margin-bottom:60px}
+ol.steps li{margin-bottom:8px}
+details{border-top:1px solid var(--line);padding:16px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{font-weight:700;cursor:pointer;font-size:1.05rem}
+details p{margin-top:10px;color:var(--muted);max-width:70ch}
+.faq{margin-bottom:60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;margin:26px 0 60px}
+.tile{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tile img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+.tile div{padding:14px 16px}
+.tile small{color:var(--muted)}
+.tile:hover{border-color:var(--ink)}
+.cat{margin:50px 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.soon{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:20px 0 70px}
+.soon div{border:1px dashed #c9c7bd;border-radius:12px;padding:18px;color:var(--muted)}
+.soon b{color:var(--ink);display:block}
+.pager{display:flex;justify-content:space-between;gap:16px;margin:0 0 60px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;color:var(--muted);font-size:.95rem}
+@media(max-width:820px){.cols{grid-template-columns:1fr;gap:30px;padding:40px 0}.bar nav a:first-child{display:none}}
+.support{font-size:.95rem;color:var(--muted);margin-top:14px}
+.how{padding-left:22px;max-width:65ch;margin-bottom:40px}.how li{margin-bottom:10px}.how b{display:block}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/038-image-compressor/","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/038-image-compressor/","name":"Image Compressor in JavaScript: Resize and Convert to WebP in the Browser","description":"Free bulk image compressor in plain JavaScript. Resize and convert photos to WebP, AVIF or JPEG in a Web Worker with OffscreenCanvas, and compare before and after.","isPartOf":{"@type":"WebSite","name":"Vanilla JavaScript Projects","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/038-image-compressor/preview.png","width":1280,"height":800},"datePublished":"2026-09-23","dateModified":"2026-09-23","inLanguage":"en"},{"@type":"SoftwareSourceCode","name":"Image Compressor in Vanilla JavaScript","description":"Free bulk image compressor in plain JavaScript. Resize and convert photos to WebP, AVIF or JPEG in a Web Worker with OffscreenCanvas, and compare before and after.","image":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/038-image-compressor/preview.png","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/038-image-compressor/","codeRepository":"https://github.com/mmrahmanbappi/vanilla-javascript-projects","programmingLanguage":["JavaScript","HTML","CSS"],"runtimePlatform":"Web browser","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"keywords":"image compressor javascript, convert to webp javascript, offscreencanvas web worker, resize image browser, compress images online free","author":{"@type":"Person","name":"mmrahmanbappi","url":"https://github.com/mmrahmanbappi"}},{"@type":"SoftwareApplication","name":"Image Compressor","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/038-image-compressor/demo.html","applicationCategory":"DeveloperApplication","operatingSystem":"Any modern web browser","image":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/038-image-compressor/preview.png","description":"Free bulk image compressor in plain JavaScript. Resize and convert photos to WebP, AVIF or JPEG in a Web Worker with OffscreenCanvas, and compare before and after.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},{"@type":"ListItem","position":2,"name":"Media and Real Time","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/"},{"@type":"ListItem","position":3,"name":"Image Compressor","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/038-image-compressor/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is WebP or AVIF better?","acceptedAnswer":{"@type":"Answer","text":"AVIF files are usually smaller at the same quality, but encoding is slower and fewer browsers can create them. WebP is a safe default."}},{"@type":"Question","name":"Does compressing lose quality?","acceptedAnswer":{"@type":"Answer","text":"A little, depending on the quality slider. Around 0.75 is hard to tell apart from the original for most photos."}},{"@type":"Question","name":"Why use a Web Worker?","acceptedAnswer":{"@type":"Answer","text":"Encoding big images takes time. Doing it in a worker keeps scrolling and clicking smooth."}}]}]}</script>
+</head>
+<body>
+<header class="bar"><div><a class="logo" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Vanilla JavaScript Projects</a><nav><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/#categories">Categories</a><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">GitHub</a></nav></div></header>
+<main class="wrap">
+<p class="crumbs"><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Home</a> / <a href="../">Media and Real Time</a> / Image Compressor</p>
+<h1>Image Compressor in JavaScript, Free with Live Demo</h1>
+<p class="lead">Free bulk image compressor in plain JavaScript. Resize and convert photos to WebP, AVIF or JPEG in a Web Worker with OffscreenCanvas, and compare before and after.</p>
+<div class="actions"><a class="btn main" href="demo.html">Open live demo</a><a class="btn" href="demo.html" download="image-compressor.html">Download HTML file</a><a class="btn" href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/05-media-and-realtime/038-image-compressor">View code on GitHub</a></div>
+<a class="shot" href="demo.html"><img src="preview.png" alt="Image Compressor JavaScript project: shrink photos in bulk without uploading them" width="1280" height="800"></a>
+<p class="support">Runs on: OffscreenCanvas in a Worker. Every modern browser. AVIF output: Chrome and Edge. Safari encodes JPEG and PNG; its WebP output may fall back to PNG.</p>
+<section class="cols"><div><h2>What is the Image Compressor?</h2><p>Drop a batch of photos, pick a size and quality, and get smaller files back in seconds, with a before and after slider on each one. Nothing is uploaded.</p><p>The heavy work runs in a Web Worker so the page never freezes. Each photo becomes an ImageBitmap, is drawn at the new size on an OffscreenCanvas, and is encoded to the format you picked.</p></div>
+<div class="box"><h3>Good for</h3><ul class="list"><li>Shrinking photos before upload</li><li>Faster pages and better Core Web Vitals</li><li>Making WebP versions of images</li><li>Learning Web Workers</li></ul></div></section>
+<section><h2>What this project does</h2><ul class="list" style="margin-bottom:40px"><li>Batch: drop many images at once</li><li>Max width, quality and output format controls</li><li>Before and after slider on each image</li><li>Shows size saved per file and in total</li><li>Download one file or all of them</li></ul></section>
+<section><h2>How it works</h2><ol class="how"><li><b>Decode</b>Each file becomes an ImageBitmap with createImageBitmap, which decodes off the main thread.</li><li><b>Resize in a worker</b>The bitmap is sent to the worker, drawn at the new size on an OffscreenCanvas with high quality smoothing.</li><li><b>Encode</b>convertToBlob encodes to the chosen format and quality. The page gets back the new file and its size.</li></ol></section>
+<section><h2>The key JavaScript</h2><p style="margin-bottom:14px">This is the heart of the project. The full file has the rest, including the screen layout and error handling.</p>
+<div class="code"><button class="copy" type="button">Copy code</button><pre><code>// worker.js (created from a Blob so the page stays a single file)
+self.onmessage = async ({ data: { id, bitmap, width, type, quality } }) =&gt; {
+  const scale = width ? Math.min(1, width / bitmap.width) : 1;
+  const canvas = new OffscreenCanvas(Math.round(bitmap.width * scale), Math.round(bitmap.height * scale));
+  const ctx = canvas.getContext(&quot;2d&quot;);
+  ctx.imageSmoothingQuality = &quot;high&quot;;
+  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  const blob = await canvas.convertToBlob({ type, quality });
+  self.postMessage({ id, blob, w: canvas.width, h: canvas.height });
+};
+// page
+worker.postMessage({ id, bitmap, width: 1920, type: &quot;image/webp&quot;, quality: 0.75 }, [bitmap]);</code></pre></div></section>
+<section><h2>How to use it</h2><ol class="steps"><li>Click Download HTML file above.</li><li>Open the file in a code editor, like VS Code.</li><li>Run it from a local server with <code>npx serve .</code> so the camera, microphone and AI features are allowed.</li><li>Change the text and colors, then upload it to GitHub Pages, Netlify or your own site. It is one file with no build step.</li></ol></section>
+<section class="faq"><h2>Questions people ask</h2><details><summary>Is WebP or AVIF better?</summary><p>AVIF files are usually smaller at the same quality, but encoding is slower and fewer browsers can create them. WebP is a safe default.</p></details><details><summary>Does compressing lose quality?</summary><p>A little, depending on the quality slider. Around 0.75 is hard to tell apart from the original for most photos.</p></details><details><summary>Why use a Web Worker?</summary><p>Encoding big images takes time. Doing it in a worker keeps scrolling and clicking smooth.</p></details></section>
+<nav class="pager" aria-label="More projects"><a href="../037-webgpu-particles/">Previous: WebGPU Particle Playground</a><a href="../039-live-chat/">Next: Live Chat App</a></nav>
+<section><h2>More Media and Real Time projects</h2><div class="grid"><a class="tile" href="../032-webrtc-video-call/"><img src="../032-webrtc-video-call/preview.png" alt="Video Call App JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>032. Video Call App</h3><small>A peer to peer video call between two browsers</small></div></a><a class="tile" href="../033-screen-recorder/"><img src="../033-screen-recorder/preview.png" alt="Screen Recorder JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>033. Screen Recorder</h3><small>Record your screen with your voice and your face in the corner</small></div></a><a class="tile" href="../034-browser-video-editor/"><img src="../034-browser-video-editor/preview.png" alt="Browser Video Editor JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>034. Browser Video Editor</h3><small>Trim a clip, add a filter and a title, and export an MP4</small></div></a><a class="tile" href="../035-collaborative-whiteboard/"><img src="../035-collaborative-whiteboard/preview.png" alt="Collaborative Whiteboard JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>035. Collaborative Whiteboard</h3><small>A shared drawing board with live cursors</small></div></a><a class="tile" href="../036-music-visualizer/"><img src="../036-music-visualizer/preview.png" alt="Music Visualizer JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>036. Music Visualizer</h3><small>Turn music into moving bars, waves and a glowing ring</small></div></a><a class="tile" href="../037-webgpu-particles/"><img src="../037-webgpu-particles/preview.png" alt="WebGPU Particle Playground JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>037. WebGPU Particle Playground</h3><small>Up to a million glowing particles that follow your mouse</small></div></a></div></section>
+</main>
+<footer>Free under the MIT license. Made by <a href="https://github.com/mmrahmanbappi">mmrahmanbappi</a>. <a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">Star the repo on GitHub</a> to help more people find these projects.</footer>
+<script>document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.nextElementSibling.innerText).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy code',1500)})})</script>
+</body>
+</html>

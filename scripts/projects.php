@@ -26,37 +26,61 @@ $CATEGORIES = [
         'num' => 2,
         'slug' => '02-modern-ui',
         'name' => 'Modern UI',
-        'ready' => false,
+        'ready' => true,
+        'title' => 'Free Modern UI JavaScript Projects: Web Components, Popover, Signals',
+        'desc' => '10 free modern UI projects in plain JavaScript with live demos: Web Components, View Transitions, a router, popovers, signals, kanban, color picker and more.',
+        'keywords' => 'modern ui javascript, web components projects, view transitions api, popover api, kanban board javascript, javascript ui projects',
+        'intro' => 'The browser now does many things that used to need React or a big library. Custom components, animated page changes, routing, tooltips that place themselves, and state that updates the screen on its own. These ten projects show those features in real, useful interfaces. Each one is a single HTML file you can open, read and copy into your own work.',
     ],
     [
         'num' => 3,
         'slug' => '03-pwa-and-offline',
         'name' => 'PWA and Offline',
-        'ready' => false,
+        'ready' => true,
+        'title' => 'Free PWA JavaScript Projects: Offline Apps, Push, Service Workers',
+        'desc' => '7 free progressive web app projects in plain JavaScript with live demos: offline todo, expense tracker, reminders, markdown editor, share target, tab sync and prerender.',
+        'keywords' => 'pwa projects javascript, service worker example, offline web app, push notifications javascript, installable web app, progressive web app tutorial',
+        'intro' => 'A progressive web app installs like a normal app, opens without internet and can send notifications. These seven projects show how, one feature at a time: caching with a service worker, syncing when the connection comes back, reminders, saving real files, receiving shares from other apps, keeping tabs in sync and loading pages before you click.',
     ],
     [
         'num' => 4,
         'slug' => '04-security-and-auth',
         'name' => 'Security and Auth',
-        'ready' => false,
+        'ready' => true,
+        'title' => 'Free JavaScript Security Projects: Passkeys, Encryption, 2FA',
+        'desc' => '4 free security projects in plain JavaScript with live demos: passkey login with WebAuthn, an encrypted password manager, a file encryptor and a TOTP 2FA app.',
+        'keywords' => 'javascript security projects, webauthn passkeys demo, web crypto api, aes encryption javascript, totp javascript, password manager javascript',
+        'intro' => 'Passwords, codes and encryption feel like hard topics, but the browser ships the building blocks for all of them. These four projects use WebAuthn for passkeys and the Web Crypto API for strong encryption and two factor codes. They are small enough to read in an evening, and they show every step so you understand what is actually happening.',
     ],
     [
         'num' => 5,
         'slug' => '05-media-and-realtime',
         'name' => 'Media and Real Time',
-        'ready' => false,
+        'ready' => true,
+        'title' => 'Free JavaScript Media Projects: Video Call, Screen Recorder, WebGPU',
+        'desc' => '9 free media and real time projects in plain JavaScript with live demos: WebRTC video call, screen recorder, video editor, whiteboard, visualizer, chat and more.',
+        'keywords' => 'webrtc video call javascript, screen recorder javascript, webcodecs video editor, real time chat javascript, webgpu particles, code playground javascript',
+        'intro' => 'Video calls, screen recording, live drawing with friends and music that moves on screen used to need plugins or native apps. Now the browser handles them with WebRTC, MediaRecorder, WebCodecs, Web Audio and WebGPU. These nine projects are the most fun in the collection, and they make great portfolio pieces because people can try them in seconds.',
     ],
     [
         'num' => 6,
         'slug' => '06-hardware-and-performance',
         'name' => 'Hardware and Performance',
-        'ready' => false,
+        'ready' => true,
+        'title' => 'Free JavaScript Hardware and Performance Projects: Bluetooth, Serial, WASM',
+        'desc' => '6 free hardware and performance projects in plain JavaScript with live demos: Web Bluetooth, Arduino serial monitor, WebAssembly filters, Core Web Vitals and more.',
+        'keywords' => 'web bluetooth javascript, web serial arduino, webassembly javascript example, core web vitals javascript, compressionstream, scheduler api',
+        'intro' => 'A web page can now talk to a heart rate strap, read an Arduino over USB, run hand written WebAssembly and measure its own speed. These six projects show how to reach hardware and how to keep pages fast, with demo modes so you can try them even without a device plugged in.',
     ],
     [
         'num' => 7,
         'slug' => '07-developer-tools',
         'name' => 'Developer Tools',
-        'ready' => false,
+        'ready' => true,
+        'title' => 'Free JavaScript Developer Tools: JSON Formatter, Regex Tester, API Client',
+        'desc' => '4 free developer tools in plain JavaScript with live demos: JSON formatter and validator, regex tester, a Postman style API client and a Temporal date toolkit.',
+        'keywords' => 'json formatter javascript, regex tester online, postman alternative javascript, temporal api, developer tools javascript, api client browser',
+        'intro' => 'These are the small tools developers open every day, rebuilt as single HTML files you can keep, change and run offline. Format and check JSON, test regular expressions, send API requests and convert time zones. Each one is fast, private and shows useful techniques like Web Workers, streaming fetch and the new Temporal API.',
     ],
 ];
 
@@ -753,6 +777,2741 @@ for (const c of codes) console.log(c.format, c.rawValue, c.cornerPoints);',
             [
                 'Why does the camera not start?',
                 'Browsers only allow the camera on HTTPS or localhost. On GitHub Pages it works, but opening the file straight from your disk will block it.',
+            ],
+        ],
+    ],
+    [
+        'num' => 11,
+        'cat' => '02-modern-ui',
+        'slug' => '011-ui-component-library',
+        'name' => 'UI Component Library',
+        'example' => 'six reusable Web Components you can drop into any page',
+        'title' => 'Web Components Tutorial: Build a UI Component Library in JavaScript',
+        'desc' => 'Free UI component library in plain JavaScript. Six Web Components with Shadow DOM: button, toggle, tabs, rating, progress ring and accordion. Works with any framework.',
+        'keywords' => 'web components tutorial, custom elements javascript, shadow dom example, ui component library, framework free components',
+        'runs' => 'Custom Elements v1',
+        'what' => [
+            'Web Components let you make your own HTML tags, like <ui-toggle> or <ui-rating>, that work in any page and any framework. This project builds six of them: a button, a toggle switch, tabs, a star rating, a progress ring and an accordion.',
+            'Each component is a JavaScript class that keeps its markup and styles inside a Shadow DOM, so nothing leaks in or out. They react when you change an attribute and fire normal events, which is why the same tag works in React, Vue or plain HTML.',
+        ],
+        'when' => [
+            'Design systems shared across several apps',
+            'Widgets you embed on other people\'s sites',
+            'Teams that use more than one framework',
+            'Learning how browsers build components',
+        ],
+        'features' => [
+            'ui-button, ui-toggle, ui-tabs, ui-rating, ui-progress and ui-accordion',
+            'Every component reacts to attribute changes',
+            'Custom events you can listen to from any framework',
+            'Theme with CSS custom properties that pierce the shadow root',
+            'Keyboard and screen reader friendly',
+        ],
+        'steps' => [
+            [
+                'Define a class',
+                'Each component extends HTMLElement and builds its markup inside an open shadow root.',
+            ],
+            [
+                'Watch attributes',
+                'observedAttributes lists what to watch, and attributeChangedCallback re-renders when one changes.',
+            ],
+            [
+                'Talk to the page',
+                'Components fire CustomEvents such as change, so any framework can listen with a normal event listener.',
+            ],
+        ],
+        'code' => 'class UiToggle extends HTMLElement {
+  static observedAttributes = ["checked", "label"];
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
+  attributeChangedCallback() { this.render(); }
+  toggle() {
+    this.toggleAttribute("checked");
+    this.dispatchEvent(new CustomEvent("change", { detail: this.hasAttribute("checked") }));
+  }
+  render() { /* build markup inside this.shadowRoot */ }
+}
+customElements.define("ui-toggle", UiToggle);',
+        'browsers' => 'Every modern browser. Custom Elements and Shadow DOM have been supported everywhere since 2020.',
+        'faq' => [
+            [
+                'Can I use Web Components in React?',
+                'Yes. They are real HTML elements, so React can render them. Pass values as attributes and listen to their events with a ref or the onChange style props in React 19.',
+            ],
+            [
+                'Do Web Components work in all browsers?',
+                'Yes. Custom Elements and Shadow DOM have worked in Chrome, Edge, Firefox and Safari since 2020. No polyfill is needed.',
+            ],
+            [
+                'How do I style a component from outside?',
+                'Use CSS custom properties, like --ui-accent in this project. They pass through the Shadow DOM, so you can theme every component from one place.',
+            ],
+        ],
+    ],
+    [
+        'num' => 12,
+        'cat' => '02-modern-ui',
+        'slug' => '012-view-transitions-gallery',
+        'name' => 'View Transitions Gallery',
+        'example' => 'a photo gallery where images grow smoothly into the detail page',
+        'title' => 'View Transitions API Example: Smooth Photo Gallery in JavaScript',
+        'desc' => 'Free View Transitions API gallery in plain JavaScript. Click a photo and it morphs into the detail view, with filters, back button support and a fallback.',
+        'keywords' => 'view transitions api, page transition javascript, startviewtransition example, shared element transition css, spa animation',
+        'runs' => 'View Transitions',
+        'what' => [
+            'Click a photo in the grid and it grows into the big detail view instead of just popping in. Press back and it shrinks home again. This kind of animation used to need a heavy library, and now the browser does it with one function call.',
+            'The View Transitions API takes a picture of the page before and after a change, then animates between them. Give the small photo and the big photo the same view-transition-name and the browser moves one into the other.',
+        ],
+        'when' => [
+            'Photo galleries and portfolios',
+            'Online shops, from product list to product page',
+            'Single page apps that feel smoother',
+            'Filters that rearrange a grid',
+        ],
+        'features' => [
+            'Shared element morph from grid to detail',
+            'Filter the grid by category with animated reflow',
+            'Back button and deep links work',
+            'Instant fallback in browsers without the API',
+            'Respects reduced motion settings',
+        ],
+        'steps' => [
+            [
+                'Name the element',
+                'The clicked photo gets view-transition-name: hero, and so does the big photo on the detail view.',
+            ],
+            [
+                'Swap the DOM',
+                'The page calls startViewTransition and changes the DOM inside the callback. The browser snapshots before and after.',
+            ],
+            [
+                'Let CSS animate',
+                'The browser morphs the named element between its two positions. Everything else cross-fades.',
+            ],
+        ],
+        'code' => '// Swap the view inside a transition
+function open(photo) {
+  const img = document.querySelector(`[data-id="${photo.id}"] img`);
+  img.style.viewTransitionName = "hero"; // name it before
+
+  document.startViewTransition(() => {
+    img.style.viewTransitionName = "";
+    renderDetail(photo); // big <img> also has view-transition-name: hero
+  });
+}
+// CSS: ::view-transition-group(hero) { animation-duration: .45s; }',
+        'browsers' => 'Chrome and Edge 111+, Safari 18+ and recent Firefox. Older browsers switch views instantly.',
+        'faq' => [
+            [
+                'What is the View Transitions API?',
+                'It is a browser feature that animates between two states of a page. You call document.startViewTransition() and change the page inside it, and the browser handles the animation.',
+            ],
+            [
+                'Does it work in Firefox and Safari?',
+                'Safari 18 and newer support it, and recent Firefox versions do too. In older browsers the page changes instantly, which is a safe fallback.',
+            ],
+            [
+                'Can I control the animation?',
+                'Yes. Use the ::view-transition pseudo elements in CSS to change the timing, easing or effect, just like normal CSS animations.',
+            ],
+        ],
+    ],
+    [
+        'num' => 13,
+        'cat' => '02-modern-ui',
+        'slug' => '013-client-side-router',
+        'name' => 'Client-side Router',
+        'example' => 'a tiny single page app router with real URLs',
+        'title' => 'JavaScript Router Tutorial: SPA Routing with the Navigation API',
+        'desc' => 'Free client-side router in plain JavaScript using the Navigation API, with route parameters, a 404 page, loading states and a History API fallback.',
+        'keywords' => 'javascript router, spa routing vanilla js, navigation api example, history api routing, single page app without framework',
+        'runs' => 'Navigation API',
+        'what' => [
+            'A router lets a single page app change screens without reloading, while every screen still has its own URL. Links, the back button and bookmarks all work. This project builds a small router in about 60 lines.',
+            'It uses the Navigation API, a newer browser feature made for exactly this job. One navigate event catches every link click and back button press, and the router decides what to show. Older browsers fall back to the History API.',
+        ],
+        'when' => [
+            'Small apps that do not need a framework',
+            'Docs sites and dashboards',
+            'Learning how React Router and others work',
+            'Static sites on GitHub Pages',
+        ],
+        'features' => [
+            'Routes with parameters like /post/:id',
+            'Loading state for slow pages, with cancel on fast clicks',
+            '404 page for unknown routes',
+            'Active link styling and document title per page',
+            'Works on static hosting because routes live in the query string',
+        ],
+        'steps' => [
+            [
+                'Catch navigations',
+                'The navigate event fires for link clicks, form submits and back or forward. The router checks if it can handle the URL.',
+            ],
+            [
+                'Intercept',
+                'event.intercept() stops the full page load and runs the route handler instead. The URL still updates.',
+            ],
+            [
+                'Render',
+                'The matching route renders into the page. If the user clicks again quickly, the signal aborts the old load.',
+            ],
+        ],
+        'code' => 'navigation.addEventListener("navigate", (event) => {
+  const url = new URL(event.destination.url);
+  if (!event.canIntercept || url.origin !== location.origin) return;
+
+  event.intercept({
+    async handler() {
+      const page = await loadRoute(url, { signal: event.signal });
+      outlet.replaceChildren(page); // URL already updated
+    },
+  });
+});',
+        'browsers' => 'Navigation API: Chrome and Edge 102+, plus the newest Safari and Firefox releases. Older browsers use the History API fallback.',
+        'faq' => [
+            [
+                'What is the Navigation API?',
+                'It is a modern replacement for the History API. It gives you one navigate event for every kind of navigation, and event.intercept() to handle it in JavaScript.',
+            ],
+            [
+                'Why are routes in the query string?',
+                'Static hosts like GitHub Pages return 404 for unknown paths. Keeping routes in ?r= means a refresh always loads the same file, so it works anywhere.',
+            ],
+            [
+                'Can it load data for a route?',
+                'Yes. Route handlers can be async. The demo waits for a fake API, and a fast second click cancels the first load with the event\'s AbortSignal.',
+            ],
+        ],
+    ],
+    [
+        'num' => 14,
+        'cat' => '02-modern-ui',
+        'slug' => '014-popover-anchor-ui',
+        'name' => 'Popovers Without Libraries',
+        'example' => 'tooltips, menus, toasts and a side sheet with no library',
+        'title' => 'Popover API and CSS Anchor Positioning: Tooltips and Menus Without JS',
+        'desc' => 'Free popover examples in plain HTML, CSS and JavaScript. Dropdown menu, tooltips, toasts and a side sheet using the Popover API and CSS anchor positioning.',
+        'keywords' => 'popover api, css anchor positioning, tooltip without javascript, dropdown menu html, popovertarget example',
+        'runs' => 'Popover API',
+        'what' => [
+            'Dropdowns, tooltips and toasts are on almost every site, and they used to need a positioning library. The new popover attribute handles showing, hiding, the Esc key and clicks outside. CSS anchor positioning places the popup right next to its button.',
+            'This project shows four common patterns built that way, with only a little JavaScript for the parts that need it. Browsers without anchor positioning get a tiny script that places things by hand.',
+        ],
+        'when' => [
+            'Dropdown and context menus',
+            'Help tooltips on forms',
+            'Notifications and toasts',
+            'Settings panels and side sheets',
+        ],
+        'features' => [
+            'Dropdown menu that flips when it hits the screen edge',
+            'Hover and focus tooltips',
+            'Toast notifications that stack and dismiss themselves',
+            'Side sheet with light dismiss (click outside or Esc)',
+            'JavaScript fallback placement when CSS anchors are missing',
+        ],
+        'steps' => [
+            [
+                'Mark it as a popover',
+                'Add popover to any element. It starts hidden and appears in the top layer, above everything, when opened.',
+            ],
+            [
+                'Connect a button',
+                'popovertarget on a button opens and closes it, with Esc and outside clicks handled by the browser.',
+            ],
+            [
+                'Anchor it',
+                'anchor-name on the button and position-anchor on the popover place it right next to the button, flipping if needed.',
+            ],
+        ],
+        'code' => '<!-- Opens and closes with no JavaScript -->
+<button id="menuBtn" popovertarget="menu">Options</button>
+<div id="menu" popover>…</div>
+
+<style>
+  #menuBtn { anchor-name: --menu; }
+  #menu {
+    position-anchor: --menu;
+    position-area: bottom span-right;          /* below, aligned left */
+    position-try-fallbacks: flip-block;        /* flip up near the bottom edge */
+  }
+</style>',
+        'browsers' => 'Popover: every modern browser. CSS anchor positioning: Chrome and Edge 125+, Safari 26+. Others get a small JavaScript fallback.',
+        'faq' => [
+            [
+                'What is the Popover API?',
+                'It is an HTML attribute, popover, that turns any element into a popup shown in the top layer. A button with popovertarget opens and closes it, with no JavaScript needed.',
+            ],
+            [
+                'What is CSS anchor positioning?',
+                'It lets you tie one element\'s position to another, like a menu to its button, in pure CSS. It can also flip the menu when it would go off screen.',
+            ],
+            [
+                'Which browsers support it?',
+                'Popover works in every modern browser. Anchor positioning is in Chrome, Edge and Safari 26. The project falls back to JavaScript placement elsewhere.',
+            ],
+        ],
+    ],
+    [
+        'num' => 15,
+        'cat' => '02-modern-ui',
+        'slug' => '015-signals-state-library',
+        'name' => 'Signals State Library',
+        'example' => 'a 40 line reactive state library running a shopping cart',
+        'title' => 'JavaScript Signals Tutorial: Build Reactive State from Scratch',
+        'desc' => 'Free signals library in plain JavaScript. Build signal, computed and effect in about 40 lines, the idea behind Solid, Vue and Angular, with a live shopping cart demo.',
+        'keywords' => 'javascript signals, reactive state management, signal computed effect, fine grained reactivity, build your own framework',
+        'runs' => 'Signals, computed, effect',
+        'what' => [
+            'Signals are how many modern frameworks know exactly what to update when data changes. Instead of redrawing the whole page, only the numbers that depend on a change are updated. Solid, Preact, Vue and Angular all use this idea.',
+            'This project writes a complete signals library in about 40 lines, then uses it to run a shopping cart. A counter next to each effect shows how many times it ran, so you can see that only the right parts update.',
+        ],
+        'when' => [
+            'Small apps that need reactive state',
+            'Understanding how frameworks work inside',
+            'Job interviews about reactivity',
+            'Adding live updates to plain HTML',
+        ],
+        'features' => [
+            'signal(), computed() and effect() with automatic dependency tracking',
+            'Batched updates so effects run once per change',
+            'Live counter of how many times each effect ran',
+            'Shopping cart demo: quantities, discount code, totals',
+            'The whole library source shown on the page',
+        ],
+        'steps' => [
+            [
+                'Track reads',
+                'When an effect runs, every signal it reads adds that effect to its subscriber list.',
+            ],
+            [
+                'Notify on write',
+                'Setting a signal schedules each subscriber once, in a microtask, so many writes cause one update.',
+            ],
+            [
+                'Derive values',
+                'computed() is an effect that writes into its own signal, so it caches and updates only when its inputs change.',
+            ],
+        ],
+        'code' => 'let current = null;
+export function signal(value) {
+  const subs = new Set();
+  const read = () => { if (current) subs.add(current); return value; };
+  read.set = (v) => { if (v !== value) { value = v; subs.forEach(schedule); } };
+  return read;
+}
+export function effect(fn) {
+  const run = () => { const prev = current; current = run; try { fn(); } finally { current = prev; } };
+  run();
+}
+export function computed(fn) {
+  const s = signal(); effect(() => s.set(fn())); return s;
+}',
+        'browsers' => 'Every modern browser.',
+        'faq' => [
+            [
+                'What is a signal in JavaScript?',
+                'A signal is a value that remembers who reads it. When you change it, everything that read it runs again. computed() builds values from other signals, and effect() runs code when they change.',
+            ],
+            [
+                'Are signals coming to JavaScript itself?',
+                'There is a TC39 proposal to add signals to the language. Until then, small libraries like this one, or Preact Signals, give you the same idea.',
+            ],
+            [
+                'Is this fast enough for real apps?',
+                'For small and medium apps, yes. Updates are batched in a microtask, so ten writes in a row cause one update.',
+            ],
+        ],
+    ],
+    [
+        'num' => 16,
+        'cat' => '02-modern-ui',
+        'slug' => '016-infinite-scroll-feed',
+        'name' => 'Infinite Scroll Feed',
+        'example' => 'a photo feed that loads more posts as you scroll',
+        'title' => 'Infinite Scroll in JavaScript with Intersection Observer (Lazy Loading)',
+        'desc' => 'Free infinite scroll feed in plain JavaScript. Load posts as you scroll, lazy load images and track seen posts with Intersection Observer. Skeleton loaders included.',
+        'keywords' => 'infinite scroll javascript, intersection observer example, lazy load images javascript, skeleton loader css, social media feed ui',
+        'runs' => 'Intersection Observer',
+        'what' => [
+            'This is a social style photo feed that keeps loading new posts as you scroll down. Images load only when they are about to appear, placeholder cards show while posts load, and a counter tracks which posts you actually saw.',
+            'All three tricks use the Intersection Observer API, which tells you when an element enters the screen without constant scroll checks. It is faster and simpler than the old scroll event approach.',
+        ],
+        'when' => [
+            'Social feeds and news sites',
+            'Product lists in online shops',
+            'Image galleries',
+            'Tracking which items users really viewed',
+        ],
+        'features' => [
+            'Loads the next page when a sentinel nears the viewport',
+            'Skeleton cards while loading',
+            'Images lazy load with a fade in',
+            'Seen counter: a post counts once it is 60% visible',
+            'Back to top button that appears after the first screen',
+        ],
+        'steps' => [
+            [
+                'Watch a sentinel',
+                'An empty element sits under the last post. When it gets within 600 px of the screen, the next page loads.',
+            ],
+            [
+                'Lazy load images',
+                'A second observer swaps data-src into src only when an image is about to be seen.',
+            ],
+            [
+                'Track views',
+                'A third observer with threshold 0.6 marks each post as seen the first time most of it is visible.',
+            ],
+        ],
+        'code' => 'const loadMore = new IntersectionObserver(([entry]) => {
+  if (entry.isIntersecting) fetchNextPage();
+}, { rootMargin: "600px" });           // start 600px before the end
+loadMore.observe(document.querySelector("#sentinel"));
+
+const lazy = new IntersectionObserver((entries) => {
+  for (const e of entries) if (e.isIntersecting) {
+    e.target.src = e.target.dataset.src;  // swap in the real image
+    lazy.unobserve(e.target);
+  }
+}, { rootMargin: "300px" });',
+        'browsers' => 'Every modern browser.',
+        'faq' => [
+            [
+                'Is infinite scroll bad for SEO?',
+                'It can be if content only loads on scroll. Give each page of results its own URL too, so search engines can reach every item.',
+            ],
+            [
+                'Why use Intersection Observer instead of the scroll event?',
+                'The scroll event fires many times a second and forces layout checks. Intersection Observer only tells you when something crosses into view, so it is much lighter.',
+            ],
+            [
+                'How do I connect it to a real API?',
+                'Replace the fakeApi function with a fetch call that takes a page number and returns posts. The rest of the code stays the same.',
+            ],
+        ],
+    ],
+    [
+        'num' => 17,
+        'cat' => '02-modern-ui',
+        'slug' => '017-responsive-dashboard-widgets',
+        'name' => 'Responsive Dashboard Widgets',
+        'example' => 'dashboard widgets that change layout when you resize them',
+        'title' => 'CSS Container Queries Example: Responsive Dashboard Widgets',
+        'desc' => 'Free responsive dashboard in HTML, CSS and JavaScript. Resize any widget and it switches layout with container queries, while ResizeObserver redraws the charts.',
+        'keywords' => 'container queries css, responsive dashboard template, resizeobserver javascript, container query units, canvas charts javascript',
+        'runs' => 'CSS Container Queries',
+        'what' => [
+            'Drag the corner of any widget on this dashboard and watch it change: a small widget shows just the number, a wider one adds a chart, and a big one adds details. Each widget decides its layout from its own width, not the screen width.',
+            'That is what CSS container queries do. The same widget works in a narrow sidebar or a wide main area without extra code. ResizeObserver tells JavaScript the new size so the canvas charts stay sharp.',
+        ],
+        'when' => [
+            'Admin and analytics dashboards',
+            'Reusable cards in design systems',
+            'Sidebars and layouts users can resize',
+            'Learning container queries',
+        ],
+        'features' => [
+            'Four widgets: revenue, visitors, tasks and weather',
+            'Three layouts per widget: small, medium and large',
+            'Drag handles to resize, plus preset layouts',
+            'Charts redraw crisply at any size and pixel density',
+            'Live size readout on each widget',
+        ],
+        'steps' => [
+            [
+                'Make it a container',
+                'Each widget has container-type: inline-size, so its children can ask how wide the widget is.',
+            ],
+            [
+                'Style by size',
+                '@container rules switch the layout at 260 px and 440 px of widget width, whatever the page width.',
+            ],
+            [
+                'Redraw on resize',
+                'ResizeObserver reports the new size and the canvas chart is redrawn to fit, sharp on high density screens.',
+            ],
+        ],
+        'code' => '.widget { container-type: inline-size; resize: both; overflow: hidden; }
+
+/* The widget, not the screen, decides the layout */
+@container (min-width: 260px) { .widget canvas { display: block; } }
+@container (min-width: 440px) { .widget .body { display: grid; grid-template-columns: auto 1fr; } }
+
+// Keep the canvas sharp at every size
+new ResizeObserver(([entry]) => {
+  const { width, height } = entry.contentRect;
+  canvas.width = width * devicePixelRatio;
+  canvas.height = height * devicePixelRatio;
+  draw();
+}).observe(canvas);',
+        'browsers' => 'Every modern browser (container queries since 2023).',
+        'faq' => [
+            [
+                'What is the difference between media queries and container queries?',
+                'Media queries look at the screen size. Container queries look at the size of a parent element, so a component adapts to wherever you place it.',
+            ],
+            [
+                'Do container queries work everywhere?',
+                'Yes. All major browsers have supported them since 2023.',
+            ],
+            [
+                'Why do the charts need JavaScript?',
+                'Canvas has a fixed pixel size. ResizeObserver reports the new size, and the chart is redrawn at the right resolution for sharp lines.',
+            ],
+        ],
+    ],
+    [
+        'num' => 18,
+        'cat' => '02-modern-ui',
+        'slug' => '018-kanban-board',
+        'name' => 'Kanban Board',
+        'example' => 'a Trello style task board with drag and drop',
+        'title' => 'Kanban Board in JavaScript: Drag and Drop Trello Clone (Free)',
+        'desc' => 'Free kanban board in plain JavaScript. Drag cards between columns, add labels and due dates, search, and save automatically with localStorage. Keyboard friendly.',
+        'keywords' => 'kanban board javascript, trello clone javascript, drag and drop javascript, task board html css js, todo app localstorage',
+        'runs' => 'HTML Drag and Drop',
+        'what' => [
+            'A kanban board shows work as cards moving through columns: To do, In progress and Done. This one lets you drag cards between columns, add new ones with labels and due dates, search every column, and it saves everything in your browser.',
+            'It uses the built in HTML Drag and Drop API, with a line that shows where a card will land. Every card also has move buttons and arrow key support, so it works for keyboard users and on phones.',
+        ],
+        'when' => [
+            'Personal task lists',
+            'Small team planning',
+            'Content calendars',
+            'A classic portfolio project done well',
+        ],
+        'features' => [
+            'Drag cards within and between columns, with a drop indicator',
+            'Move cards with buttons or the keyboard for accessibility',
+            'Colored labels and due dates, overdue cards stand out',
+            'Search filters every column at once',
+            'Export and import the board as JSON',
+        ],
+        'steps' => [
+            [
+                'Start the drag',
+                'dragstart stores the card id in dataTransfer and dims the card.',
+            ],
+            [
+                'Find the spot',
+                'dragover compares the mouse position with the middle of each card to show where it will land.',
+            ],
+            [
+                'Drop and save',
+                'drop moves the card in the data, renders the board again and saves it to localStorage.',
+            ],
+        ],
+        'code' => 'card.addEventListener("dragstart", (e) => {
+  e.dataTransfer.setData("text/plain", card.dataset.id);
+});
+column.addEventListener("dragover", (e) => {
+  e.preventDefault();                                   // allow dropping
+  const after = [...list.children].find((c) => e.clientY < c.getBoundingClientRect().top + c.offsetHeight / 2);
+  list.insertBefore(marker, after ?? null);             // show where it lands
+});
+column.addEventListener("drop", (e) => {
+  moveCard(e.dataTransfer.getData("text/plain"), column.dataset.id, indexOf(marker));
+});',
+        'browsers' => 'Drag and drop: desktop browsers. On phones, use the move buttons on each card.',
+        'faq' => [
+            [
+                'How does drag and drop work in plain JavaScript?',
+                'Set draggable on the card, save its id in dragstart, call preventDefault in dragover to allow a drop, and move the card in the drop handler.',
+            ],
+            [
+                'Does drag and drop work on phones?',
+                'The HTML Drag and Drop API is weak on touch screens, so each card has move buttons as well. They work everywhere.',
+            ],
+            [
+                'Where is my board saved?',
+                'In localStorage in your browser. Use Export to save a JSON copy, and Import to load it on another computer.',
+            ],
+        ],
+    ],
+    [
+        'num' => 19,
+        'cat' => '02-modern-ui',
+        'slug' => '019-color-picker-palette',
+        'name' => 'Color Picker and Palette Tool',
+        'example' => 'a color picker that pulls palettes from photos and checks contrast',
+        'title' => 'Color Palette Generator in JavaScript with EyeDropper and Contrast Checker',
+        'desc' => 'Free color tool in plain JavaScript. Pick any color on screen with the EyeDropper API, get a palette from a photo, make shades and check WCAG contrast.',
+        'keywords' => 'color palette generator, eyedropper api javascript, color picker javascript, wcag contrast checker, palette from image',
+        'runs' => 'EyeDropper',
+        'what' => [
+            'This tool helps you choose colors that look good and stay readable. Pick a color from anywhere on your screen, pull the main colors out of a photo, make matching harmonies and shades, and check whether text on each color passes accessibility rules.',
+            'The screen picker uses the EyeDropper API. The photo palette shrinks the image on a canvas and groups similar pixels. The contrast check uses the same formula as the WCAG guidelines.',
+        ],
+        'when' => [
+            'Choosing brand colors',
+            'Building a palette from a product photo',
+            'Checking button and text contrast',
+            'Generating CSS color variables',
+        ],
+        'features' => [
+            'Screen color picker with the EyeDropper API',
+            'Palette from any photo using color quantization',
+            'Complementary, analogous and triadic harmonies plus 9 shades',
+            'WCAG AA and AAA contrast check for text on any background',
+            'Copy as HEX, RGB, HSL or a block of CSS variables',
+        ],
+        'steps' => [
+            [
+                'Pick a color',
+                'The EyeDropper returns the hex value of any pixel on screen, even outside the browser window.',
+            ],
+            [
+                'Read a photo',
+                'The photo is shrunk to 64 by 64 pixels, then the pixels are grouped into buckets to find the main colors.',
+            ],
+            [
+                'Check contrast',
+                'Each color\'s luminance is compared with the text color to get a ratio, and the page marks AA and AAA passes.',
+            ],
+        ],
+        'code' => '// Pick any pixel on screen (Chrome, Edge)
+const { sRGBHex } = await new EyeDropper().open(); // "#c2255c"
+
+// WCAG contrast ratio between two colors
+const lum = ([r, g, b]) => {
+  const f = (c) => (c /= 255) <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+};
+const ratio = (a, b) => (Math.max(lum(a), lum(b)) + 0.05) / (Math.min(lum(a), lum(b)) + 0.05);
+// 4.5 or more passes AA for body text',
+        'browsers' => 'EyeDropper: Chrome and Edge on desktop. Everything else works in every modern browser.',
+        'faq' => [
+            [
+                'What contrast ratio do I need?',
+                'WCAG asks for at least 4.5 to 1 for normal text and 3 to 1 for large text. 7 to 1 meets the stricter AAA level.',
+            ],
+            [
+                'Which browsers have the EyeDropper API?',
+                'Chrome and Edge on desktop. The other features work in every modern browser.',
+            ],
+            [
+                'How is the palette taken from a photo?',
+                'The photo is drawn at 64 by 64 pixels, pixels are grouped into color buckets, and the most common distinct buckets become the palette.',
+            ],
+        ],
+    ],
+    [
+        'num' => 20,
+        'cat' => '02-modern-ui',
+        'slug' => '020-accessible-dialog-forms',
+        'name' => 'Accessible Modal and Form Kit',
+        'example' => 'an accessible sign up form inside a native dialog',
+        'title' => 'Accessible Modal Dialog and Form Validation in JavaScript (dialog Element)',
+        'desc' => 'Free accessible modal and form kit in plain JavaScript. Native dialog with focus handling, live error messages and custom validation with the Constraint Validation API.',
+        'keywords' => 'accessible modal javascript, dialog element showmodal, form validation javascript, constraint validation api, aria live errors',
+        'runs' => 'dialog, showModal()',
+        'what' => [
+            'Pop up forms are where many sites fail keyboard and screen reader users. This kit shows a sign up form in a modal, a confirm dialog and a slide in drawer, all built on the native dialog element so the browser handles focus and the Esc key.',
+            'The form uses the built in Constraint Validation API with friendly messages under each field. Errors are announced by screen readers, the first bad field gets focus, and focus returns to the button that opened the dialog.',
+        ],
+        'when' => [
+            'Sign up and login forms',
+            'Delete and confirm prompts',
+            'Filter drawers in shops',
+            'Meeting accessibility rules',
+        ],
+        'features' => [
+            'Sign-up form in a modal with focus trap and Esc to close',
+            'Errors appear under each field and are read out by screen readers',
+            'Custom rules: password strength and matching passwords',
+            'Confirm dialog that returns the user\'s choice',
+            'Slide-in drawer built on the same dialog element',
+        ],
+        'steps' => [
+            [
+                'Open as modal',
+                'showModal() puts the dialog in the top layer, makes the page behind inert and moves focus inside.',
+            ],
+            [
+                'Validate on the fly',
+                'Each field is checked on blur and on submit using the browser\'s own ValidityState, with friendly messages.',
+            ],
+            [
+                'Close and return focus',
+                'When the dialog closes, focus goes back to the button that opened it, and returnValue says which button was used.',
+            ],
+        ],
+        'code' => 'dialog.showModal();                         // focus moves in, page behind is inert
+
+input.addEventListener("blur", () => {
+  const v = input.validity;                 // built-in ValidityState
+  const msg = v.valueMissing ? "Enter your email"
+            : v.typeMismatch ? "That does not look like an email" : "";
+  input.setAttribute("aria-invalid", !!msg);
+  errorEl.textContent = msg;                // aria-live reads it out
+});
+
+dialog.addEventListener("close", () => {
+  console.log(dialog.returnValue);          // "create" or "cancel"
+  openButton.focus();                       // give focus back
+});',
+        'browsers' => 'Every modern browser.',
+        'faq' => [
+            [
+                'Why use the dialog element instead of a div?',
+                'showModal() makes the rest of the page inert, puts the dialog on top and moves focus into it. With a div you have to build all of that yourself.',
+            ],
+            [
+                'How do I show custom error messages?',
+                'Check the field\'s validity object, like validity.valueMissing, and write your own message into an element linked with aria-describedby.',
+            ],
+            [
+                'Is the form accessible for screen readers?',
+                'Yes. Errors are in aria-live regions, invalid fields get aria-invalid, and every input has a real label.',
+            ],
+        ],
+    ],
+    [
+        'num' => 21,
+        'cat' => '03-pwa-and-offline',
+        'slug' => '021-offline-todo-pwa',
+        'name' => 'Offline-first Todo PWA',
+        'example' => 'a todo app you can install that works with no internet',
+        'title' => 'Offline Todo App PWA in JavaScript with a Service Worker (Free)',
+        'desc' => 'Free offline todo PWA in plain JavaScript. A service worker caches the app so it works with no internet, tasks are saved in IndexedDB, and you can install it.',
+        'keywords' => 'pwa tutorial, service worker example, offline web app javascript, installable pwa, indexeddb todo app',
+        'runs' => 'Service Worker, Cache',
+        'what' => [
+            'This todo list works like an app on your phone or computer. You can install it, open it with Wi-Fi off, and keep adding tasks. Nothing is lost, and there is no server at all.',
+            'A service worker saves the page files on the first visit and answers from that cache afterward. Tasks are stored in IndexedDB. The page also shows when you are offline and offers an update button when a new version is ready.',
+        ],
+        'when' => [
+            'Learning how PWAs work',
+            'Apps used on trains, planes and bad networks',
+            'Simple internal tools',
+            'A base for any offline first app',
+        ],
+        'features' => [
+            'Works offline after the first visit',
+            'Install button using the beforeinstallprompt event',
+            'Online and offline status badge',
+            'Filters: all, active, done, plus clear completed',
+            'Update banner when a new version of the service worker is ready',
+        ],
+        'steps' => [
+            [
+                'Install the worker',
+                'On first load, sw.js caches index.html, the manifest and the fonts.',
+            ],
+            [
+                'Serve from cache',
+                'Every later request is answered from the cache first, so the page opens instantly and works with no network.',
+            ],
+            [
+                'Keep data local',
+                'Tasks live in IndexedDB. There is no server, so offline and online behave the same.',
+            ],
+        ],
+        'code' => '// sw.js: cache the app shell, then answer from cache first
+const CACHE = "todo-v1";
+self.addEventListener("install", (e) => {
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(["./", "./index.html", "./manifest.webmanifest"])));
+});
+self.addEventListener("fetch", (e) => {
+  e.respondWith(caches.match(e.request).then((hit) => hit || fetch(e.request).then((res) => {
+    const copy = res.clone(); caches.open(CACHE).then((c) => c.put(e.request, copy)); return res;
+  })));
+});
+// index.html
+navigator.serviceWorker.register("sw.js");',
+        'browsers' => 'Every modern browser. Install prompt: Chrome, Edge and Samsung Internet. On iPhone use Share, then Add to Home Screen.',
+        'faq' => [
+            [
+                'What makes a web app a PWA?',
+                'A web app manifest, a service worker and HTTPS. Together they let the browser install the app and run it offline.',
+            ],
+            [
+                'How do I test offline mode?',
+                'Load the page once, then open DevTools, go to Network and choose Offline, or turn off Wi-Fi. Reload and the app still opens.',
+            ],
+            [
+                'Can I install it on an iPhone?',
+                'Yes. Open it in Safari, tap Share, then Add to Home Screen.',
+            ],
+        ],
+    ],
+    [
+        'num' => 22,
+        'cat' => '03-pwa-and-offline',
+        'slug' => '022-expense-tracker-pwa',
+        'name' => 'Expense Tracker PWA',
+        'example' => 'a spending tracker with charts that syncs when back online',
+        'title' => 'Expense Tracker in JavaScript with Charts, IndexedDB and Background Sync',
+        'desc' => 'Free expense tracker PWA in plain JavaScript. Log spending, see a donut chart and a 7 day bar chart, set a budget and sync offline entries with Background Sync.',
+        'keywords' => 'expense tracker javascript, budget app pwa, background sync api, indexeddb example, canvas chart javascript',
+        'runs' => 'Background Sync',
+        'what' => [
+            'Log what you spend by category and see where the money goes, with a donut chart by category, a bar chart for the last seven days and a monthly budget bar. You can export everything to CSV.',
+            'Entries are saved in IndexedDB first. If you are offline, they are marked as waiting, and the Background Sync API wakes the service worker to send them once you are online, even if the tab is closed.',
+        ],
+        'when' => [
+            'Personal budgeting',
+            'Apps used on poor mobile networks',
+            'Learning Background Sync',
+            'Canvas charts without a library',
+        ],
+        'features' => [
+            'Add expenses with amount, category, note and date',
+            'Donut chart by category and bar chart for the last 7 days',
+            'Monthly budget with a progress bar',
+            'Offline entries show as waiting, then sync automatically',
+            'Export to CSV',
+        ],
+        'steps' => [
+            [
+                'Save locally first',
+                'Every expense goes into IndexedDB right away, marked as not yet synced.',
+            ],
+            [
+                'Ask for a sync',
+                'The page registers a sync tag. The browser wakes the service worker when it is online, even if the tab is closed.',
+            ],
+            [
+                'Flush the outbox',
+                'The worker sends waiting entries to the server (simulated here) and tells the page, which marks them synced.',
+            ],
+        ],
+        'code' => '// Page: save locally, then ask the browser to sync when online
+await db.put("expenses", { ...expense, synced: false });
+const reg = await navigator.serviceWorker.ready;
+await reg.sync.register("sync-expenses");
+
+// sw.js: runs when the connection is back, even if the tab is closed
+self.addEventListener("sync", (event) => {
+  if (event.tag === "sync-expenses") event.waitUntil(sendUnsynced());
+});',
+        'browsers' => 'App and charts: every modern browser. Background Sync: Chrome, Edge and Samsung Internet. Other browsers sync when the page is open and online.',
+        'faq' => [
+            [
+                'What is the Background Sync API?',
+                'It lets a web app ask the browser to run a task when the connection comes back. The service worker gets a sync event and can send saved data.',
+            ],
+            [
+                'Which browsers support Background Sync?',
+                'Chrome, Edge and Samsung Internet. In other browsers this app syncs when the page is open and online.',
+            ],
+            [
+                'Are the charts made with a library?',
+                'No. Both charts are drawn with the Canvas 2D API in about 20 lines each.',
+            ],
+        ],
+    ],
+    [
+        'num' => 23,
+        'cat' => '03-pwa-and-offline',
+        'slug' => '023-reminder-notifications',
+        'name' => 'Reminder Notifications',
+        'example' => 'a reminder app with Done and Snooze buttons in the notification',
+        'title' => 'Web Push Notifications in JavaScript: Reminder App with Service Worker',
+        'desc' => 'Free reminder app in plain JavaScript. Set reminders that show as system notifications with Done and Snooze buttons, handled by a service worker, plus push setup code.',
+        'keywords' => 'push notifications javascript, notifications api example, service worker notification actions, web push tutorial, reminder app pwa',
+        'runs' => 'Notifications, Push',
+        'what' => [
+            'Set a reminder, switch to another app, and a real system notification appears on time. You can tap Done or Snooze right inside the notification, and the page updates to match.',
+            'The page asks for notification permission, and the service worker shows the notification with action buttons and handles the tap. For reminders when the app is closed, the project includes the Push API subscription code your server would use.',
+        ],
+        'when' => [
+            'Reminder and habit apps',
+            'Order and delivery updates',
+            'Learning notification actions',
+            'The starting point for web push',
+        ],
+        'features' => [
+            'Quick reminders: 10 seconds, 1 minute, 5 minutes or a custom time',
+            'Done and Snooze 5 min buttons inside the notification',
+            'Notification click brings this page to the front',
+            'Push subscription button that prints the JSON your server needs',
+            'Reminders are saved, so a reload keeps them',
+        ],
+        'steps' => [
+            [
+                'Ask permission',
+                'The browser asks once. Without permission, reminders still show inside the page.',
+            ],
+            [
+                'Show from the worker',
+                'registration.showNotification() creates a system notification with action buttons.',
+            ],
+            [
+                'Handle the tap',
+                'The service worker gets notificationclick, snoozes or completes the reminder, and focuses the page.',
+            ],
+        ],
+        'code' => 'const reg = await navigator.serviceWorker.register("sw.js");
+await Notification.requestPermission();                // "granted"
+
+reg.showNotification("Stand up and stretch", {
+  body: "Reminder from your to-do app",
+  actions: [{ action: "done", title: "Done" }, { action: "snooze", title: "Snooze 5 min" }],
+  tag: "reminder-42", requireInteraction: true,
+});
+
+// sw.js
+self.addEventListener("notificationclick", (e) => {
+  e.notification.close();
+  if (e.action === "snooze") { /* tell the page to reschedule */ }
+});',
+        'browsers' => 'Notifications: every modern desktop browser, Android, and iPhone once the app is added to the Home Screen. Timers only run while the page is open; use Push for closed apps.',
+        'faq' => [
+            [
+                'How do I show a notification from JavaScript?',
+                'Ask with Notification.requestPermission(), then call registration.showNotification() on your service worker registration. That version supports action buttons.',
+            ],
+            [
+                'Do notifications work on iPhone?',
+                'Yes, on iOS 16.4 and later, but only after the web app is added to the Home Screen.',
+            ],
+            [
+                'Why do timed reminders need the page open?',
+                'Browsers do not let pages set timers that fire after they close. For that you need server push, which is why the Push API code is included.',
+            ],
+        ],
+    ],
+    [
+        'num' => 24,
+        'cat' => '03-pwa-and-offline',
+        'slug' => '024-markdown-editor',
+        'name' => 'Local Markdown Editor',
+        'example' => 'a Markdown editor that saves real files on your disk',
+        'title' => 'Markdown Editor in JavaScript with File System Access API (Save Files)',
+        'desc' => 'Free Markdown editor in plain JavaScript. Open and save real .md files with the File System Access API, see a live preview, and keep drafts. Includes a small parser.',
+        'keywords' => 'markdown editor javascript, file system access api, save file javascript, markdown to html javascript, live preview editor',
+        'runs' => 'File System Access',
+        'what' => [
+            'Open a .md file from your computer, edit it with a live preview next to it, and press Ctrl S to save straight back to the same file. It feels like a desktop app, but it is a single web page.',
+            'Saving uses the File System Access API, which gives the page a handle to a real file after you pick it. The preview comes from a small Markdown parser in the project that escapes HTML first for safety.',
+        ],
+        'when' => [
+            'Writing notes and docs',
+            'Editing README files',
+            'Learning how Markdown parsers work',
+            'Offline writing tools',
+        ],
+        'features' => [
+            'Open, Save and Save as, straight to files on your disk',
+            'Ctrl+S saves to the same file after the first save',
+            'Live preview with headings, lists, links, images, code, quotes and tables',
+            'Draft autosave in the browser',
+            'Word count and reading time',
+        ],
+        'steps' => [
+            [
+                'Get a file handle',
+                'The picker returns a handle to the real file. The page keeps it so later saves need no dialog.',
+            ],
+            [
+                'Render as you type',
+                'Each keystroke runs the parser, which escapes HTML first and then adds Markdown formatting.',
+            ],
+            [
+                'Write back',
+                'handle.createWritable() streams the new text into the same file on disk.',
+            ],
+        ],
+        'code' => '// Open a real file and keep its handle
+const [handle] = await showOpenFilePicker({
+  types: [{ description: "Markdown", accept: { "text/markdown": [".md"] } }],
+});
+editor.value = await (await handle.getFile()).text();
+
+// Later: save back to the same file, no dialog
+const writable = await handle.createWritable();
+await writable.write(editor.value);
+await writable.close();',
+        'browsers' => 'Direct file saving: Chrome and Edge on desktop. Other browsers download a copy instead.',
+        'faq' => [
+            [
+                'What is the File System Access API?',
+                'It lets a web page open and save files on your computer after you pick them, so you can edit a file in place instead of downloading copies.',
+            ],
+            [
+                'Which browsers can save files directly?',
+                'Chrome and Edge on desktop. In other browsers Save downloads a copy of the file instead.',
+            ],
+            [
+                'Which Markdown features are supported?',
+                'Headings, bold, italic, links, images, lists, quotes, code blocks, tables and horizontal lines. That covers most READMEs and notes.',
+            ],
+        ],
+    ],
+    [
+        'num' => 25,
+        'cat' => '03-pwa-and-offline',
+        'slug' => '025-share-target-link-saver',
+        'name' => 'Share Target Link Saver',
+        'example' => 'a reading list app that appears in your phone\'s share menu',
+        'title' => 'Web Share API and Share Target in JavaScript: Link Saver PWA',
+        'desc' => 'Free link saver PWA in plain JavaScript. Install it and it appears in your phone\'s share menu, saving any link you share. Share links back out with the Web Share API.',
+        'keywords' => 'web share target api, web share api example, navigator share javascript, pwa share sheet, reading list app',
+        'runs' => 'Web Share, Share Target',
+        'what' => [
+            'Install this app on Android and it shows up next to WhatsApp and email when you share a link from any app. Pick it, and the link lands in your reading list with its title.',
+            'The manifest declares a share_target, so the system opens the page with the shared title, text and URL in the address. The Web Share API sends saved links back out through the normal share sheet.',
+        ],
+        'when' => [
+            'Reading lists and bookmark tools',
+            'Apps that collect links or photos',
+            'Making a PWA feel native on Android',
+            'Learning the Web Share API',
+        ],
+        'features' => [
+            'Appears in the system share sheet once installed',
+            'Saves the title, text and URL that other apps share',
+            'Share any saved link back out, or the whole list as a text file',
+            'Tags and search',
+            'Test the share target right here with the simulate button',
+        ],
+        'steps' => [
+            [
+                'Register as a target',
+                'The manifest declares share_target with an action URL and the names of the title, text and url parameters.',
+            ],
+            [
+                'Receive a share',
+                'When you share to the app, the OS opens index.html?title=...&text=...&url=... and the page saves it.',
+            ],
+            [
+                'Share back out',
+                'navigator.share() opens the native share sheet with a saved link, or with a file when canShare allows it.',
+            ],
+        ],
+        'code' => '// manifest.webmanifest
+"share_target": {
+  "action": "./index.html",
+  "method": "GET",
+  "params": { "title": "title", "text": "text", "url": "url" }
+}
+
+// index.html: read what was shared
+const p = new URLSearchParams(location.search);
+if (p.has("url") || p.has("text")) saveLink(p.get("title"), p.get("url") || p.get("text"));
+
+// Share back out
+await navigator.share({ title: link.title, url: link.url });',
+        'browsers' => 'Share target: installed PWA on Android (Chrome, Edge, Samsung Internet) and ChromeOS. Web Share: Android, iPhone, Safari, Edge and Chrome on Windows and ChromeOS.',
+        'faq' => [
+            [
+                'What is a Web Share Target?',
+                'It is a manifest setting that lets an installed web app receive shares from other apps, the same way native apps do.',
+            ],
+            [
+                'Does it work on iPhone?',
+                'The Web Share API for sending works in Safari. Receiving shares as a target is not supported on iOS yet.',
+            ],
+            [
+                'How do I test it without a phone?',
+                'Use the Simulate a share button. It opens the page with the same address parameters the system would send.',
+            ],
+        ],
+    ],
+    [
+        'num' => 26,
+        'cat' => '03-pwa-and-offline',
+        'slug' => '026-multi-tab-sync',
+        'name' => 'Multi-tab Sync',
+        'example' => 'open it in several tabs and watch them stay in sync',
+        'title' => 'Sync Browser Tabs in JavaScript with BroadcastChannel and Web Locks',
+        'desc' => 'Free multi-tab sync demo in plain JavaScript. A shared note, counter, theme and list of open tabs stay in sync with BroadcastChannel, with leader election by Web Locks.',
+        'keywords' => 'broadcastchannel api, sync tabs javascript, web locks api, cross tab communication, leader election javascript',
+        'runs' => 'BroadcastChannel',
+        'what' => [
+            'Open this page in two or three tabs and type in one. The others update right away: a shared note, a counter, the theme and a live list of open tabs. No server is involved.',
+            'Tabs talk through BroadcastChannel, which sends messages between pages from the same site. The Web Locks API picks one tab as the leader, which is useful when only one tab should poll a server or play a sound.',
+        ],
+        'when' => [
+            'Keeping login state the same in every tab',
+            'Shopping carts across tabs',
+            'Only one tab polling a server',
+            'Logging out everywhere at once',
+        ],
+        'features' => [
+            'Shared note that updates in every tab as you type',
+            'Shared counter with a history of who changed it',
+            'Theme switch that applies to all tabs',
+            'Live list of open tabs with a heartbeat',
+            'Leader election: exactly one tab is the leader, and another takes over when it closes',
+        ],
+        'steps' => [
+            [
+                'Join the channel',
+                'Every tab opens a BroadcastChannel with the same name and announces itself with a random id.',
+            ],
+            [
+                'Broadcast changes',
+                'Edits are sent as small messages. Other tabs apply them and save the latest state to localStorage.',
+            ],
+            [
+                'Elect a leader',
+                'Each tab asks for the same Web Lock. Only one gets it. When that tab closes, the lock passes to the next tab.',
+            ],
+        ],
+        'code' => 'const channel = new BroadcastChannel("my-app");
+channel.postMessage({ type: "note", text: "Hello from tab A" });
+channel.onmessage = (e) => { if (e.data.type === "note") note.value = e.data.text; };
+
+// Only one tab at a time holds this lock: that tab is the leader
+navigator.locks.request("leader", () => {
+  becomeLeader();
+  return new Promise(() => {});   // hold the lock until the tab closes
+});',
+        'browsers' => 'Every modern browser.',
+        'faq' => [
+            [
+                'What is BroadcastChannel?',
+                'It is a simple message channel between tabs, windows and workers from the same origin. You post a message and every other listener receives it.',
+            ],
+            [
+                'What does leader election mean?',
+                'It means one tab is chosen to do a job for all of them. Here, each tab asks for the same Web Lock and only one gets it at a time.',
+            ],
+            [
+                'Does it work across different browsers?',
+                'No. BroadcastChannel only connects tabs in the same browser profile. For different devices you need a server.',
+            ],
+        ],
+    ],
+    [
+        'num' => 27,
+        'cat' => '03-pwa-and-offline',
+        'slug' => '027-instant-blog-speculation-rules',
+        'name' => 'Instant-loading Blog',
+        'example' => 'a blog where the next page is ready before you click',
+        'title' => 'Speculation Rules API: Instant Page Loads with Prerender (JavaScript Demo)',
+        'desc' => 'Free instant-loading blog in plain JavaScript. The Speculation Rules API prerenders posts while you hover, so they open almost instantly. Timing shows the difference.',
+        'keywords' => 'speculation rules api, prerender pages, instant page load, core web vitals lcp, prefetch on hover',
+        'runs' => 'Speculation Rules',
+        'what' => [
+            'Hover over a post title for a moment, then click. The page opens almost instantly because the browser already built it in the background. A timer at the top shows how fast the page appeared and whether it was prerendered.',
+            'This uses the Speculation Rules API, a small JSON block that tells the browser which links it may prerender and how eager to be. You can switch between eager, moderate and conservative to see the trade off.',
+        ],
+        'when' => [
+            'Blogs and news sites',
+            'Product pages in shops',
+            'Improving Largest Contentful Paint',
+            'Multi page sites that want app like speed',
+        ],
+        'features' => [
+            'Prerenders post pages when you hover or press on a link',
+            'Timer shows how fast this page appeared and whether it was prerendered',
+            'Choose eagerness: conservative, moderate or eager',
+            'Works on static hosting, posts live in the query string',
+            'No effect in browsers without support, links work as normal',
+        ],
+        'steps' => [
+            [
+                'Declare the rules',
+                'A JSON script tag says which links may be prerendered and how eager the browser should be.',
+            ],
+            [
+                'Prerender on hover',
+                'With moderate eagerness, holding the pointer on a link for about 200 ms starts building that page in a hidden tab.',
+            ],
+            [
+                'Swap on click',
+                'Clicking activates the finished page. activationStart shows it was prerendered and how much time was saved.',
+            ],
+        ],
+        'code' => '<script type="speculationrules">
+{
+  "prerender": [{
+    "where": { "href_matches": "/*\\\\?post=*" },
+    "eagerness": "moderate"
+  }]
+}
+</script>
+<script>
+  const nav = performance.getEntriesByType("navigation")[0];
+  const wasPrerendered = nav.activationStart > 0;
+</script>',
+        'browsers' => 'Prerendering: Chrome and Edge 109+. Other browsers load pages normally.',
+        'faq' => [
+            [
+                'What are speculation rules?',
+                'A script tag of type speculationrules with JSON inside. It lists URLs the browser may prefetch or prerender before the user clicks.',
+            ],
+            [
+                'Does prerendering waste data?',
+                'It can, which is why moderate eagerness waits for a short hover. Only pages people are likely to open get prerendered.',
+            ],
+            [
+                'Which browsers support it?',
+                'Chrome and Edge. Other browsers ignore the rules and load pages normally, so nothing breaks.',
+            ],
+        ],
+    ],
+    [
+        'num' => 28,
+        'cat' => '04-security-and-auth',
+        'slug' => '028-passkey-login',
+        'name' => 'Passkey Login Demo',
+        'example' => 'sign up and sign in with your fingerprint instead of a password',
+        'title' => 'Passkeys Tutorial: WebAuthn Login Demo in JavaScript (No Password)',
+        'desc' => 'Free passkey login demo in plain JavaScript. Register and sign in with fingerprint, face or PIN using WebAuthn, and see the signature checked step by step.',
+        'keywords' => 'passkeys javascript, webauthn tutorial, passwordless login, navigator credentials create, fido2 example',
+        'runs' => 'WebAuthn (passkeys)',
+        'what' => [
+            'Passkeys replace passwords with your phone or laptop\'s screen lock. This demo lets you create one and sign in with it, and shows every step of what happens in between.',
+            'It uses the WebAuthn API. Your device makes a key pair, keeps the private key and shares only the public key. At sign in it signs a random challenge, and the page checks that signature with the Web Crypto API.',
+        ],
+        'when' => [
+            'Learning how passkeys really work',
+            'Adding passwordless login to a site',
+            'Security talks and workshops',
+            'Testing authenticators and password managers',
+        ],
+        'features' => [
+            'Register a passkey with the device\'s screen lock',
+            'Sign in with it, with or without typing a username',
+            'Signature verified with the stored public key, in the browser',
+            'Step log showing challenge, client data and authenticator data',
+            'Delete local accounts to start over',
+        ],
+        'steps' => [
+            [
+                'Register',
+                'The page sends a random challenge. Your device makes a new key pair, keeps the private key, and returns the public key.',
+            ],
+            [
+                'Sign in',
+                'A new challenge goes to the device, which signs it after you unlock with your fingerprint, face or PIN.',
+            ],
+            [
+                'Verify',
+                'The signature is checked against the saved public key. In a real app your server does this step, never the browser.',
+            ],
+        ],
+        'code' => '// Register: the device makes a key pair and returns the public key
+const cred = await navigator.credentials.create({ publicKey: {
+  challenge: crypto.getRandomValues(new Uint8Array(32)),
+  rp: { name: "My App" },
+  user: { id: userId, name: "rafi@example.com", displayName: "Rafi" },
+  pubKeyCredParams: [{ type: "public-key", alg: -7 }],   // ES256
+  authenticatorSelection: { residentKey: "required", userVerification: "preferred" },
+}});
+// Sign in: the device signs a new challenge
+const assertion = await navigator.credentials.get({ publicKey: { challenge, userVerification: "preferred" } });
+// Server: verify assertion.response.signature with the saved public key',
+        'browsers' => 'Chrome, Edge, Safari and Firefox on devices with a screen lock, plus password managers that store passkeys. Needs HTTPS or localhost.',
+        'faq' => [
+            [
+                'Are passkeys safer than passwords?',
+                'Yes. There is no shared secret to steal or reuse, and they only work on the real site, so phishing pages cannot use them.',
+            ],
+            [
+                'Is this demo enough for a real app?',
+                'No. In a real app the server makes the challenge and checks the signature. This demo does it in the browser so you can see each step.',
+            ],
+            [
+                'Which devices support passkeys?',
+                'Almost all current phones and computers with a screen lock, in Chrome, Edge, Safari and Firefox, plus password managers that store passkeys.',
+            ],
+        ],
+    ],
+    [
+        'num' => 29,
+        'cat' => '04-security-and-auth',
+        'slug' => '029-password-manager',
+        'name' => 'Client-side Password Manager',
+        'example' => 'an encrypted password vault that only your master password opens',
+        'title' => 'Build a Password Manager in JavaScript with Web Crypto (AES-GCM)',
+        'desc' => 'Free password manager in plain JavaScript. An encrypted vault with AES-GCM and PBKDF2, a password generator, strength meter, auto lock and encrypted export.',
+        'keywords' => 'password manager javascript, web crypto api example, aes gcm javascript, pbkdf2 javascript, password generator javascript',
+        'runs' => 'AES-GCM 256',
+        'what' => [
+            'This is a small password vault that lives in your browser. Everything is encrypted before it is saved, so the stored data is useless without your master password. It also makes strong passwords and locks itself after two minutes.',
+            'Your master password is stretched with PBKDF2 600,000 times to make a key, and the vault is encrypted with AES-GCM. A wrong password fails the built in integrity check, so nothing is ever shown by mistake.',
+        ],
+        'when' => [
+            'Learning real browser encryption',
+            'Storing secrets in a local tool',
+            'Understanding how password managers work',
+            'Security coursework',
+        ],
+        'features' => [
+            'Vault encrypted with AES-GCM, key derived with PBKDF2 SHA-256',
+            'Password generator with length and character options',
+            'Strength meter with an estimated crack time',
+            'Auto lock after 2 minutes of no activity',
+            'Search, copy, and export the encrypted vault',
+        ],
+        'steps' => [
+            [
+                'Stretch the password',
+                'Your master password and a random salt go through PBKDF2 600,000 times to make a 256-bit key.',
+            ],
+            [
+                'Encrypt the vault',
+                'The whole list is turned into JSON and encrypted with AES-GCM and a fresh random IV on every save.',
+            ],
+            [
+                'Unlock',
+                'Only the salt, IV and ciphertext are stored. A wrong password fails the AES-GCM integrity check, so nothing is shown.',
+            ],
+        ],
+        'code' => 'const salt = crypto.getRandomValues(new Uint8Array(16));
+const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(master), "PBKDF2", false, ["deriveKey"]);
+const key = await crypto.subtle.deriveKey(
+  { name: "PBKDF2", salt, iterations: 600_000, hash: "SHA-256" },
+  base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+
+const iv = crypto.getRandomValues(new Uint8Array(12));   // new IV every save
+const data = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key,
+  new TextEncoder().encode(JSON.stringify(vault)));
+// Store salt + iv + data. A wrong password makes decrypt() throw.',
+        'browsers' => 'Every modern browser. This is a learning project: for real passwords use an audited password manager.',
+        'faq' => [
+            [
+                'Is it safe to use for my real passwords?',
+                'It is a learning project. The encryption is strong, but use an audited password manager for real accounts.',
+            ],
+            [
+                'Why 600,000 PBKDF2 rounds?',
+                'It makes each guess slow. That is the current OWASP advice for PBKDF2 with SHA-256, and it takes under a second on a normal laptop.',
+            ],
+            [
+                'What happens if I forget the master password?',
+                'The vault cannot be opened. There is no reset, because nobody else holds a copy of the key.',
+            ],
+        ],
+    ],
+    [
+        'num' => 30,
+        'cat' => '04-security-and-auth',
+        'slug' => '030-file-encryptor',
+        'name' => 'Secure File Encryptor',
+        'example' => 'lock any file with a password, right in your browser',
+        'title' => 'Encrypt Files in the Browser with JavaScript (AES-GCM, Password)',
+        'desc' => 'Free file encryptor in plain JavaScript. Lock any file with a password using AES-GCM 256 and PBKDF2, and unlock it later. No upload, the file never leaves your computer.',
+        'keywords' => 'encrypt file javascript, aes gcm file encryption, password protect file online, web crypto api, decrypt file browser',
+        'runs' => 'AES-GCM 256',
+        'what' => [
+            'Drop any file, like a PDF, photo or zip, pick a password and download a locked copy. Only someone with the password can open it again. The file never leaves your computer.',
+            'The page stretches your password with PBKDF2, encrypts the file with AES-GCM and saves a small header with the salt and IV. Unlocking reads that header, rebuilds the key and checks the file was not changed.',
+        ],
+        'when' => [
+            'Sending private files by email or chat',
+            'Backups on cloud storage',
+            'Learning file encryption',
+            'Tools for teams that handle sensitive data',
+        ],
+        'features' => [
+            'Works with any file type: PDFs, photos, zips, documents',
+            'Keeps the original file name inside the locked file',
+            'Password strength check and a matching confirm field',
+            'Integrity check: a wrong password or a changed file is detected',
+            'Shows the file format byte by byte so you can learn it',
+        ],
+        'steps' => [
+            [
+                'Make a key',
+                'A random 16 byte salt and your password go through PBKDF2 to make an AES key.',
+            ],
+            [
+                'Encrypt',
+                'The file name and bytes are encrypted together with AES-GCM and a random 12 byte IV.',
+            ],
+            [
+                'Pack the file',
+                'Output is a header (magic word, version, salt, IV) followed by the ciphertext. Unlocking reads the header back.',
+            ],
+        ],
+        'code' => 'const MAGIC = new TextEncoder().encode("VJLENC");
+const salt = crypto.getRandomValues(new Uint8Array(16));
+const iv = crypto.getRandomValues(new Uint8Array(12));
+const key = await deriveKey(password, salt);          // PBKDF2, 600k rounds
+
+const plain = new Uint8Array(await file.arrayBuffer());
+const cipher = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, plain);
+
+const locked = new Blob([MAGIC, new Uint8Array([1]), salt, iv, cipher]);
+// Unlock: read the header back, derive the same key, decrypt()',
+        'browsers' => 'Every modern browser. Large files (over about 1 GB) may run out of memory.',
+        'faq' => [
+            [
+                'How strong is AES-GCM 256?',
+                'It is the same encryption used by banks and messaging apps. With a strong password, the locked file cannot be opened by guessing.',
+            ],
+            [
+                'Can I unlock the file on another computer?',
+                'Yes. Open this page anywhere, drop the .locked file and enter the password.',
+            ],
+            [
+                'Is there a file size limit?',
+                'The file is read into memory, so very large files, over about 1 GB, may fail on some devices.',
+            ],
+        ],
+    ],
+    [
+        'num' => 31,
+        'cat' => '04-security-and-auth',
+        'slug' => '031-totp-authenticator',
+        'name' => 'TOTP 2FA Authenticator',
+        'example' => 'an authenticator app that makes six digit 2FA codes',
+        'title' => 'TOTP in JavaScript: Build a Google Authenticator Style 2FA App',
+        'desc' => 'Free TOTP authenticator in plain JavaScript. Make six digit 2FA codes with HMAC-SHA1, add accounts from a secret or otpauth link, make QR codes and verify codes.',
+        'keywords' => 'totp javascript, two factor authentication javascript, google authenticator clone, rfc 6238, otpauth qr code',
+        'runs' => 'TOTP, RFC 6238',
+        'what' => [
+            'The six digit codes in apps like Google Authenticator come from a shared secret and the current time. This project does that math live for as many accounts as you like, with a countdown ring for each code.',
+            'It follows RFC 6238. The current time is split into 30 second steps, the step number is signed with HMAC-SHA1 using your secret, and a short part of the result becomes the code. The page is tested against the official test values.',
+        ],
+        'when' => [
+            'Learning how 2FA codes work',
+            'Adding 2FA to your own app',
+            'Testing login flows',
+            'Security interviews and courses',
+        ],
+        'features' => [
+            'Live codes with a 30 second countdown ring',
+            'Add accounts by secret or by pasting an otpauth:// link',
+            'Generate a new secret with a QR code to scan into any app',
+            'Check a code against a secret with a time window of plus or minus one step',
+            'Copy a code with one click',
+        ],
+        'steps' => [
+            [
+                'Count time steps',
+                'The current Unix time is divided by 30 to get a counter that changes every 30 seconds.',
+            ],
+            [
+                'Sign the counter',
+                'The counter, as 8 bytes, is signed with HMAC SHA-1 using the account\'s secret as the key.',
+            ],
+            [
+                'Truncate',
+                'Four bytes are picked from the signature using its last nibble, turned into a number, and cut to 6 digits.',
+            ],
+        ],
+        'code' => 'async function totp(base32Secret, step = 30, digits = 6) {
+  const counter = Math.floor(Date.now() / 1000 / step);
+  const msg = new DataView(new ArrayBuffer(8));
+  msg.setUint32(4, counter);                              // 8 byte big-endian counter
+  const key = await crypto.subtle.importKey("raw", base32Decode(base32Secret),
+    { name: "HMAC", hash: "SHA-1" }, false, ["sign"]);
+  const h = new Uint8Array(await crypto.subtle.sign("HMAC", key, msg.buffer));
+  const o = h[19] & 0xf;                                  // dynamic truncation
+  const n = ((h[o] & 0x7f) << 24) | (h[o + 1] << 16) | (h[o + 2] << 8) | h[o + 3];
+  return String(n % 10 ** digits).padStart(digits, "0");
+}',
+        'browsers' => 'Every modern browser. Secrets are stored unencrypted in this demo, so do not use it for real accounts.',
+        'faq' => [
+            [
+                'How does TOTP work?',
+                'The server and your app share a secret. Both sign the current 30 second time step with it, so they get the same six digit code without talking to each other.',
+            ],
+            [
+                'Can I use this instead of Google Authenticator?',
+                'It is a learning project and stores secrets without encryption, so keep using a real authenticator for your accounts.',
+            ],
+            [
+                'Why was my code rejected?',
+                'Usually the device clock is off. This project accepts one step before and after to allow for small drift.',
+            ],
+        ],
+    ],
+    [
+        'num' => 32,
+        'cat' => '05-media-and-realtime',
+        'slug' => '032-webrtc-video-call',
+        'name' => 'Video Call App',
+        'example' => 'a peer to peer video call between two browsers',
+        'title' => 'WebRTC Video Call in JavaScript: Peer to Peer, No Server (Free)',
+        'desc' => 'Free WebRTC video call in plain JavaScript. Camera, mute, screen share and live stats. Connect two tabs automatically or two devices by copying a code.',
+        'keywords' => 'webrtc video call javascript, peer to peer video chat, rtcpeerconnection example, screen sharing webrtc, webrtc without server',
+        'runs' => 'WebRTC',
+        'what' => [
+            'This is a real video call where audio and video go straight from one browser to the other. Test it with two tabs on the same computer, or send a short code to a friend to connect two devices.',
+            'WebRTC handles the camera, the connection and the media. The two sides only need to swap a description of the call once, and here that happens through a tab channel or through codes you copy and paste.',
+        ],
+        'when' => [
+            'Learning how WebRTC works',
+            'Support and tutoring apps',
+            'Screen sharing tools',
+            'Private one to one calls',
+        ],
+        'features' => [
+            'Two-tab mode connects automatically over BroadcastChannel',
+            'Two-device mode: copy the offer code, paste back the answer code',
+            'Mute, camera off and screen share (switches the track without reconnecting)',
+            'Live stats: bitrate, resolution, frame rate and round trip time',
+            'Uses a public STUN server to find a direct route between networks',
+        ],
+        'steps' => [
+            [
+                'Get media',
+                'getUserMedia turns on the camera and microphone and shows your own video.',
+            ],
+            [
+                'Swap descriptions',
+                'One side makes an offer, the other an answer. They reach each other through a tab channel or through codes you copy.',
+            ],
+            [
+                'Connect directly',
+                'ICE finds a network path, then audio and video flow peer to peer with no server in the middle.',
+            ],
+        ],
+        'code' => 'const pc = new RTCPeerConnection({ iceServers: [{ urls: "stun:stun.l.google.com:19302" }] });
+stream.getTracks().forEach((t) => pc.addTrack(t, stream));
+pc.ontrack = (e) => (remoteVideo.srcObject = e.streams[0]);
+
+// Caller
+await pc.setLocalDescription(await pc.createOffer());
+send(pc.localDescription);                 // any channel: tabs, codes, WebSocket...
+
+// Callee
+await pc.setRemoteDescription(offer);
+await pc.setLocalDescription(await pc.createAnswer());
+send(pc.localDescription);',
+        'browsers' => 'Every modern browser. Needs HTTPS or localhost. Some strict company or mobile networks need a TURN server, which this demo does not include.',
+        'faq' => [
+            [
+                'Do I need a server for WebRTC?',
+                'Only to swap the first connection details, called signaling. This demo avoids a server by using copy and paste or a tab channel.',
+            ],
+            [
+                'Why does the call fail on some networks?',
+                'Strict company or mobile networks block direct connections. Real apps add a TURN server to relay the media in those cases.',
+            ],
+            [
+                'How does screen sharing work here?',
+                'getDisplayMedia gets the screen, and replaceTrack swaps it into the call without reconnecting.',
+            ],
+        ],
+    ],
+    [
+        'num' => 33,
+        'cat' => '05-media-and-realtime',
+        'slug' => '033-screen-recorder',
+        'name' => 'Screen Recorder',
+        'example' => 'record your screen with your voice and your face in the corner',
+        'title' => 'Screen Recorder in JavaScript with MediaRecorder and getDisplayMedia',
+        'desc' => 'Free screen recorder in plain JavaScript. Record a screen, window or tab with your microphone and a webcam bubble, then preview and download the video.',
+        'keywords' => 'screen recorder javascript, getdisplaymedia example, mediarecorder api, record screen with audio, webcam overlay',
+        'runs' => 'Screen Capture, MediaRecorder',
+        'what' => [
+            'Record your whole screen, one window or one tab, talk over it and add your face in a round bubble in the corner. When you stop, watch it back and save the file. Nothing is uploaded.',
+            'getDisplayMedia opens the browser\'s own picker for what to share. The screen and webcam are drawn onto one canvas, the microphone and screen audio are mixed with Web Audio, and MediaRecorder turns it all into a video file.',
+        ],
+        'when' => [
+            'Tutorials and bug reports',
+            'Product demos',
+            'Recording lessons',
+            'Learning browser media APIs',
+        ],
+        'features' => [
+            'Record the whole screen, one window or one tab',
+            'Mix microphone and system or tab audio together',
+            'Webcam bubble drawn into the corner of the video',
+            'Pause and resume, with a live timer and file size',
+            'Preview and download as WebM or MP4 where supported',
+        ],
+        'steps' => [
+            [
+                'Pick what to share',
+                'The browser shows its own picker for screens, windows and tabs. The page never sees anything you did not pick.',
+            ],
+            [
+                'Mix the sources',
+                'Screen video and webcam are drawn onto one canvas. Microphone and screen audio are mixed with an AudioContext.',
+            ],
+            [
+                'Record',
+                'MediaRecorder turns the combined stream into video chunks. On stop they become one file you can play or save.',
+            ],
+        ],
+        'code' => 'const screen = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+const mic = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+// Mix screen audio and microphone into one track
+const ctx = new AudioContext(), out = ctx.createMediaStreamDestination();
+[screen, mic].forEach((s) => s.getAudioTracks().length && ctx.createMediaStreamSource(s).connect(out));
+
+const stream = new MediaStream([...screen.getVideoTracks(), ...out.stream.getAudioTracks()]);
+const rec = new MediaRecorder(stream, { mimeType: "video/webm;codecs=vp9,opus" });
+rec.ondataavailable = (e) => chunks.push(e.data);
+rec.onstop = () => download(new Blob(chunks, { type: rec.mimeType }));
+rec.start(1000);',
+        'browsers' => 'Chrome, Edge and Firefox on desktop. Safari records screens but not tab audio. Phones cannot share their screen from a web page.',
+        'faq' => [
+            [
+                'What format are the recordings?',
+                'WebM in most browsers, and MP4 where the browser supports recording it. Both play in modern browsers and editors.',
+            ],
+            [
+                'Can it record system sound?',
+                'Tab audio works in Chrome and Edge when you share a tab. Full system audio depends on the operating system.',
+            ],
+            [
+                'Does it work on phones?',
+                'No. Mobile browsers do not let web pages share the screen yet.',
+            ],
+        ],
+    ],
+    [
+        'num' => 34,
+        'cat' => '05-media-and-realtime',
+        'slug' => '034-browser-video-editor',
+        'name' => 'Browser Video Editor',
+        'example' => 'trim a clip, add a filter and a title, and export an MP4',
+        'title' => 'Video Editor in JavaScript: Trim and Export MP4 with WebCodecs',
+        'desc' => 'Free browser video editor in plain JavaScript. Trim a clip, add a filter and a title, and export a real MP4 with the WebCodecs VideoEncoder. No upload.',
+        'keywords' => 'webcodecs api, video editor javascript, trim video browser, export mp4 javascript, videoencoder example',
+        'runs' => 'WebCodecs VideoEncoder',
+        'what' => [
+            'Load a video, drag two handles to trim it, pick a color filter, add a title and export an MP4. Every frame is processed and encoded inside your browser, so the video is never uploaded.',
+            'The page plays the clip and grabs each frame, draws it on a canvas with the filter and title, and sends it to the WebCodecs VideoEncoder. The mp4-muxer library packs the encoded frames into an MP4 file.',
+        ],
+        'when' => [
+            'Quick social clips',
+            'Trimming screen recordings',
+            'Learning WebCodecs',
+            'Building a custom video tool',
+        ],
+        'features' => [
+            'Timeline with 10 thumbnails and trim handles',
+            'Filters: grayscale, sepia, vivid, fade, blur',
+            'Title text burned into the video',
+            'Export as MP4 with H.264, VP9 or AV1, whichever your browser can encode',
+            'Export progress and final file size',
+        ],
+        'steps' => [
+            [
+                'Pick frames',
+                'The video plays from the in point to the out point. requestVideoFrameCallback hands over each frame as it is shown.',
+            ],
+            [
+                'Edit the frame',
+                'Each frame is drawn on a canvas with the filter and title, then wrapped in a VideoFrame with its timestamp.',
+            ],
+            [
+                'Encode and pack',
+                'VideoEncoder compresses the frames. mp4-muxer puts the chunks into an MP4 file you can download.',
+            ],
+        ],
+        'code' => 'import { Muxer, ArrayBufferTarget } from "https://cdn.jsdelivr.net/npm/mp4-muxer@5.2.2/+esm";
+
+const muxer = new Muxer({ target: new ArrayBufferTarget(), video: { codec: "avc", width, height }, fastStart: "in-memory" });
+const encoder = new VideoEncoder({ output: (chunk, meta) => muxer.addVideoChunk(chunk, meta), error: console.error });
+encoder.configure({ codec: "avc1.42001f", width, height, bitrate: 4e6, framerate: 30 });
+
+video.requestVideoFrameCallback(function onFrame(now, info) {
+  ctx.drawImage(video, 0, 0);                                   // plus filter and title
+  const frame = new VideoFrame(canvas, { timestamp: (info.mediaTime - start) * 1e6 });
+  encoder.encode(frame, { keyFrame: n++ % 60 === 0 }); frame.close();
+  video.requestVideoFrameCallback(onFrame);
+});',
+        'browsers' => 'WebCodecs: Chrome, Edge, Safari 17+ and Firefox 130+ on desktop. Audio is not included in the export in this version.',
+        'faq' => [
+            [
+                'What is WebCodecs?',
+                'It is a browser API that gives JavaScript direct access to video and audio encoders and decoders. It is much faster than older canvas recording tricks.',
+            ],
+            [
+                'Is audio included in the export?',
+                'Not in this version. The video track is exported. Audio can be added with AudioEncoder in the same way.',
+            ],
+            [
+                'Which codec does it use?',
+                'It picks the first your browser can encode: H.264, then VP9, then AV1.',
+            ],
+        ],
+    ],
+    [
+        'num' => 35,
+        'cat' => '05-media-and-realtime',
+        'slug' => '035-collaborative-whiteboard',
+        'name' => 'Collaborative Whiteboard',
+        'example' => 'a shared drawing board with live cursors',
+        'title' => 'Collaborative Whiteboard in JavaScript: Canvas Drawing with Live Cursors',
+        'desc' => 'Free real time whiteboard in plain JavaScript. Pen, shapes, eraser, undo and live cursors, synced between tabs instantly or across devices with a tiny WebSocket server.',
+        'keywords' => 'collaborative whiteboard javascript, canvas drawing app, real time drawing websocket, live cursors, pointer events',
+        'runs' => 'Canvas 2D, Pointer Events',
+        'what' => [
+            'Sketch, write and draw shapes on a board that other people see live. Open a second tab and every line appears there as you draw it, with a named cursor for each person.',
+            'Drawing uses Canvas and Pointer Events, with pen pressure on tablets. The board is stored as a list of strokes, sent as small messages over BroadcastChannel between tabs or over a WebSocket between devices.',
+        ],
+        'when' => [
+            'Team brainstorming',
+            'Online tutoring',
+            'Learning real time sync',
+            'Multiplayer canvas apps',
+        ],
+        'features' => [
+            'Pen, highlighter, line, rectangle, ellipse and eraser',
+            'Pressure-sensitive strokes on pens and tablets',
+            'Undo and redo your own strokes',
+            'Live cursors with names for everyone on the board',
+            'Export the board as PNG, and it survives a reload',
+        ],
+        'steps' => [
+            [
+                'Capture strokes',
+                'Pointer events are collected into a stroke: tool, color, width and a list of points with pressure.',
+            ],
+            [
+                'Share strokes',
+                'Each new point is sent to the others as a small message, so they see the line as it is being drawn.',
+            ],
+            [
+                'Redraw from data',
+                'The board is a list of strokes. Undo removes one and the canvas is redrawn from the list.',
+            ],
+        ],
+        'code' => 'board.addEventListener("pointermove", (e) => {
+  if (!drawing) return sendCursor(e);
+  for (const p of e.getCoalescedEvents()) {          // every point, not just one per frame
+    stroke.points.push([p.offsetX, p.offsetY, p.pressure || 0.5]);
+  }
+  drawSegment(stroke);
+  send({ type: "points", id: stroke.id, points: stroke.points.slice(-3) });
+});
+// Others apply the same data and redraw
+channel.onmessage = ({ data }) => apply(data);',
+        'browsers' => 'Every modern browser, with touch, mouse and pen. For devices on different networks, run the included server.js.',
+        'faq' => [
+            [
+                'How do I use it across different devices?',
+                'Run the included server.js with Node, then enter its ws:// address in the page on each device.',
+            ],
+            [
+                'Does it support pens and tablets?',
+                'Yes. Pointer Events give pressure data, and pen strokes get thicker when you press harder.',
+            ],
+            [
+                'How does undo work with several people?',
+                'Undo removes your own last stroke only, and tells the others to remove it too.',
+            ],
+        ],
+    ],
+    [
+        'num' => 36,
+        'cat' => '05-media-and-realtime',
+        'slug' => '036-music-visualizer',
+        'name' => 'Music Visualizer',
+        'example' => 'turn music into moving bars, waves and a glowing ring',
+        'title' => 'Audio Visualizer in JavaScript with the Web Audio API and Canvas',
+        'desc' => 'Free music visualizer in plain JavaScript. Bars, waveform and a glowing ring react to a built in synth loop, your own songs or your microphone, using Web Audio.',
+        'keywords' => 'audio visualizer javascript, web audio api example, analysernode, canvas music visualizer, microphone visualizer',
+        'runs' => 'Web Audio AnalyserNode',
+        'what' => [
+            'Play the built in beat, drop in a song or sing into your microphone, and the screen moves with the sound. Pick bars, a waveform or a glowing ring, and change the colors and sensitivity.',
+            'The Web Audio API sends the sound through an AnalyserNode, which splits it into frequency bands many times a second. Canvas turns those numbers into shapes. Even the demo beat is made in code with oscillators.',
+        ],
+        'when' => [
+            'Music players and podcasts',
+            'Live event screens',
+            'Learning Web Audio',
+            'Fun portfolio projects',
+        ],
+        'features' => [
+            'Built-in synth loop made with oscillators, so no audio file is needed',
+            'Play your own MP3, WAV or OGG files, or use the microphone',
+            'Three styles: frequency bars, waveform and radial ring',
+            'Beat pulse that reacts to the bass',
+            'Color themes, sensitivity and a fullscreen button',
+        ],
+        'steps' => [
+            [
+                'Route the sound',
+                'The source (synth, file or mic) goes through an AnalyserNode on its way to the speakers.',
+            ],
+            [
+                'Read frequencies',
+                'Every frame, the analyser runs a fast Fourier transform and returns loudness for 128 frequency bands.',
+            ],
+            [
+                'Draw',
+                'Each band becomes a bar, a point on a wave or a spoke on the ring. The average of the lowest bands drives the beat pulse.',
+            ],
+        ],
+        'code' => 'const ctx = new AudioContext();
+const analyser = ctx.createAnalyser();
+analyser.fftSize = 256;                               // 128 frequency bands
+source.connect(analyser).connect(ctx.destination);
+
+const bins = new Uint8Array(analyser.frequencyBinCount);
+(function draw() {
+  analyser.getByteFrequencyData(bins);                // 0 to 255 per band
+  bins.forEach((v, i) => canvas.fillRect(i * w, H - v, w - 2, v));
+  requestAnimationFrame(draw);
+})();',
+        'browsers' => 'Every modern browser. Sound starts only after you click, as browsers require.',
+        'faq' => [
+            [
+                'How does an audio visualizer work?',
+                'An AnalyserNode runs a fast Fourier transform on the sound and returns loudness per frequency band. You draw each band as a bar or point.',
+            ],
+            [
+                'Why does nothing play until I click?',
+                'Browsers block sound until the user interacts with the page. The first click starts the audio.',
+            ],
+            [
+                'Is the microphone sound played back?',
+                'No. It is only analyzed, so there is no echo or feedback.',
+            ],
+        ],
+    ],
+    [
+        'num' => 37,
+        'cat' => '05-media-and-realtime',
+        'slug' => '037-webgpu-particles',
+        'name' => 'WebGPU Particle Playground',
+        'example' => 'up to a million glowing particles that follow your mouse',
+        'title' => 'WebGPU Tutorial: Particle Simulation with Compute Shaders in JavaScript',
+        'desc' => 'Free WebGPU particle simulation in plain JavaScript. Move up to 1,000,000 particles with a compute shader and your mouse, with gravity and color controls and a fallback.',
+        'keywords' => 'webgpu tutorial, wgsl compute shader, particle system javascript, gpu simulation browser, webgpu example',
+        'runs' => 'WebGPU',
+        'what' => [
+            'Move your mouse over the canvas and a cloud of glowing particles follows it. With WebGPU you can push up to a million of them, and your graphics card moves every one each frame.',
+            'A compute shader written in WGSL updates each particle\'s position and speed. A render pass reads the same buffer and draws the particles with additive blending. Browsers without WebGPU get a smaller Canvas 2D version.',
+        ],
+        'when' => [
+            'Learning WebGPU and WGSL',
+            'Hero backgrounds and art pieces',
+            'GPU simulation basics',
+            'Showing off in a portfolio',
+        ],
+        'features' => [
+            'Up to 1,000,000 particles on WebGPU, 20,000 on the fallback',
+            'Mouse or touch attraction, hold Shift or right click to push away',
+            'Gravity, particle size and color controls',
+            'Live frames per second and particle count',
+            'Burst button to throw particles from the center',
+        ],
+        'steps' => [
+            [
+                'Fill a buffer',
+                'Each particle is 4 floats: position and velocity. They all live in one GPU storage buffer.',
+            ],
+            [
+                'Simulate on the GPU',
+                'A compute shader runs once per particle, in groups of 64, adding gravity and the pull toward the pointer.',
+            ],
+            [
+                'Draw',
+                'The render pass reads the same buffer and draws a small glowing quad per particle, colored by speed.',
+            ],
+        ],
+        'code' => '@compute @workgroup_size(64)
+fn simulate(@builtin(global_invocation_id) id: vec3u) {
+  let i = id.x;
+  if (i >= u.count) { return; }
+  var p = particles[i];
+  let d = u.mouse - p.pos;
+  p.vel += normalize(d) * u.pull / (dot(d, d) + 0.05) * u.dt;  // pull to pointer
+  p.vel.y -= u.gravity * u.dt;
+  p.vel *= 0.995;
+  p.pos += p.vel * u.dt;
+  particles[i] = p;
+}',
+        'browsers' => 'WebGPU: Chrome and Edge 113+, Safari 26+, Firefox 141+ on Windows. Other browsers get the Canvas 2D version.',
+        'faq' => [
+            [
+                'What is WebGPU?',
+                'It is the modern graphics and compute API for the web. It is faster and more flexible than WebGL, and it can run general math on the GPU.',
+            ],
+            [
+                'What is a compute shader?',
+                'A small program that runs on the GPU for many items at once, here once per particle, in groups of 64.',
+            ],
+            [
+                'Which browsers support WebGPU?',
+                'Chrome and Edge 113 and newer, Safari 26, and Firefox 141 on Windows. Others get the Canvas 2D fallback.',
+            ],
+        ],
+    ],
+    [
+        'num' => 38,
+        'cat' => '05-media-and-realtime',
+        'slug' => '038-image-compressor',
+        'name' => 'Image Compressor',
+        'example' => 'shrink photos in bulk without uploading them',
+        'title' => 'Image Compressor in JavaScript: Resize and Convert to WebP in the Browser',
+        'desc' => 'Free bulk image compressor in plain JavaScript. Resize and convert photos to WebP, AVIF or JPEG in a Web Worker with OffscreenCanvas, and compare before and after.',
+        'keywords' => 'image compressor javascript, convert to webp javascript, offscreencanvas web worker, resize image browser, compress images online free',
+        'runs' => 'OffscreenCanvas in a Worker',
+        'what' => [
+            'Drop a batch of photos, pick a size and quality, and get smaller files back in seconds, with a before and after slider on each one. Nothing is uploaded.',
+            'The heavy work runs in a Web Worker so the page never freezes. Each photo becomes an ImageBitmap, is drawn at the new size on an OffscreenCanvas, and is encoded to the format you picked.',
+        ],
+        'when' => [
+            'Shrinking photos before upload',
+            'Faster pages and better Core Web Vitals',
+            'Making WebP versions of images',
+            'Learning Web Workers',
+        ],
+        'features' => [
+            'Batch: drop many images at once',
+            'Max width, quality and output format controls',
+            'Before and after slider on each image',
+            'Shows size saved per file and in total',
+            'Download one file or all of them',
+        ],
+        'steps' => [
+            [
+                'Decode',
+                'Each file becomes an ImageBitmap with createImageBitmap, which decodes off the main thread.',
+            ],
+            [
+                'Resize in a worker',
+                'The bitmap is sent to the worker, drawn at the new size on an OffscreenCanvas with high quality smoothing.',
+            ],
+            [
+                'Encode',
+                'convertToBlob encodes to the chosen format and quality. The page gets back the new file and its size.',
+            ],
+        ],
+        'code' => '// worker.js (created from a Blob so the page stays a single file)
+self.onmessage = async ({ data: { id, bitmap, width, type, quality } }) => {
+  const scale = width ? Math.min(1, width / bitmap.width) : 1;
+  const canvas = new OffscreenCanvas(Math.round(bitmap.width * scale), Math.round(bitmap.height * scale));
+  const ctx = canvas.getContext("2d");
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  const blob = await canvas.convertToBlob({ type, quality });
+  self.postMessage({ id, blob, w: canvas.width, h: canvas.height });
+};
+// page
+worker.postMessage({ id, bitmap, width: 1920, type: "image/webp", quality: 0.75 }, [bitmap]);',
+        'browsers' => 'Every modern browser. AVIF output: Chrome and Edge. Safari encodes JPEG and PNG; its WebP output may fall back to PNG.',
+        'faq' => [
+            [
+                'Is WebP or AVIF better?',
+                'AVIF files are usually smaller at the same quality, but encoding is slower and fewer browsers can create them. WebP is a safe default.',
+            ],
+            [
+                'Does compressing lose quality?',
+                'A little, depending on the quality slider. Around 0.75 is hard to tell apart from the original for most photos.',
+            ],
+            [
+                'Why use a Web Worker?',
+                'Encoding big images takes time. Doing it in a worker keeps scrolling and clicking smooth.',
+            ],
+        ],
+    ],
+    [
+        'num' => 39,
+        'cat' => '05-media-and-realtime',
+        'slug' => '039-live-chat',
+        'name' => 'Live Chat App',
+        'example' => 'a real time chat with rooms and typing indicators',
+        'title' => 'Real Time Chat App in JavaScript with WebSocket (Rooms, Typing)',
+        'desc' => 'Free real time chat in plain JavaScript. Rooms, nicknames, typing indicators and reactions, working between tabs with no server or across devices with a WebSocket server.',
+        'keywords' => 'websocket chat javascript, real time chat app, chat rooms node ws, typing indicator javascript, broadcastchannel chat',
+        'runs' => 'WebSocket',
+        'what' => [
+            'Open two tabs and chat between them right away. Run the tiny included server and people on other phones and laptops can join the same rooms, see who is typing and react to messages.',
+            'Messages are small JSON events. Without a server they travel over BroadcastChannel. With one, they go over a WebSocket, and the 20 line server.js simply passes each event to everyone else.',
+        ],
+        'when' => [
+            'Support chat widgets',
+            'Team and community rooms',
+            'Learning WebSocket',
+            'Real time features in any app',
+        ],
+        'features' => [
+            'Rooms: general, random and dev, with unread counts',
+            'Typing indicator and who is online',
+            'Emoji reactions on any message',
+            'Message history per room saved in the browser',
+            'Auto reconnect with backoff when the server drops',
+        ],
+        'steps' => [
+            [
+                'Pick a transport',
+                'With no server address, messages go over BroadcastChannel between tabs. With one, they go over a WebSocket.',
+            ],
+            [
+                'Send events',
+                'Messages, typing, joins and reactions are small JSON events with a room name and a sender id.',
+            ],
+            [
+                'Render',
+                'Each tab applies events to its local state and redraws the room. The server only relays events, it keeps nothing.',
+            ],
+        ],
+        'code' => 'const ws = new WebSocket("wss://chat.example.com");
+ws.onmessage = (e) => handle(JSON.parse(e.data));
+
+function send(type, data) {
+  ws.send(JSON.stringify({ type, room, from: me.id, name: me.name, ...data }));
+}
+input.addEventListener("input", throttle(() => send("typing"), 1500));
+form.addEventListener("submit", () => send("message", { text: input.value, id: crypto.randomUUID() }));
+// server.js relays every message to everyone else
+wss.on("connection", (s) => s.on("message", (d) => wss.clients.forEach((c) => c !== s && c.send(d.toString()))));',
+        'browsers' => 'Every modern browser. For devices on different networks, host server.js somewhere with wss:// (HTTPS pages need secure WebSockets).',
+        'faq' => [
+            [
+                'How do I run the chat server?',
+                'Install Node, run npm install ws, then node server.js. Enter ws://your-ip:8788 in the page on each device.',
+            ],
+            [
+                'Are messages saved?',
+                'Each browser keeps the last 200 messages per room. The server keeps nothing, it only relays.',
+            ],
+            [
+                'Can I host it online?',
+                'Yes. Deploy server.js to any Node host and use a wss:// address, since HTTPS pages need secure WebSockets.',
+            ],
+        ],
+    ],
+    [
+        'num' => 40,
+        'cat' => '05-media-and-realtime',
+        'slug' => '040-code-playground',
+        'name' => 'Online Code Playground',
+        'example' => 'a CodePen style editor with live preview and share links',
+        'title' => 'Build a CodePen Clone in JavaScript: Live Code Playground (Free)',
+        'desc' => 'Free online code playground in plain JavaScript. HTML, CSS and JS editors, a live sandboxed preview, a working console, templates and share links stored in the URL.',
+        'keywords' => 'code playground javascript, codepen clone, live html editor, iframe sandbox srcdoc, share code url',
+        'runs' => 'Sandboxed iframe',
+        'what' => [
+            'Type HTML, CSS and JavaScript and see the result as you type. Console logs and errors show under the preview, and one click makes a link that holds the whole project.',
+            'The code runs in a sandboxed iframe using srcdoc, so it cannot touch this page. A small bridge script forwards console calls with postMessage. Share links gzip the project with CompressionStream and put it after the #.',
+        ],
+        'when' => [
+            'Teaching HTML, CSS and JavaScript',
+            'Quick experiments and bug demos',
+            'Embedding live examples in docs',
+            'Learning how CodePen works',
+        ],
+        'features' => [
+            'Three editors with tab indent and line numbers',
+            'Live preview that updates as you type, or on Ctrl+Enter',
+            'Console panel that shows logs, warnings and errors from the preview',
+            'Starter templates: counter, canvas animation, fetch demo',
+            'Share link: the project is gzipped and stored in the URL hash',
+        ],
+        'steps' => [
+            [
+                'Build the page',
+                'The three editors are joined into one HTML document with a small console bridge script at the top.',
+            ],
+            [
+                'Run it safely',
+                'The document goes into an iframe with sandbox="allow-scripts", so it cannot touch this page, its storage or cookies.',
+            ],
+            [
+                'Share',
+                'The project JSON is gzipped with CompressionStream, base64url encoded and placed after the # in the link.',
+            ],
+        ],
+        'code' => 'const bridge = `<script>
+  for (const k of ["log", "warn", "error", "info"]) {
+    const orig = console[k];
+    console[k] = (...a) => { parent.postMessage({ k, a: a.map(String) }, "*"); orig(...a); };
+  }
+  onerror = (m, s, line) => parent.postMessage({ k: "error", a: [m + " (line " + line + ")"] }, "*");
+<\\/script>`;
+iframe.srcdoc = bridge + html + `<style>${css}</style><script>${js}<\\/script>`;
+addEventListener("message", (e) => { if (e.source === iframe.contentWindow) showInConsole(e.data); });',
+        'browsers' => 'Every modern browser. CompressionStream share links need Chrome 80+, Safari 16.4+ or Firefox 113+.',
+        'faq' => [
+            [
+                'Is running code in an iframe safe?',
+                'With sandbox set to allow-scripts only, the code cannot reach this page, its cookies or its storage.',
+            ],
+            [
+                'Where is my code saved?',
+                'In localStorage, and in the share link itself. No server stores anything.',
+            ],
+            [
+                'How long can a share link be?',
+                'Browsers handle very long URLs, and gzip keeps small projects to a few hundred characters.',
+            ],
+        ],
+    ],
+    [
+        'num' => 41,
+        'cat' => '06-hardware-and-performance',
+        'slug' => '041-bluetooth-dashboard',
+        'name' => 'Bluetooth Device Dashboard',
+        'example' => 'read live heart rate and battery from a Bluetooth device',
+        'title' => 'Web Bluetooth API Example: Heart Rate Dashboard in JavaScript',
+        'desc' => 'Free Web Bluetooth dashboard in plain JavaScript. Connect a heart rate strap or watch, see a live chart, battery and device info, or try the demo mode.',
+        'keywords' => 'web bluetooth api, ble heart rate javascript, bluetooth low energy browser, web bluetooth example, fitness dashboard',
+        'runs' => 'Web Bluetooth',
+        'what' => [
+            'Pair a heart rate strap, fitness watch or sensor straight from the browser and see live readings with a 60 second chart, min, max and average, plus the battery level. No app to install.',
+            'The Web Bluetooth API opens the browser\'s device picker, connects to the device\'s GATT server and subscribes to notifications. Each heart rate reading arrives as a few bytes that the page decodes.',
+        ],
+        'when' => [
+            'Fitness and health dashboards',
+            'IoT sensor tools',
+            'Hardware hack days',
+            'Learning Bluetooth Low Energy',
+        ],
+        'features' => [
+            'Scan and pair with devices that offer the heart rate service',
+            'Live heart rate with a 60 second chart, min, max and average',
+            'Battery level with change notifications',
+            'Manufacturer and model from the Device Information service',
+            'Demo mode that simulates a workout',
+        ],
+        'steps' => [
+            [
+                'Ask for a device',
+                'The browser shows its own picker, filtered to devices with the heart rate service. The page only gets the one you choose.',
+            ],
+            [
+                'Subscribe',
+                'The page connects to the GATT server and starts notifications on the heart rate characteristic.',
+            ],
+            [
+                'Decode',
+                'Each notification is a few bytes. The first byte says if the value is 8 or 16 bit, then the reading follows.',
+            ],
+        ],
+        'code' => 'const device = await navigator.bluetooth.requestDevice({
+  filters: [{ services: ["heart_rate"] }], optionalServices: ["battery_service"],
+});
+const server = await device.gatt.connect();
+const hr = await (await server.getPrimaryService("heart_rate"))
+  .getCharacteristic("heart_rate_measurement");
+
+hr.addEventListener("characteristicvaluechanged", (e) => {
+  const v = e.target.value;                            // DataView
+  const bpm = v.getUint8(0) & 1 ? v.getUint16(1, true) : v.getUint8(1);
+  show(bpm);
+});
+await hr.startNotifications();',
+        'browsers' => 'Chrome and Edge on desktop and Android, and Opera. Not available in Safari or Firefox. Needs HTTPS or localhost.',
+        'faq' => [
+            [
+                'Which browsers support Web Bluetooth?',
+                'Chrome and Edge on desktop and Android, and Opera. Safari and Firefox do not support it.',
+            ],
+            [
+                'What devices can I connect?',
+                'Any Bluetooth Low Energy device with a standard heart rate or battery service, including most chest straps and many watches.',
+            ],
+            [
+                'Can I try it without a device?',
+                'Yes. Demo mode simulates a workout so you can see the chart and numbers move.',
+            ],
+        ],
+    ],
+    [
+        'num' => 42,
+        'cat' => '06-hardware-and-performance',
+        'slug' => '042-serial-monitor',
+        'name' => 'Arduino Serial Monitor',
+        'example' => 'read and plot data from an Arduino or ESP32 over USB',
+        'title' => 'Web Serial API: Arduino Serial Monitor and Plotter in the Browser',
+        'desc' => 'Free serial monitor and plotter in plain JavaScript. Talk to an Arduino, ESP32 or Pico over USB with the Web Serial API, send commands and plot numbers live.',
+        'keywords' => 'web serial api, arduino serial monitor browser, esp32 web serial, serial plotter javascript, usb serial javascript',
+        'runs' => 'Web Serial',
+        'what' => [
+            'Plug in an Arduino or ESP32, pick the port and read everything it prints, with timestamps. Numbers in each line are drawn on a live chart like the Arduino IDE plotter, and you can send commands back.',
+            'The Web Serial API opens the USB port at the baud rate you choose. Bytes flow through a TextDecoderStream and a small line splitter, and a simulator lets you try it without a board.',
+        ],
+        'when' => [
+            'Arduino and ESP32 projects',
+            'Classroom electronics',
+            'Sensor logging',
+            'Tools for makers without installing an app',
+        ],
+        'features' => [
+            'Pick any USB serial port and baud rate',
+            'Line by line output with timestamps and auto scroll',
+            'Send text with a choice of line ending',
+            'Live plotter for up to 4 numbers per line, like 23.5,61',
+            'Simulator that acts like a board sending sensor data',
+        ],
+        'steps' => [
+            [
+                'Open the port',
+                'You choose the port in the browser\'s picker. The page opens it at the baud rate your board uses.',
+            ],
+            [
+                'Read lines',
+                'Bytes flow through a TextDecoderStream and a small TransformStream that splits on new lines.',
+            ],
+            [
+                'Plot',
+                'Each line is checked for numbers. If it has any, they are added to the chart as separate colored lines.',
+            ],
+        ],
+        'code' => 'const port = await navigator.serial.requestPort();
+await port.open({ baudRate: 115200 });
+
+const lines = port.readable
+  .pipeThrough(new TextDecoderStream())
+  .pipeThrough(new TransformStream({
+    transform(chunk, ctl) { (this.buf = (this.buf ?? "") + chunk).split("\\n").slice(0, -1).forEach((l) => ctl.enqueue(l)); this.buf = this.buf.slice(this.buf.lastIndexOf("\\n") + 1); },
+  }));
+for await (const line of lines) show(line);
+
+const writer = port.writable.getWriter();
+await writer.write(new TextEncoder().encode("LED ON\\n"));',
+        'browsers' => 'Chrome and Edge on desktop, and Opera. Not in Safari, Firefox or mobile browsers. Needs HTTPS or localhost.',
+        'faq' => [
+            [
+                'Which browsers support Web Serial?',
+                'Chrome, Edge and Opera on desktop. It is not in Safari, Firefox or mobile browsers.',
+            ],
+            [
+                'What baud rate should I use?',
+                'The same one as Serial.begin() in your sketch. 115200 is the most common.',
+            ],
+            [
+                'How do I plot values?',
+                'Print numbers on one line, like temp:24.5 humidity:61. The plotter draws up to four values per line.',
+            ],
+        ],
+    ],
+    [
+        'num' => 43,
+        'cat' => '06-hardware-and-performance',
+        'slug' => '043-wasm-image-filters',
+        'name' => 'WebAssembly Image Filters',
+        'example' => 'photo filters in hand written WebAssembly, raced against JavaScript',
+        'title' => 'WebAssembly Tutorial: Image Filters in WAT vs JavaScript (Speed Test)',
+        'desc' => 'Free WebAssembly image filters in plain JavaScript. Grayscale, sepia, invert and brightness in a 491 byte hand written WASM module, with a speed race against JS.',
+        'keywords' => 'webassembly tutorial, wat webassembly, wasm image processing, wasm vs javascript, webassembly example',
+        'runs' => 'WebAssembly',
+        'what' => [
+            'Four photo filters written by hand in WebAssembly text format and compiled to just 491 bytes. Apply them to a photo, then race the same filters written in plain JavaScript to see which is faster.',
+            'The photo\'s pixels are copied into WebAssembly memory, the exported function changes them in place with integer math, and the result is copied back to the canvas. The readable filters.wat source is in the folder.',
+        ],
+        'when' => [
+            'Learning WebAssembly from the ground up',
+            'Image and audio processing',
+            'Performance experiments',
+            'Understanding linear memory',
+        ],
+        'features' => [
+            'Grayscale, sepia, invert and brightness with contrast',
+            'The same filters written in JavaScript for a fair race',
+            'Timing for both, with a bar chart over repeated runs',
+            'Works on your own photos of any size (memory grows as needed)',
+            'The .wat source is included and readable',
+        ],
+        'steps' => [
+            [
+                'Copy pixels in',
+                'The photo\'s RGBA bytes are copied into the WebAssembly memory. Memory grows in 64 KB pages to fit.',
+            ],
+            [
+                'Run the filter',
+                'The exported function loops over every pixel in place, using only integer math.',
+            ],
+            [
+                'Copy pixels out',
+                'The page reads the bytes back from the same memory and paints them on the canvas.',
+            ],
+        ],
+        'code' => 'const bytes = Uint8Array.from(atob(WASM_BASE64), (c) => c.charCodeAt(0));
+const { instance } = await WebAssembly.instantiate(bytes);
+const { memory, grayscale } = instance.exports;
+
+const img = ctx.getImageData(0, 0, w, h);
+const need = Math.ceil(img.data.length / 65536) - memory.buffer.byteLength / 65536;
+if (need > 0) memory.grow(need);                           // 64 KB pages
+
+new Uint8Array(memory.buffer).set(img.data);                // copy in
+grayscale(img.data.length);                                 // run in place
+img.data.set(new Uint8Array(memory.buffer, 0, img.data.length));  // copy out
+ctx.putImageData(img, 0, 0);',
+        'browsers' => 'Every modern browser.',
+        'faq' => [
+            [
+                'Is WebAssembly always faster than JavaScript?',
+                'No. For simple loops like these, modern JavaScript is close. WebAssembly wins on heavier math and gives steadier timing.',
+            ],
+            [
+                'What is WAT?',
+                'WebAssembly Text format, the human readable version of WebAssembly. A tool like wat2wasm turns it into the binary file.',
+            ],
+            [
+                'Can I use WebAssembly from other languages?',
+                'Yes. Rust, C, C++ and Go all compile to WebAssembly. Writing WAT by hand shows what they produce.',
+            ],
+        ],
+    ],
+    [
+        'num' => 44,
+        'cat' => '06-hardware-and-performance',
+        'slug' => '044-performance-monitor',
+        'name' => 'Performance Monitor Widget',
+        'example' => 'a live panel for Core Web Vitals on any page',
+        'title' => 'Measure Core Web Vitals in JavaScript: LCP, CLS and INP Monitor',
+        'desc' => 'Free performance monitor in plain JavaScript. Measure LCP, CLS, INP, FCP, TTFB, long tasks and FPS live with PerformanceObserver, and trigger issues to learn.',
+        'keywords' => 'core web vitals javascript, measure lcp cls inp, performanceobserver example, web performance monitor, long tasks api',
+        'runs' => 'PerformanceObserver',
+        'what' => [
+            'Watch this page\'s Core Web Vitals update live: loading speed, layout shifts and how fast it responds to clicks. Buttons let you cause a layout shift or a slow task so you can see exactly how the scores react.',
+            'Every number comes from PerformanceObserver. CLS groups layout shifts into session windows, INP takes the slowest interaction, and each value is rated with Google\'s official good and poor thresholds.',
+        ],
+        'when' => [
+            'SEO and site speed audits',
+            'Debugging slow pages',
+            'Teaching Core Web Vitals',
+            'Adding a speed panel to your own site',
+        ],
+        'features' => [
+            'LCP, CLS and INP rated good, needs work or poor with Google\'s thresholds',
+            'FCP, TTFB and a navigation timing waterfall',
+            'Long tasks list with durations',
+            'Live frames per second graph and JS memory where available',
+            'Floating mini widget you can copy into your own site',
+        ],
+        'steps' => [
+            [
+                'Observe entries',
+                'A PerformanceObserver subscribes to each entry type. buffered: true replays what happened before the script ran.',
+            ],
+            [
+                'Compute the metric',
+                'CLS groups shifts into session windows. INP takes the slowest interaction. LCP takes the last large paint.',
+            ],
+            [
+                'Rate it',
+                'Each value is compared with the official thresholds, for example LCP is good under 2.5 seconds.',
+            ],
+        ],
+        'code' => 'new PerformanceObserver((list) => {
+  const last = list.getEntries().at(-1);
+  report("LCP", last.startTime);                        // good under 2500 ms
+}).observe({ type: "largest-contentful-paint", buffered: true });
+
+let cls = 0;
+new PerformanceObserver((list) => {
+  for (const e of list.getEntries()) if (!e.hadRecentInput) cls += e.value;
+  report("CLS", cls);                                   // good under 0.1
+}).observe({ type: "layout-shift", buffered: true });
+
+new PerformanceObserver((list) => {
+  for (const e of list.getEntries()) if (e.interactionId) inp = Math.max(inp, e.duration);
+}).observe({ type: "event", durationThreshold: 16, buffered: true });',
+        'browsers' => 'All metrics: Chrome and Edge. Safari and Firefox support FCP, TTFB and LCP (Firefox and Safari 26+), with INP and CLS in the newest versions or not at all.',
+        'faq' => [
+            [
+                'What are good Core Web Vitals scores?',
+                'LCP under 2.5 seconds, CLS under 0.1 and INP under 200 milliseconds count as good.',
+            ],
+            [
+                'Why is INP empty at first?',
+                'INP measures interactions, so it needs you to click or type something first.',
+            ],
+            [
+                'Can I add this to my own site?',
+                'Yes. Copy the observer code and send the values to your analytics instead of showing them.',
+            ],
+        ],
+    ],
+    [
+        'num' => 45,
+        'cat' => '06-hardware-and-performance',
+        'slug' => '045-file-compressor',
+        'name' => 'Browser File Compressor',
+        'example' => 'gzip any file or unpack a .gz right in the browser',
+        'title' => 'Gzip Files in JavaScript with CompressionStream (Compress and Unzip)',
+        'desc' => 'Free file compressor in plain JavaScript. Gzip or deflate any file and unpack .gz files with the native CompressionStream API, with streaming progress and size charts.',
+        'keywords' => 'compressionstream api, gzip javascript, decompressionstream, compress file browser, streams api example',
+        'runs' => 'CompressionStream',
+        'what' => [
+            'Drop a file to gzip it, or drop a .gz file to unpack it. You also get a text box that shows how well your text compresses, with before and after size bars.',
+            'The browser\'s own CompressionStream does the work, and the file is read as a stream, piece by piece, so big files never sit fully in memory. A small counting stream drives the progress bar.',
+        ],
+        'when' => [
+            'Shrinking logs, CSV and JSON exports',
+            'Unpacking .gz downloads',
+            'Learning the Streams API',
+            'Tools that must work offline',
+        ],
+        'features' => [
+            'Compress any file to .gz, or decompress .gz back',
+            'Text mode to see how well your text compresses',
+            'Streams the file in chunks with a progress bar',
+            'Before and after size bars and the compression ratio',
+            'Choose gzip, deflate or deflate-raw',
+        ],
+        'steps' => [
+            [
+                'Stream the file',
+                'file.stream() gives a ReadableStream, so the file is read piece by piece instead of all at once.',
+            ],
+            [
+                'Pipe through gzip',
+                'pipeThrough(new CompressionStream("gzip")) compresses each piece as it passes. A small TransformStream counts bytes for the progress bar.',
+            ],
+            [
+                'Collect',
+                'new Response(stream).blob() gathers the output into a file you can download.',
+            ],
+        ],
+        'code' => 'async function gzip(file, onProgress) {
+  let done = 0;
+  const counter = new TransformStream({
+    transform(chunk, ctl) { done += chunk.byteLength; onProgress(done / file.size); ctl.enqueue(chunk); },
+  });
+  const stream = file.stream()
+    .pipeThrough(counter)
+    .pipeThrough(new CompressionStream("gzip"));
+  return new Response(stream).blob();                  // collect the output
+}
+// Unpack: file.stream().pipeThrough(new DecompressionStream("gzip"))',
+        'browsers' => 'Chrome and Edge 80+, Safari 16.4+, Firefox 113+.',
+        'faq' => [
+            [
+                'What is CompressionStream?',
+                'A built in browser API that compresses or decompresses a stream with gzip, deflate or deflate raw. No library is needed.',
+            ],
+            [
+                'Why do photos barely shrink?',
+                'JPEG, PNG, MP4 and zip files are already compressed. Text, CSV, JSON and code shrink the most.',
+            ],
+            [
+                'Can it make .zip files?',
+                'No. Gzip works on one file at a time. Zip archives need a library such as fflate.',
+            ],
+        ],
+    ],
+    [
+        'num' => 46,
+        'cat' => '06-hardware-and-performance',
+        'slug' => '046-scheduler-api-demo',
+        'name' => 'Scheduler API Demo',
+        'example' => 'see why long tasks freeze a page and how to fix it',
+        'title' => 'Scheduler API: Fix UI Jank with scheduler.yield() and postTask()',
+        'desc' => 'Free Scheduler API demo in plain JavaScript. Run the same heavy job blocking, chunked with setTimeout and with scheduler.yield(), and watch the jank.',
+        'keywords' => 'scheduler api javascript, scheduler yield, scheduler posttask, long tasks javascript, improve inp',
+        'runs' => 'Scheduler API',
+        'what' => [
+            'A moving ball and a text box show how smooth the page feels. Run the same heavy job three ways and watch which one freezes the page, which one keeps it moving, and how long each takes.',
+            'scheduler.yield() lets a long loop pause so the browser can handle clicks and paint, then continue ahead of other waiting work. scheduler.postTask() runs tasks by priority, and a second demo shows the order.',
+        ],
+        'when' => [
+            'Fixing poor INP scores',
+            'Apps with heavy data work',
+            'Learning how the main thread works',
+            'Performance talks and workshops',
+        ],
+        'features' => [
+            'Same 2 second job run three ways: blocking, setTimeout chunks and scheduler.yield()',
+            'Live animation and typing box to feel the jank',
+            'Frame drop counter and a timeline of long frames',
+            'Task priority demo: user-blocking, user-visible and background',
+            'Fallback to setTimeout when the API is missing',
+        ],
+        'steps' => [
+            [
+                'Break the work',
+                'The heavy job is a loop. Every few milliseconds it stops to let the browser handle input and paint.',
+            ],
+            [
+                'Yield smartly',
+                'await scheduler.yield() pauses and then continues ahead of other queued tasks, so the job still finishes quickly.',
+            ],
+            [
+                'Prioritize',
+                'postTask runs callbacks by priority, so user-blocking work jumps ahead of background work.',
+            ],
+        ],
+        'code' => 'async function processAll(items) {
+  let last = performance.now();
+  for (const item of items) {
+    doWork(item);
+    if (performance.now() - last > 10) {         // every 10 ms...
+      await scheduler.yield();                   // ...let input and paint happen
+      last = performance.now();
+    }
+  }
+}
+scheduler.postTask(() => saveDraft(), { priority: "background" });
+scheduler.postTask(() => showMenu(), { priority: "user-blocking" });  // runs first',
+        'browsers' => 'scheduler.postTask: Chrome, Edge and Firefox 142+. scheduler.yield: Chrome and Edge 129+. Others use a setTimeout fallback.',
+        'faq' => [
+            [
+                'What is scheduler.yield()?',
+                'A function that pauses your code and lets the browser do other work, then resumes your task first. It is the easiest way to break up long tasks.',
+            ],
+            [
+                'How is it different from setTimeout?',
+                'After setTimeout your code waits at the back of the queue. After scheduler.yield() it continues sooner, so the job finishes faster.',
+            ],
+            [
+                'Which browsers support it?',
+                'scheduler.postTask is in Chrome, Edge and recent Firefox. scheduler.yield is in Chrome and Edge 129 and newer. The demo falls back to setTimeout.',
+            ],
+        ],
+    ],
+    [
+        'num' => 47,
+        'cat' => '07-developer-tools',
+        'slug' => '047-json-formatter',
+        'name' => 'JSON Formatter and Validator',
+        'example' => 'format, check and browse JSON, even large files',
+        'title' => 'JSON Formatter and Validator in JavaScript (Tree View, Free)',
+        'desc' => 'Free JSON formatter in plain JavaScript. Format, minify, sort keys and validate JSON with the exact error line, browse a collapsible tree and search. Large files use a worker.',
+        'keywords' => 'json formatter, json validator, json viewer online, pretty print json javascript, json tree view',
+        'runs' => 'JSON.parse in a Worker',
+        'what' => [
+            'Paste messy JSON and get it clean, checked and easy to read. Mistakes point to the exact line and column, and big files open in a tree you can fold, search and copy paths from.',
+            'Parsing uses JSON.parse, moved to a Web Worker for large inputs so typing stays smooth. When the browser\'s error has no position, a small scanner finds where the JSON breaks.',
+        ],
+        'when' => [
+            'Reading API responses',
+            'Fixing broken config files',
+            'Exploring big data exports',
+            'A private tool that works offline',
+        ],
+        'features' => [
+            'Format with 2 or 4 spaces or tabs, minify, and sort keys',
+            'Error message with line, column and a pointer to the problem',
+            'Collapsible tree with type colors and item counts',
+            'Search keys and values, click any node to copy its path',
+            'Stats: size, depth, number of keys, arrays and objects',
+        ],
+        'steps' => [
+            [
+                'Parse',
+                'The text goes to JSON.parse. Big inputs go to a Worker first so typing stays smooth.',
+            ],
+            [
+                'Point to the error',
+                'If parsing fails, the error position is turned into a line and column and the line is shown with a marker.',
+            ],
+            [
+                'Build the tree',
+                'Objects and arrays become folding details elements. Children render only when a branch is opened.',
+            ],
+        ],
+        'code' => 'try {
+  const data = JSON.parse(text);
+  output.textContent = JSON.stringify(data, null, 2);
+} catch (err) {
+  // "Unexpected token } in JSON at position 812" becomes a line and column
+  const pos = +(/position (\\d+)/.exec(err.message)?.[1] ?? 0);
+  const before = text.slice(0, pos).split("\\n");
+  showError(err.message, before.length, before.at(-1).length + 1);
+}
+// Large inputs: parse in a worker so the page never freezes
+const worker = new Worker(URL.createObjectURL(new Blob([`onmessage = (e) => postMessage(JSON.parse(e.data))`])));',
+        'browsers' => 'Every modern browser.',
+        'faq' => [
+            [
+                'Is my JSON sent anywhere?',
+                'No. Everything runs in your browser, so it is safe for private data.',
+            ],
+            [
+                'How big a file can it handle?',
+                'Files of several megabytes parse fine in the worker. The tree shows 500 items per level so the page stays fast.',
+            ],
+            [
+                'How do I copy the path to a value?',
+                'Click the value in the tree view. A path like $.users[3].email is copied.',
+            ],
+        ],
+    ],
+    [
+        'num' => 48,
+        'cat' => '07-developer-tools',
+        'slug' => '048-regex-tester',
+        'name' => 'Regex Tester',
+        'example' => 'test regular expressions with live highlights and groups',
+        'title' => 'Regex Tester in JavaScript with Live Highlight, Groups and Cheat Sheet',
+        'desc' => 'Free regex tester in plain JavaScript. See matches highlighted live, groups in a table, flags as toggles, a replace preview, a plain English explanation and common patterns.',
+        'keywords' => 'regex tester, regular expression tester javascript, regex online, named capture groups, regex cheat sheet',
+        'runs' => 'JavaScript RegExp',
+        'what' => [
+            'Type a pattern and every match lights up in your text. Capture groups and named groups fill a table, the replace box shows the result, and a plain English list explains what each part of the pattern means.',
+            'Matching runs in a Web Worker with a one second limit, so a runaway pattern stops instead of freezing the page. There is a cheat sheet and ten ready patterns for emails, URLs, dates, phones and more.',
+        ],
+        'when' => [
+            'Writing validation rules',
+            'Search and replace in data',
+            'Learning regular expressions',
+            'Checking patterns before shipping',
+        ],
+        'features' => [
+            'Live highlight of every match, with alternating colors',
+            'Table of matches with index, capture groups and named groups',
+            'Flag toggles, including d for match indices and v for sets',
+            'Replace preview with $1, $<name> and $& support',
+            'Plain-English explanation, cheat sheet and 10 common patterns',
+        ],
+        'steps' => [
+            [
+                'Build the RegExp',
+                'The pattern and flags make a new RegExp. A syntax error is shown instead of crashing.',
+            ],
+            [
+                'Find matches safely',
+                'matchAll runs inside a Worker. If a pattern takes more than a second, the worker is stopped so the page never hangs.',
+            ],
+            [
+                'Show results',
+                'Match positions become highlighted spans. Groups fill the table and the replace preview runs on the same text.',
+            ],
+        ],
+        'code' => 'const re = new RegExp(pattern, "gd");            // d = give match indices
+for (const m of text.matchAll(re)) {
+  console.log(m[0], m.index, m.groups);           // full match, where, named groups
+  console.log(m.indices[1]);                      // start and end of group 1
+}
+// Stop runaway patterns like /(a+)+$/ from freezing the page
+const w = new Worker(url); w.postMessage({ pattern, flags, text });
+const t = setTimeout(() => { w.terminate(); showError("Too slow, stopped"); }, 1000);',
+        'browsers' => 'Every modern browser. The v flag needs Chrome 112+, Safari 17+ or Firefox 116+.',
+        'faq' => [
+            [
+                'Which regex engine does it use?',
+                'Your browser\'s JavaScript RegExp, so what works here works in your JavaScript code.',
+            ],
+            [
+                'What is catastrophic backtracking?',
+                'Some patterns, like (a+)+$, take exponential time on certain text. The tester stops those after one second.',
+            ],
+            [
+                'How do named groups work?',
+                'Write (?<year>\\d{4}) and the match has groups.year. Use $<year> in the replace box to reuse it.',
+            ],
+        ],
+    ],
+    [
+        'num' => 49,
+        'cat' => '07-developer-tools',
+        'slug' => '049-mini-postman',
+        'name' => 'Mini Postman API Client',
+        'example' => 'send API requests and read clean responses',
+        'title' => 'Build a Postman Alternative in JavaScript: REST API Client (Free)',
+        'desc' => 'Free API client in plain JavaScript. Send GET, POST, PUT, PATCH and DELETE with params, headers and body, see status, time and pretty JSON, save collections and copy cURL.',
+        'keywords' => 'postman alternative, rest api client javascript, api tester online, fetch api example, curl export',
+        'runs' => 'Fetch with AbortController',
+        'what' => [
+            'Test any API from the browser. Build a request with query params, headers and a body, send it, and read a clean response with status, time and size. Save the ones you use often and copy them as cURL.',
+            'Requests use fetch with an AbortSignal for the timeout and the Cancel button. The response body is streamed to count bytes, and variables like {{baseUrl}} are filled in before sending.',
+        ],
+        'when' => [
+            'Testing your own APIs',
+            'Learning how HTTP requests work',
+            'Sharing requests as cURL',
+            'A lightweight tool with no account',
+        ],
+        'features' => [
+            'Methods, params table, headers table and JSON, form or raw body',
+            'Response status, time, size, headers and highlighted JSON',
+            'Timeout and a Cancel button',
+            'History of the last 30 requests and named collections',
+            'Environment variables like {{baseUrl}} and cURL export',
+        ],
+        'steps' => [
+            [
+                'Build the request',
+                'The URL, params, headers and body are combined, and {{variables}} are filled in from the environment.',
+            ],
+            [
+                'Send with limits',
+                'fetch runs with a signal that aborts on your timeout or when you press Cancel.',
+            ],
+            [
+                'Read the response',
+                'The body is streamed to count bytes and show progress, then shown as pretty JSON or plain text.',
+            ],
+        ],
+        'code' => 'const controller = new AbortController();
+const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]);
+const t0 = performance.now();
+const res = await fetch(url, { method, headers, body, signal });
+
+let bytes = 0; const chunks = [];
+const reader = res.body.getReader();
+for (let r; !(r = await reader.read()).done; ) { chunks.push(r.value); bytes += r.value.length; }
+const text = new TextDecoder().decode(await new Blob(chunks).arrayBuffer());
+show(res.status, performance.now() - t0, bytes, text, [...res.headers]);
+// Cancel button: controller.abort()',
+        'browsers' => 'Every modern browser. The API you call must allow CORS; many public APIs do, private ones often need a proxy.',
+        'faq' => [
+            [
+                'Why do some APIs fail with a CORS error?',
+                'Browsers block requests to sites that do not allow them. Public APIs usually allow it, private ones often need a proxy.',
+            ],
+            [
+                'Where are my requests saved?',
+                'History and collections are stored in localStorage in your browser.',
+            ],
+            [
+                'Can I use environment variables?',
+                'Yes. Add them in the Variables tab and use {{name}} in the URL, params, headers or body.',
+            ],
+        ],
+    ],
+    [
+        'num' => 50,
+        'cat' => '07-developer-tools',
+        'slug' => '050-temporal-datetime',
+        'name' => 'Temporal Date and Time Toolkit',
+        'example' => 'time zones, date math and Unix time with the new Temporal API',
+        'title' => 'JavaScript Temporal API Examples: Time Zone Converter and Date Calculator',
+        'desc' => 'Free date and time toolkit in plain JavaScript with the Temporal API. Convert time zones, count days between dates, add durations, decode Unix timestamps and see a world clock.',
+        'keywords' => 'temporal api javascript, time zone converter, date difference calculator, unix timestamp converter, javascript date',
+        'runs' => 'Temporal',
+        'what' => [
+            'Convert a meeting time across cities, count the days until a deadline, add a month to a date or decode a Unix timestamp. There is also a live world clock with day and night markers.',
+            'Everything uses Temporal, the new JavaScript date API that fixes the old Date object\'s time zone and month math problems. Browsers without Temporal load a small polyfill automatically.',
+        ],
+        'when' => [
+            'Scheduling across time zones',
+            'Deadline and age calculators',
+            'Debugging timestamps in logs',
+            'Learning the Temporal API',
+        ],
+        'features' => [
+            'Time zone converter for any number of cities, with daylight saving shifts',
+            'Difference between two dates in years, months, days and business days',
+            'Add or subtract a duration from any date',
+            'Unix timestamp to date and back, in seconds or milliseconds',
+            'Live world clock with day and night markers',
+        ],
+        'steps' => [
+            [
+                'Use the right type',
+                'PlainDate for calendar days, ZonedDateTime for a moment in a place, Instant for an exact point on the timeline.',
+            ],
+            [
+                'Convert zones',
+                'One ZonedDateTime is moved to other zones with withTimeZone(). The clock time changes, the moment does not.',
+            ],
+            [
+                'Do math safely',
+                'until() and add() understand months of different lengths and daylight saving, so 1 month after 31 January is 28 or 29 February.',
+            ],
+        ],
+        'code' => 'import { Temporal } from "https://cdn.jsdelivr.net/npm/temporal-polyfill@1.0.5/+esm"; // only if not built in
+
+const meeting = Temporal.ZonedDateTime.from("2026-10-26T09:00[America/New_York]");
+meeting.withTimeZone("Asia/Dhaka").toString();   // 2026-10-26T19:00:00+06:00[Asia/Dhaka]
+
+const until = Temporal.PlainDate.from("2026-09-23").until("2026-12-25", { largestUnit: "month" });
+until.toString();                                // "P3M2D": 3 months, 2 days
+
+Temporal.PlainDate.from("2026-01-31").add({ months: 1 }).toString(); // "2026-02-28"',
+        'browsers' => 'Native Temporal: Firefox 139+ and the newest Chrome and Edge. Other browsers load a small polyfill automatically.',
+        'faq' => [
+            [
+                'What is the Temporal API?',
+                'A new built in JavaScript API for dates and times. It has clear types for calendar dates, times with a zone and exact moments.',
+            ],
+            [
+                'Why not use the Date object?',
+                'Date mixes local and UTC time, months start at zero and time zone math is easy to get wrong. Temporal handles those cases correctly.',
+            ],
+            [
+                'What is 31 January plus one month?',
+                'Temporal gives 28 February, or 29 in a leap year, instead of spilling into March.',
             ],
         ],
     ],

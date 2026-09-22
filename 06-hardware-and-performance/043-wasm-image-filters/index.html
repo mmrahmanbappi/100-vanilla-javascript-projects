@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WebAssembly Tutorial: Image Filters in WAT vs JavaScript (Speed Test)</title>
+<meta name="description" content="Free WebAssembly image filters in plain JavaScript. Grayscale, sepia, invert and brightness in a 491 byte hand written WASM module, with a speed race against JS.">
+<meta name="keywords" content="webassembly tutorial, wat webassembly, wasm image processing, wasm vs javascript, webassembly example">
+<meta name="author" content="mmrahmanbappi">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vanilla JavaScript Projects">
+<meta property="og:title" content="WebAssembly Tutorial: Image Filters in WAT vs JavaScript (Speed Test)">
+<meta property="og:description" content="Free WebAssembly image filters in plain JavaScript. Grayscale, sepia, invert and brightness in a 491 byte hand written WASM module, with a speed race against JS.">
+<meta property="og:url" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WebAssembly Tutorial: Image Filters in WAT vs JavaScript (Speed Test)">
+<meta name="twitter:description" content="Free WebAssembly image filters in plain JavaScript. Grayscale, sepia, invert and brightness in a 491 byte hand written WASM module, with a speed race against JS.">
+<meta name="twitter:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/preview.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317191f'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'%3EJS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#fbfbf8;--ink:#17191f;--muted:#5a5f6b;--line:#e4e3dc;--blue:#2445d6;--card:#fff}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Instrument Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:17px}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.bar{border-bottom:1px solid var(--line);background:#fff}
+.bar div{max-width:1120px;margin:0 auto;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.bar a.logo{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);text-decoration:none}
+.bar nav a{margin-left:18px;color:var(--ink);font-weight:600;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.crumbs{font-size:.9rem;color:var(--muted);padding:22px 0 0}
+.crumbs a{color:var(--muted)}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin:14px 0 14px;max-width:22ch}
+h2{font-size:1.6rem;margin:0 0 14px}
+h3{font-size:1.15rem}
+.lead{font-size:1.15rem;color:var(--muted);max-width:62ch}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:#fff}
+.btn.main{background:var(--ink);color:#fff}
+.shot{display:block;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 50px rgba(20,20,40,.12)}
+.shot img{display:block;width:100%;height:auto}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:50px;padding:60px 0}
+.cols p{margin-bottom:14px;max-width:65ch}
+ul.list{padding-left:20px}
+ul.list li{margin-bottom:6px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.code{position:relative;margin:0 0 60px}
+pre{background:#1d2030;color:#e8eaf3;border-radius:14px;padding:24px;overflow-x:auto;font-size:.9rem;line-height:1.6}
+.copy{position:absolute;top:12px;right:12px;font:inherit;font-size:.85rem;font-weight:700;border:0;border-radius:8px;padding:6px 12px;background:#fff;color:var(--ink);cursor:pointer}
+ol.steps{padding-left:22px;max-width:65ch;margin-bottom:60px}
+ol.steps li{margin-bottom:8px}
+details{border-top:1px solid var(--line);padding:16px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{font-weight:700;cursor:pointer;font-size:1.05rem}
+details p{margin-top:10px;color:var(--muted);max-width:70ch}
+.faq{margin-bottom:60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;margin:26px 0 60px}
+.tile{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tile img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+.tile div{padding:14px 16px}
+.tile small{color:var(--muted)}
+.tile:hover{border-color:var(--ink)}
+.cat{margin:50px 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.soon{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:20px 0 70px}
+.soon div{border:1px dashed #c9c7bd;border-radius:12px;padding:18px;color:var(--muted)}
+.soon b{color:var(--ink);display:block}
+.pager{display:flex;justify-content:space-between;gap:16px;margin:0 0 60px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;color:var(--muted);font-size:.95rem}
+@media(max-width:820px){.cols{grid-template-columns:1fr;gap:30px;padding:40px 0}.bar nav a:first-child{display:none}}
+.support{font-size:.95rem;color:var(--muted);margin-top:14px}
+.how{padding-left:22px;max-width:65ch;margin-bottom:40px}.how li{margin-bottom:10px}.how b{display:block}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/","name":"WebAssembly Tutorial: Image Filters in WAT vs JavaScript (Speed Test)","description":"Free WebAssembly image filters in plain JavaScript. Grayscale, sepia, invert and brightness in a 491 byte hand written WASM module, with a speed race against JS.","isPartOf":{"@type":"WebSite","name":"Vanilla JavaScript Projects","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/preview.png","width":1280,"height":800},"datePublished":"2026-09-23","dateModified":"2026-09-23","inLanguage":"en"},{"@type":"SoftwareSourceCode","name":"WebAssembly Image Filters in Vanilla JavaScript","description":"Free WebAssembly image filters in plain JavaScript. Grayscale, sepia, invert and brightness in a 491 byte hand written WASM module, with a speed race against JS.","image":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/preview.png","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/","codeRepository":"https://github.com/mmrahmanbappi/vanilla-javascript-projects","programmingLanguage":["JavaScript","HTML","CSS"],"runtimePlatform":"Web browser","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"keywords":"webassembly tutorial, wat webassembly, wasm image processing, wasm vs javascript, webassembly example","author":{"@type":"Person","name":"mmrahmanbappi","url":"https://github.com/mmrahmanbappi"}},{"@type":"SoftwareApplication","name":"WebAssembly Image Filters","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/demo.html","applicationCategory":"DeveloperApplication","operatingSystem":"Any modern web browser","image":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/preview.png","description":"Free WebAssembly image filters in plain JavaScript. Grayscale, sepia, invert and brightness in a 491 byte hand written WASM module, with a speed race against JS.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},{"@type":"ListItem","position":2,"name":"Hardware and Performance","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/"},{"@type":"ListItem","position":3,"name":"WebAssembly Image Filters","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is WebAssembly always faster than JavaScript?","acceptedAnswer":{"@type":"Answer","text":"No. For simple loops like these, modern JavaScript is close. WebAssembly wins on heavier math and gives steadier timing."}},{"@type":"Question","name":"What is WAT?","acceptedAnswer":{"@type":"Answer","text":"WebAssembly Text format, the human readable version of WebAssembly. A tool like wat2wasm turns it into the binary file."}},{"@type":"Question","name":"Can I use WebAssembly from other languages?","acceptedAnswer":{"@type":"Answer","text":"Yes. Rust, C, C++ and Go all compile to WebAssembly. Writing WAT by hand shows what they produce."}}]}]}</script>
+</head>
+<body>
+<header class="bar"><div><a class="logo" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Vanilla JavaScript Projects</a><nav><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/#categories">Categories</a><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">GitHub</a></nav></div></header>
+<main class="wrap">
+<p class="crumbs"><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Home</a> / <a href="../">Hardware and Performance</a> / WebAssembly Image Filters</p>
+<h1>WebAssembly Image Filters in JavaScript, Free with Live Demo</h1>
+<p class="lead">Free WebAssembly image filters in plain JavaScript. Grayscale, sepia, invert and brightness in a 491 byte hand written WASM module, with a speed race against JS.</p>
+<div class="actions"><a class="btn main" href="demo.html">Open live demo</a><a class="btn" href="demo.html" download="wasm-image-filters.html">Download HTML file</a><a class="btn" href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/06-hardware-and-performance/043-wasm-image-filters">View code on GitHub</a></div>
+<a class="shot" href="demo.html"><img src="preview.png" alt="WebAssembly Image Filters JavaScript project: photo filters in hand written WebAssembly, raced against JavaScript" width="1280" height="800"></a>
+<p class="support">Runs on: WebAssembly. Every modern browser.</p>
+<section class="cols"><div><h2>What is the WebAssembly Image Filters?</h2><p>Four photo filters written by hand in WebAssembly text format and compiled to just 491 bytes. Apply them to a photo, then race the same filters written in plain JavaScript to see which is faster.</p><p>The photo&#039;s pixels are copied into WebAssembly memory, the exported function changes them in place with integer math, and the result is copied back to the canvas. The readable filters.wat source is in the folder.</p></div>
+<div class="box"><h3>Good for</h3><ul class="list"><li>Learning WebAssembly from the ground up</li><li>Image and audio processing</li><li>Performance experiments</li><li>Understanding linear memory</li></ul></div></section>
+<section><h2>What this project does</h2><ul class="list" style="margin-bottom:40px"><li>Grayscale, sepia, invert and brightness with contrast</li><li>The same filters written in JavaScript for a fair race</li><li>Timing for both, with a bar chart over repeated runs</li><li>Works on your own photos of any size (memory grows as needed)</li><li>The .wat source is included and readable</li></ul></section>
+<section><h2>How it works</h2><ol class="how"><li><b>Copy pixels in</b>The photo&#039;s RGBA bytes are copied into the WebAssembly memory. Memory grows in 64 KB pages to fit.</li><li><b>Run the filter</b>The exported function loops over every pixel in place, using only integer math.</li><li><b>Copy pixels out</b>The page reads the bytes back from the same memory and paints them on the canvas.</li></ol></section>
+<section><h2>The key JavaScript</h2><p style="margin-bottom:14px">This is the heart of the project. The full file has the rest, including the screen layout and error handling.</p>
+<div class="code"><button class="copy" type="button">Copy code</button><pre><code>const bytes = Uint8Array.from(atob(WASM_BASE64), (c) =&gt; c.charCodeAt(0));
+const { instance } = await WebAssembly.instantiate(bytes);
+const { memory, grayscale } = instance.exports;
+
+const img = ctx.getImageData(0, 0, w, h);
+const need = Math.ceil(img.data.length / 65536) - memory.buffer.byteLength / 65536;
+if (need &gt; 0) memory.grow(need);                           // 64 KB pages
+
+new Uint8Array(memory.buffer).set(img.data);                // copy in
+grayscale(img.data.length);                                 // run in place
+img.data.set(new Uint8Array(memory.buffer, 0, img.data.length));  // copy out
+ctx.putImageData(img, 0, 0);</code></pre></div></section>
+<section><h2>How to use it</h2><ol class="steps"><li>Click Download HTML file above.</li><li>Open the file in a code editor, like VS Code.</li><li>Run it from a local server with <code>npx serve .</code> so the camera, microphone and AI features are allowed.</li><li>Change the text and colors, then upload it to GitHub Pages, Netlify or your own site. It is one file with no build step.</li></ol></section>
+<section class="faq"><h2>Questions people ask</h2><details><summary>Is WebAssembly always faster than JavaScript?</summary><p>No. For simple loops like these, modern JavaScript is close. WebAssembly wins on heavier math and gives steadier timing.</p></details><details><summary>What is WAT?</summary><p>WebAssembly Text format, the human readable version of WebAssembly. A tool like wat2wasm turns it into the binary file.</p></details><details><summary>Can I use WebAssembly from other languages?</summary><p>Yes. Rust, C, C++ and Go all compile to WebAssembly. Writing WAT by hand shows what they produce.</p></details></section>
+<nav class="pager" aria-label="More projects"><a href="../042-serial-monitor/">Previous: Arduino Serial Monitor</a><a href="../044-performance-monitor/">Next: Performance Monitor Widget</a></nav>
+<section><h2>More Hardware and Performance projects</h2><div class="grid"><a class="tile" href="../041-bluetooth-dashboard/"><img src="../041-bluetooth-dashboard/preview.png" alt="Bluetooth Device Dashboard JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>041. Bluetooth Device Dashboard</h3><small>Read live heart rate and battery from a Bluetooth device</small></div></a><a class="tile" href="../042-serial-monitor/"><img src="../042-serial-monitor/preview.png" alt="Arduino Serial Monitor JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>042. Arduino Serial Monitor</h3><small>Read and plot data from an Arduino or ESP32 over USB</small></div></a><a class="tile" href="../044-performance-monitor/"><img src="../044-performance-monitor/preview.png" alt="Performance Monitor Widget JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>044. Performance Monitor Widget</h3><small>A live panel for Core Web Vitals on any page</small></div></a><a class="tile" href="../045-file-compressor/"><img src="../045-file-compressor/preview.png" alt="Browser File Compressor JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>045. Browser File Compressor</h3><small>Gzip any file or unpack a .gz right in the browser</small></div></a><a class="tile" href="../046-scheduler-api-demo/"><img src="../046-scheduler-api-demo/preview.png" alt="Scheduler API Demo JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>046. Scheduler API Demo</h3><small>See why long tasks freeze a page and how to fix it</small></div></a></div></section>
+</main>
+<footer>Free under the MIT license. Made by <a href="https://github.com/mmrahmanbappi">mmrahmanbappi</a>. <a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">Star the repo on GitHub</a> to help more people find these projects.</footer>
+<script>document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.nextElementSibling.innerText).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy code',1500)})})</script>
+</body>
+</html>

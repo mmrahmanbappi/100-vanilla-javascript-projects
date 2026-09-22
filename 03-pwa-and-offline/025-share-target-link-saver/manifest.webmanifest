@@ -1,0 +1,3 @@
+{ "name": "Link Saver", "short_name": "Links", "start_url": "./demo.html", "scope": "./", "display": "standalone", "background_color": "#EEF1F4", "theme_color": "#0CA678",
+  "share_target": { "action": "./demo.html", "method": "GET", "params": { "title": "title", "text": "text", "url": "url" } },
+  "icons": [{ "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230CA678'/%3E%3Cpath d='M42 58l16-16M36 50l-6 6a9 9 0 0 0 13 13l6-6M64 50l6-6a9 9 0 0 0-13-13l-6 6' stroke='white' stroke-width='7' fill='none' stroke-linecap='round'/%3E%3C/svg%3E", "sizes": "any", "type": "image/svg+xml" }] }

@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Regex Tester Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Write a regular expression and see every match highlighted live, with capture groups and named groups in a table, flags as toggles, a replace preview, a plain-English explanation, a cheat sheet and ready-made patterns. Free source.">
+<meta name="keywords" content="regex tester javascript, regular expression online, regex highlight matches, named capture groups, regex replace preview, regex cheat sheet">
+<meta property="og:title" content="JavaScript Regex Tester with Live Highlighting, Groups, Replace Preview and Cheat Sheet">
+<meta property="og:description" content="Write a regular expression and see every match highlighted live, with capture groups and named groups in a table, flags as toggles, a replace preview, a plain-English explanation, a cheat sheet and ready-made patterns. Free source.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/048-regex-tester/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/048-regex-tester/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#C2255C">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23C2255C'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Regex Tester", "description": "Write a regular expression and see every match highlighted live, with capture groups and named groups in a table, flags as toggles, a replace preview, a plain-English explanation, a cheat sheet and ready-made patterns. Free source.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "regex tester javascript, regular expression online, regex highlight matches, named capture groups, regex replace preview, regex cheat sheet"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+:root{--accent:#C2255C}
+.pat{display:flex;align-items:center;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--panel);font:16px var(--code)}
+.pat span{padding:0 10px;color:var(--muted)}.pat input{border:0;font:16px var(--code);padding:12px 4px}.pat input:focus{outline:0}
+.pat:focus-within{outline:3px solid var(--accent);outline-offset:1px}
+.flags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.flags button{font:700 13px var(--code);min-height:32px;padding:4px 10px}.flags button[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.hl{position:relative;font:14px/1.7 var(--code)}
+.hl textarea,.hl .back{font:inherit;padding:12px;margin:0;border:1px solid var(--line);border-radius:var(--r-sm);white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;box-sizing:border-box;width:100%;height:220px;overflow:auto}
+.hl .back{position:absolute;inset:0;color:transparent;pointer-events:none;border-color:transparent;background:transparent}
+.hl textarea{background:transparent;position:relative;resize:vertical}
+.hl mark{color:transparent;background:color-mix(in srgb,var(--accent) 30%,transparent);border-radius:3px}.hl mark.alt{background:color-mix(in srgb,#1971C2 30%,transparent)}
+.msg{font-size:14px;margin:8px 0;min-height:22px}.msg.err{color:var(--err);font-weight:700}
+.mt{width:100%;border-collapse:collapse;font:13px var(--code)}.mt th,.mt td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}.mt th{font-family:var(--body);color:var(--muted)}
+.tw{max-height:220px;overflow:auto}
+.lib{display:flex;gap:6px;flex-wrap:wrap}.lib button{font-size:13px;min-height:32px;padding:4px 10px}
+.cheat{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px}.cheat code{font-family:var(--code);color:var(--accent);font-weight:700}
+.explain{list-style:none;padding:0;margin:0;font-size:14px}.explain li{padding:4px 0;border-bottom:1px dashed var(--line)}.explain code{font-family:var(--code);color:var(--accent);font-weight:700;margin-right:8px}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="7" fill="var(--ink)"/><path d="M10 21V11h5.5a3 3 0 0 1 0 6H10m5.5 0 4.5 4" stroke="var(--paper)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="10" r="2.6" fill="var(--accent)"/></svg>Vanilla JS Projects</a>
+  <nav><span>Project 48 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 48, Developer tools</p>
+    <h1>Regex Tester</h1>
+    <p class="lede">Type a pattern and watch matches light up in your text. Groups, replacements and a plain-English explanation update as you type.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A magnifying glass over highlighted text">
+  <g fill="var(--line)"><rect x="20" y="60" width="200" height="12" rx="6"/><rect x="20" y="96" width="240" height="12" rx="6"/><rect x="20" y="132" width="170" height="12" rx="6"/><rect x="20" y="168" width="220" height="12" rx="6"/></g>
+  <g fill="var(--accent)" opacity=".6"><rect x="70" y="92" width="70" height="20" rx="4"/><rect x="40" y="164" width="60" height="20" rx="4"/></g>
+  <circle cx="220" cy="110" r="46" fill="none" stroke="var(--ink)" stroke-width="10"/><path d="M252 142l40 40" stroke="var(--ink)" stroke-width="14" stroke-linecap="round"/>
+  <text x="220" y="118" text-anchor="middle" font-family="var(--code)" font-weight="700" font-size="22" fill="var(--accent)">/\d+/</text>
+</svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Engine</dt><dd>JavaScript RegExp</dd></div><div><dt>Flags</dt><dd>g i m s u y d v</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <div class="grid2">
+    <div>
+      <h2 id="w-title">Pattern</h2>
+      <div class="pat"><span>/</span><label class="sr-only" for="re">Regular expression</label><input type="text" id="re" spellcheck="false" autocomplete="off"><span id="fl">/g</span></div>
+      <div class="flags" id="flags"></div>
+      <div class="msg" id="msg" aria-live="polite"></div>
+      <label class="field" for="txt">Test text</label>
+      <div class="hl"><div class="back" id="back" aria-hidden="true"></div><textarea id="txt" spellcheck="false"></textarea></div>
+      <label class="field" for="rep" style="margin-top:12px">Replace with</label><input type="text" id="rep" value="[$&]" style="font-family:var(--code)">
+      <pre id="repout" style="white-space:pre-wrap;max-height:140px;margin-top:8px"></pre>
+    </div>
+    <div>
+      <h2>Matches</h2><div class="tw"><table class="mt" id="mt"></table></div>
+      <h3 style="font:700 16px var(--display);margin:16px 0 6px">What your pattern means</h3><ul class="explain" id="explain"></ul>
+      <h3 style="font:700 16px var(--display);margin:16px 0 6px">Common patterns</h3><div class="lib" id="lib"></div>
+      <details style="margin-top:14px"><summary><b>Cheat sheet</b></summary><div class="cheat" id="cheat" style="margin-top:8px"></div></details>
+    </div>
+  </div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Build the RegExp</strong><span>The pattern and flags make a new RegExp. A syntax error is shown instead of crashing.</span></li><li><strong>Find matches safely</strong><span>matchAll runs inside a Worker. If a pattern takes more than a second, the worker is stopped so the page never hangs.</span></li><li><strong>Show results</strong><span>Match positions become highlighted spans. Groups fill the table and the replace preview runs on the same text.</span></li></ol></div>
+  <pre><code><span class="k">const</span> re = <span class="k">new</span> RegExp(pattern, &quot;gd&quot;);            <span class="c">// d = give match indices</span>
+<span class="k">for</span> (<span class="k">const</span> m <span class="k">of</span> text.matchAll(re)) {
+  console.log(m[0], m.index, m.groups);           <span class="c">// full match, where, named groups</span>
+  console.log(m.indices[1]);                      <span class="c">// start and end <span class="k">of</span> group 1</span>
+}
+<span class="c">// Stop runaway patterns like /(a+)+$/ <span class="k">from</span> freezing the page</span>
+<span class="k">const</span> w = <span class="k">new</span> Worker(url); w.postMessage({ pattern, flags, text });
+<span class="k">const</span> t = setTimeout(() =&gt; { w.terminate(); showError(&quot;Too slow, stopped&quot;); }, 1000);</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Regex Tester. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/07-developer-tools/048-regex-tester">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+const FLAGS = [["g", "global"], ["i", "ignore case"], ["m", "multiline"], ["s", "dot all"], ["u", "unicode"], ["y", "sticky"], ["d", "indices"], ["v", "sets"]];
+const LIB = { Email: "[\\w.+-]+@[\\w-]+\\.[\\w.]+", URL: "https?:\\/\\/[^\\s/$.?#].[^\\s]*", "Phone (BD)": "(?:\\+?880|0)1[3-9]\\d{8}", Date: "(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})", "Hex color": "#(?:[0-9a-fA-F]{3}){1,2}\\b", IPv4: "\\b(?:(?:25[0-5]|2[0-4]\\d|1?\\d?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|1?\\d?\\d)\\b", Hashtag: "#[\\p{L}\\d_]+", "Strong password": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$", Price: "\\$\\d+(?:\\.\\d{2})?", Words: "\\b\\w+\\b" };
+const LIB_FLAGS = { Hashtag: "gu", "Strong password": "gm" };
+const CHEAT = [[".", "any character except new line"], ["\\d \\w \\s", "digit, word character, whitespace"], ["\\D \\W \\S", "not digit, not word, not whitespace"], ["[abc] [^abc]", "one of a, b, c / anything else"], ["a* a+ a?", "0 or more, 1 or more, 0 or 1"], ["a{3} a{2,5}", "exactly 3, between 2 and 5"], ["^ $", "start and end of text (or line with m)"], ["\\b", "word boundary"], ["(abc)", "capture group"], ["(?<name>abc)", "named group"], ["(?:abc)", "group without capturing"], ["a|b", "a or b"], ["(?=a) (?!a)", "followed by a / not followed by a"], ["(?<=a) (?<!a)", "after a / not after a"], ["\\p{L}", "any letter in any language (u flag)"]];
+let flags = new Set(["g", "d"]), worker = null, timer = null;
+const WSRC = `onmessage=(e)=>{const{p,f,t}=e.data;try{const re=new RegExp(p,f.includes("g")?f:f+"g");const out=[];for(const m of t.matchAll(re)){out.push({i:m.index,s:m[0],g:[...m].slice(1),n:m.groups||null,x:m.indices?[...m.indices].slice(1):null});if(!m[0].length&&out.length>5000)break;if(out.length>5000)break}postMessage({ok:1,out})}catch(err){postMessage({ok:0,m:err.message})}}`;
+const wurl = URL.createObjectURL(new Blob([WSRC], { type: "text/javascript" }));
+support(true, "Supported");
+$("#flags").innerHTML = FLAGS.map(([f, n]) => `<button class="btn" data-f="${f}" aria-pressed="${flags.has(f)}" title="${n}" type="button">${f} ${n}</button>`).join("");
+$("#lib").innerHTML = Object.keys(LIB).map((k) => `<button class="btn" data-k="${k}" type="button">${k}</button>`).join("");
+$("#cheat").innerHTML = CHEAT.map(([a, b]) => `<code>${esc(a)}</code><span>${b}</span>`).join("");
+function explain(p) {
+  const out = [], rules = [[/^\(\?<(\w+)>/, (m) => `start of a named group "${m[1]}"`], [/^\(\?:/, () => "start of a group that does not capture"], [/^\(\?=/, () => "look ahead: must be followed by"], [/^\(\?!/, () => "look ahead: must not be followed by"], [/^\(\?<=/, () => "look behind: must come after"], [/^\(\?<!/, () => "look behind: must not come after"], [/^\(/, () => "start of capture group"], [/^\)/, () => "end of group"],
+    [/^\[\^?(?:\\.|[^\]])*\]/, (m) => (m[0][1] === "^" ? "one character not in " : "one character from ") + m[0]], [/^\\d/, () => "a digit 0 to 9"], [/^\\w/, () => "a letter, digit or underscore"], [/^\\s/, () => "a whitespace character"], [/^\\b/, () => "a word boundary"], [/^\\p\{\w+\}/, (m) => "any character in Unicode class " + m[0].slice(3, -1)], [/^\\./, (m) => `the character ${m[0][1]}`],
+    [/^\{(\d+)(,(\d*))?\}\??/, (m) => (m[2] ? (m[3] ? `repeat ${m[1]} to ${m[3]} times` : `repeat ${m[1]} or more times`) : `repeat exactly ${m[1]} times`)], [/^\*\??/, () => "repeat 0 or more times"], [/^\+\??/, () => "repeat 1 or more times"], [/^\?/, () => "optional (0 or 1 time)"], [/^\^/, () => "start of text or line"], [/^\$/, () => "end of text or line"], [/^\|/, () => "or"], [/^\./, () => "any character"], [/^[^\\()[\]{}*+?|^$.]+/, (m) => `the text "${m[0]}"`]];
+  let s = p, guard = 0; while (s && guard++ < 80) { const r = rules.find(([re]) => re.test(s)); if (!r) { s = s.slice(1); continue; } const m = s.match(r[0]); out.push([m[0], r[1](m)]); s = s.slice(m[0].length); }
+  $("#explain").innerHTML = out.map(([t, d]) => `<li><code>${esc(t)}</code>${esc(d)}</li>`).join("") + (guard >= 80 ? "<li class='muted'>…</li>" : "");
+}
+function run() {
+  const p = $("#re").value, f = [...flags].join(""), t = $("#txt").value; $("#fl").textContent = "/" + f; explain(p);
+  try { new RegExp(p, f); } catch (e) { $("#msg").className = "msg err"; $("#msg").textContent = e.message; $("#back").innerHTML = esc(t); $("#mt").innerHTML = ""; return; }
+  worker?.terminate(); worker = new Worker(wurl); clearTimeout(timer);
+  timer = setTimeout(() => { worker.terminate(); $("#msg").className = "msg err"; $("#msg").textContent = "Stopped: this pattern took over 1 second (catastrophic backtracking?)"; }, 1000);
+  worker.onmessage = ({ data }) => { clearTimeout(timer); if (!data.ok) return;
+    const ms = flags.has("g") ? data.out : data.out.slice(0, 1); $("#msg").className = "msg"; $("#msg").textContent = `${ms.length} match${ms.length === 1 ? "" : "es"}${data.out.length > 5000 ? " (showing the first 5000)" : ""}`;
+    let html = "", last = 0; ms.forEach((m, k) => { if (!m.s.length) return; html += esc(t.slice(last, m.i)) + `<mark class="${k % 2 ? "alt" : ""}">${esc(m.s)}</mark>`; last = m.i + m.s.length; }); $("#back").innerHTML = html + esc(t.slice(last)) + "\n";
+    const gn = ms[0]?.n ? Object.keys(ms[0].n) : [];
+    $("#mt").innerHTML = ms.length ? `<tr><th>#</th><th>Match</th><th>At</th>${ms[0].g.map((_, i) => `<th>$${i + 1}${gn[i] ? " " + esc(gn[i]) : ""}</th>`).join("")}</tr>` + ms.slice(0, 200).map((m, i) => `<tr><td>${i + 1}</td><td>${esc(m.s)}</td><td>${m.i}</td>${m.g.map((g, j) => `<td>${g == null ? '<span class="muted">none</span>' : esc(g)}${m.x?.[j] ? `<br><span class="muted">${m.x[j].join("–")}</span>` : ""}</td>`).join("")}</tr>`).join("") : "<tr><td class='muted'>No matches</td></tr>";
+    try { $("#repout").textContent = t.replace(new RegExp(p, f), $("#rep").value); } catch {} };
+  worker.postMessage({ p, f, t });
+}
+$("#flags").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; const f = b.dataset.f; flags.has(f) ? flags.delete(f) : flags.add(f); if (f === "u" && flags.has("u")) flags.delete("v"); if (f === "v" && flags.has("v")) flags.delete("u"); $$("#flags button").forEach((x) => x.setAttribute("aria-pressed", flags.has(x.dataset.f))); run(); };
+$("#lib").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; $("#re").value = LIB[b.dataset.k]; flags = new Set((LIB_FLAGS[b.dataset.k] || "g") + "d"); $$("#flags button").forEach((x) => x.setAttribute("aria-pressed", flags.has(x.dataset.f))); run(); };
+["re", "txt", "rep"].forEach((id) => $("#" + id).addEventListener("input", () => { clearTimeout(run.t); run.t = setTimeout(run, 120); }));
+$("#txt").onscroll = () => ($("#back").scrollTop = $("#txt").scrollTop);
+$("#txt").value = `Order 2026-09-23 from rafi@example.com, total $49.99.\nShip to Dhaka, call +8801712345678.\nBackup contact: mina.k+shop@mail.co, visit https://vanilla-js-lab.dev/projects?id=48\nColors: #C2255C and #fff. Server 192.168.1.20 replied on 2026-09-24.`;
+$("#re").value = LIB.Date; run();
+</script>
+</body>
+</html>

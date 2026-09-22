@@ -106,7 +106,7 @@ function head($title, $desc, $url, $image, $keywords, $schema) {
 
 function foot() {
     global $SITE;
-    return "<footer>Free under the MIT license. Made by <a href=\"{$SITE['author_url']}\">{$SITE['author']}</a>. <a href=\"{$SITE['repo']}\">Star the repo on GitHub</a> to get new projects.</footer>
+    return "<footer>Free under the MIT license. Made by <a href=\"{$SITE['author_url']}\">{$SITE['author']}</a>. <a href=\"{$SITE['repo']}\">Star the repo on GitHub</a> to help more people find these projects.</footer>
 <script>document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.nextElementSibling.innerText).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy code',1500)})})</script>
 </body>
 </html>";
@@ -274,13 +274,13 @@ function home() {
     global $SITE, $B, $CATEGORIES, $PROJECTS;
     $live = count($PROJECTS);
     $title = '50 Free Vanilla JavaScript Projects with Live Demos and Source Code';
-    $desc = "$live free vanilla JavaScript projects live now, growing to 50. Local AI chatbot, speech to text, background remover, QR scanner and more, each with a live demo.";
+    $desc = "$live free vanilla JavaScript projects with live demos and source code: local AI chatbot, WebRTC video call, passkeys, PWA, WebGPU, JSON formatter and more.";
     $img = purl($PROJECTS[0]) . 'preview.png';
     $faq = [
         ['Are these JavaScript projects really free?', 'Yes. Every project is released under the MIT license. You can use them for learning, client work and paid products. Some AI models have their own license, and the project page says so when that matters.'],
         ['Do I need React or a framework?', 'No. Each project is one HTML file with plain JavaScript and CSS inside. There is no build step and no npm install. Serve the folder and open it in a browser.'],
         ['Are these good projects for a portfolio?', 'Yes. Each one uses a newer browser feature, like WebGPU, WebCodecs or passkeys, that many developers have not tried yet. That makes them stand out more than another to do list.'],
-        ['How often are new projects added?', 'New projects are added in batches of ten until all 50 are live. Star the GitHub repo to see them as they arrive.'],
+        ['What do I need to run them?', 'A modern browser and a local server, like npx serve . or python -m http.server. A few projects also need a camera, a microphone, a Bluetooth device or a recent version of Chrome, and each project page says so.'],
     ];
     $schema = ['@context' => 'https://schema.org', '@graph' => [
         ['@type' => 'WebSite', '@id' => $B . '#site', 'url' => $B, 'name' => $SITE['name'], 'description' => $desc, 'inLanguage' => 'en',
@@ -301,10 +301,10 @@ function home() {
     }
     $body = "<main class=\"wrap\">
 <h1 style=\"margin-top:50px\">50 free JavaScript projects you can open, learn from and use</h1>
-<p class=\"lead\">$live projects are live, with more added in batches. Every one is plain JavaScript in a single HTML file, built around a browser feature worth knowing in 2026: AI that runs on your own device, WebGPU, WebRTC, passkeys, offline apps and more. Open the demo, read the code, then make it yours.</p>
+<p class=\"lead\">All $live projects are live, sorted into 7 categories. Every one is plain JavaScript in a single HTML file, built around a browser feature worth knowing in 2026: AI that runs on your own device, WebGPU, WebRTC, passkeys, offline apps and more. Open the demo, read the code, then make it yours.</p>
 <div class=\"actions\"><a class=\"btn main\" href=\"#categories\">Browse the projects</a><a class=\"btn\" href=\"{$SITE['repo']}/archive/refs/heads/main.zip\">Download everything (ZIP)</a><a class=\"btn\" href=\"{$SITE['repo']}\">Star on GitHub</a></div>
 <section id=\"categories\">$sections
-<h2 style=\"margin-top:30px\">More categories on the way</h2><div class=\"soon\">$soon</div></section>
+" . ($soon ? "<h2 style=\"margin-top:30px\">More categories on the way</h2><div class=\"soon\">$soon</div>" : "") . "</section>
 <section class=\"faq\"><h2>Questions people ask</h2>" . faq_html($faq) . "</section>
 </main>
 ";
@@ -342,7 +342,7 @@ $cats
 
 ## License
 
-MIT. Use these projects in personal and commercial work. Project 007 uses the RMBG 1.4 model, which is for non-commercial use only. A star on the repo helps more people find them.
+MIT. Use these projects in personal and commercial work. Project 007 uses the RMBG 1.4 model, which is for non-commercial use only. Projects 035 and 039 include a small `server.js` for syncing across devices. A star on the repo helps more people find them.
 ");
 }
 

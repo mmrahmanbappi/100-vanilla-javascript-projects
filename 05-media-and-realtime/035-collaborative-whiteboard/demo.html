@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Collaborative Whiteboard Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Draw together in real time on a shared canvas: pen, highlighter, shapes, eraser, undo and redo, with live cursors for every person. Syncs between tabs instantly and between devices with a tiny WebSocket server. Free source.">
+<meta name="keywords" content="collaborative whiteboard javascript, canvas drawing app, real time drawing websocket, live cursors, broadcastchannel, pointer events">
+<meta property="og:title" content="Real-time Collaborative Whiteboard with Canvas, Live Cursors and WebSocket (Vanilla JS)">
+<meta property="og:description" content="Draw together in real time on a shared canvas: pen, highlighter, shapes, eraser, undo and redo, with live cursors for every person. Syncs between tabs instantly and between devices with a tiny WebSocket server. Free source.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/035-collaborative-whiteboard/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/035-collaborative-whiteboard/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F76707">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23F76707'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Collaborative Whiteboard", "description": "Draw together in real time on a shared canvas: pen, highlighter, shapes, eraser, undo and redo, with live cursors for every person. Syncs between tabs instantly and between devices with a tiny WebSocket server. Free source.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "collaborative whiteboard javascript, canvas drawing app, real time drawing websocket, live cursors, broadcastchannel, pointer events"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+:root{--accent:#F76707}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.tools .tool[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tools .sw{width:28px;height:28px;border-radius:50%;border:3px solid transparent;cursor:pointer;padding:0}.tools .sw[aria-pressed=true]{border-color:var(--ink);outline:2px solid var(--panel);outline-offset:-5px}
+.board{position:relative;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;background:#fff;height:520px;touch-action:none}
+.board canvas{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair}
+.cursor{position:absolute;pointer-events:none;transition:transform .08s linear;z-index:2}
+.cursor span{position:absolute;left:14px;top:14px;color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.conn{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px;font-size:14px}
+.conn input{max-width:280px}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="7" fill="var(--ink)"/><path d="M10 21V11h5.5a3 3 0 0 1 0 6H10m5.5 0 4.5 4" stroke="var(--paper)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="10" r="2.6" fill="var(--accent)"/></svg>Vanilla JS Projects</a>
+  <nav><span>Project 35 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 35, Media and real-time</p>
+    <h1>Collaborative Whiteboard</h1>
+    <p class="lede">Sketch, write and draw shapes on a shared board. Open a second tab and everything you draw appears there at once, with a named cursor for each person.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A whiteboard with scribbles and two named cursors">
+  <rect x="14" y="20" width="292" height="200" rx="14" fill="var(--panel)" stroke="var(--line)" stroke-width="3"/>
+  <path d="M40 150c30-60 60-60 80-10s50 30 70-40" stroke="var(--accent)" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <rect x="200" y="120" width="80" height="60" rx="4" fill="none" stroke="#1971C2" stroke-width="5"/>
+  <circle cx="90" cy="70" r="24" fill="none" stroke="#2B8A3E" stroke-width="5"/>
+  <path d="M190 72l0 26 8-8 10 6z" fill="#1971C2"/><rect x="208" y="90" width="44" height="18" rx="9" fill="#1971C2"/><text x="230" y="103" text-anchor="middle" font-size="11" fill="#fff" font-family="var(--body)" font-weight="700">Mina</text>
+  <path d="M130 170l0 26 8-8 10 6z" fill="var(--accent)"/><rect x="148" y="188" width="40" height="18" rx="9" fill="var(--accent)"/><text x="168" y="201" text-anchor="middle" font-size="11" fill="#fff" font-family="var(--body)" font-weight="700">You</text>
+  <rect x="120" y="226" width="80" height="14" rx="7" fill="var(--ink)"/>
+</svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Drawing</dt><dd>Canvas 2D, Pointer Events</dd></div><div><dt>Sync</dt><dd>BroadcastChannel or WebSocket</dd></div><div><dt>Files</dt><dd>index.html, server.js</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <div class="row" style="justify-content:space-between;margin-bottom:10px"><h2 id="w-title" style="margin:0">Shared board</h2><span class="small muted" id="people"></span></div>
+  <div class="tools" role="toolbar" aria-label="Drawing tools">
+    <button class="btn tool" data-t="pen" aria-pressed="true" type="button">Pen</button><button class="btn tool" data-t="hl" aria-pressed="false" type="button">Highlighter</button><button class="btn tool" data-t="line" aria-pressed="false" type="button">Line</button><button class="btn tool" data-t="rect" aria-pressed="false" type="button">Box</button><button class="btn tool" data-t="ellipse" aria-pressed="false" type="button">Circle</button><button class="btn tool" data-t="eraser" aria-pressed="false" type="button">Eraser</button>
+    <span id="swatches" class="row" style="gap:6px"></span>
+    <label class="small">Size <input type="range" id="size" min="2" max="30" value="5" style="width:90px"></label>
+    <button class="btn" id="undo" type="button">Undo</button><button class="btn" id="redo" type="button">Redo</button><button class="btn" id="clear" type="button">Clear</button><button class="btn" id="png" type="button">Save PNG</button>
+  </div>
+  <div class="board" id="board"><canvas id="c"></canvas></div>
+  <div class="conn"><label>Your name <input type="text" id="name" style="width:140px;padding:6px 10px"></label><button class="btn" id="tab" type="button">Open another tab</button>
+    <label class="sr-only" for="ws">WebSocket server</label><input type="text" id="ws" placeholder="ws://localhost:8787 (optional)"><button class="btn" id="wsb" type="button">Connect server</button><span class="pill" id="wss" data-state="idle">Tabs only</span></div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Capture strokes</strong><span>Pointer events are collected into a stroke: tool, color, width and a list of points with pressure.</span></li><li><strong>Share strokes</strong><span>Each new point is sent to the others as a small message, so they see the line as it is being drawn.</span></li><li><strong>Redraw from data</strong><span>The board is a list of strokes. Undo removes one and the canvas is redrawn from the list.</span></li></ol></div>
+  <pre><code>board.addEventListener(&quot;pointermove&quot;, (e) =&gt; {
+  <span class="k">if</span> (!drawing) <span class="k">return</span> sendCursor(e);
+  <span class="k">for</span> (<span class="k">const</span> p <span class="k">of</span> e.getCoalescedEvents()) {          <span class="c">// every point, not just one per frame</span>
+    stroke.points.push([p.offsetX, p.offsetY, p.pressure || 0.5]);
+  }
+  drawSegment(stroke);
+  send({ type: &quot;points&quot;, id: stroke.id, points: stroke.points.slice(-3) });
+});
+<span class="c">// Others apply the same data and redraw</span>
+channel.onmessage = ({ data }) =&gt; apply(data);</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Collaborative Whiteboard. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/05-media-and-realtime/035-collaborative-whiteboard">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+const COLORS = ["#16213A", "#E03131", "#F76707", "#2B8A3E", "#1971C2", "#AE3EC9"];
+const me = { id: Math.random().toString(36).slice(2, 8), name: store("vjl-wb-name") || ["Ayesha", "Rafi", "Mina", "Omar", "Lena", "Kenji"][Math.floor(Math.random() * 6)], color: COLORS[1 + Math.floor(Math.random() * 5)] };
+let strokes = store("vjl-wb") || [], redo = [], tool = "pen", color = COLORS[0], cur = null, ws = null; const cursors = {};
+const c = $("#c"), g = c.getContext("2d"), board = $("#board"), ch = new BroadcastChannel("vjl-wb");
+$("#name").value = me.name; support(true, "Supported");
+$("#swatches").innerHTML = COLORS.map((k, i) => `<button class="sw" style="background:${k}" data-c="${k}" aria-label="Color ${k}" aria-pressed="${i === 0}" type="button"></button>`).join("");
+function fit() { const r = board.getBoundingClientRect(), d = devicePixelRatio; c.width = r.width * d; c.height = r.height * d; g.setTransform(d, 0, 0, d, 0, 0); redraw(); }
+function draw(s) {
+  g.save(); g.lineCap = g.lineJoin = "round"; g.strokeStyle = s.color; g.globalAlpha = s.tool === "hl" ? 0.35 : 1; if (s.tool === "eraser") g.globalCompositeOperation = "destination-out";
+  const p = s.points; if (!p.length) return g.restore();
+  if (["line", "rect", "ellipse"].includes(s.tool)) { const [a, b] = [p[0], p[p.length - 1]]; g.lineWidth = s.w; g.beginPath();
+    if (s.tool === "line") { g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); } else if (s.tool === "rect") g.rect(a[0], a[1], b[0] - a[0], b[1] - a[1]); else g.ellipse((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, Math.abs(b[0] - a[0]) / 2, Math.abs(b[1] - a[1]) / 2, 0, 0, 7); g.stroke(); }
+  else { for (let i = 1; i < p.length; i++) { g.lineWidth = s.tool === "pen" ? s.w * (0.4 + p[i][2]) : s.tool === "hl" ? s.w * 3 : s.w * 3; g.beginPath(); g.moveTo(p[i - 1][0], p[i - 1][1]); g.lineTo(p[i][0], p[i][1]); g.stroke(); }
+    if (p.length === 1) { g.fillStyle = s.color; g.beginPath(); g.arc(p[0][0], p[0][1], s.w / 2, 0, 7); g.fill(); } }
+  g.restore();
+}
+function redraw() { g.clearRect(0, 0, c.width, c.height); strokes.forEach(draw); }
+const save = () => store("vjl-wb", strokes);
+function send(m) { m.from = me.id; ch.postMessage(m); if (ws?.readyState === 1) ws.send(JSON.stringify(m)); }
+function apply(m) {
+  if (m.from === me.id) return;
+  if (m.type === "start") strokes.push(m.stroke);
+  if (m.type === "points") { const s = strokes.find((x) => x.id === m.id); if (s) { if (["line", "rect", "ellipse"].includes(s.tool)) s.points = [s.points[0], ...m.points.slice(-1)]; else s.points.push(...m.points); } }
+  if (m.type === "remove") strokes = strokes.filter((x) => x.id !== m.id);
+  if (m.type === "clear") strokes = [];
+  if (m.type === "sync" && m.strokes.length > strokes.length) strokes = m.strokes;
+  if (m.type === "hello") send({ type: "sync", strokes });
+  if (m.type === "cursor") showCursor(m); if (m.type === "bye") { cursors[m.from]?.remove(); delete cursors[m.from]; people(); }
+  redraw(); if (m.type !== "cursor") save();
+}
+function showCursor(m) { let el = cursors[m.from]; if (!el) { el = document.createElement("div"); el.className = "cursor"; el.innerHTML = `<svg width="18" height="22" viewBox="0 0 18 22"><path d="M1 1v18l5-5 4 7 3-1-4-7h7z" fill="${m.color}" stroke="#fff" stroke-width="1.5"/></svg><span style="background:${m.color}"></span>`; board.append(el); cursors[m.from] = el; people(); }
+  el.querySelector("span").textContent = m.name; el.style.transform = `translate(${m.x}px,${m.y}px)`; clearTimeout(el.t); el.t = setTimeout(() => { el.remove(); delete cursors[m.from]; people(); }, 8000); }
+const people = () => ($("#people").textContent = `${Object.keys(cursors).length + 1} on this board`);
+const pos = (e) => { const r = board.getBoundingClientRect(); return [Math.round(e.clientX - r.left), Math.round(e.clientY - r.top), +(e.pressure || 0.5).toFixed(2)]; };
+let lastCursor = 0;
+board.onpointerdown = (e) => { board.setPointerCapture(e.pointerId); cur = { id: me.id + Date.now(), by: me.id, tool, color, w: +$("#size").value, points: [pos(e)] }; strokes.push(cur); redo = []; send({ type: "start", stroke: cur }); redraw(); };
+board.onpointermove = (e) => {
+  if (performance.now() - lastCursor > 40) { lastCursor = performance.now(); const [x, y] = pos(e); send({ type: "cursor", x, y, name: me.name, color: me.color }); }
+  if (!cur) return; const pts = (e.getCoalescedEvents?.() || [e]).map(pos);
+  if (["line", "rect", "ellipse"].includes(tool)) cur.points = [cur.points[0], pts[pts.length - 1]]; else cur.points.push(...pts);
+  redraw(); send({ type: "points", id: cur.id, points: pts });
+};
+board.onpointerup = board.onpointercancel = () => { if (cur) { cur = null; save(); } };
+$$(".tool").forEach((b) => b.onclick = () => { tool = b.dataset.t; $$(".tool").forEach((x) => x.setAttribute("aria-pressed", x === b)); });
+$("#swatches").onclick = (e) => { const b = e.target.closest(".sw"); if (!b) return; color = b.dataset.c; $$(".sw").forEach((x) => x.setAttribute("aria-pressed", x === b)); };
+$("#undo").onclick = () => { const i = strokes.map((s) => s.by).lastIndexOf(me.id); if (i < 0) return; const [s] = strokes.splice(i, 1); redo.push(s); send({ type: "remove", id: s.id }); redraw(); save(); };
+$("#redo").onclick = () => { const s = redo.pop(); if (!s) return; strokes.push(s); send({ type: "start", stroke: s }); redraw(); save(); };
+$("#clear").onclick = () => { if (!confirm("Clear the board for everyone?")) return; strokes = []; send({ type: "clear" }); redraw(); save(); };
+$("#png").onclick = () => { const o = document.createElement("canvas"); o.width = c.width; o.height = c.height; const og = o.getContext("2d"); og.fillStyle = "#fff"; og.fillRect(0, 0, o.width, o.height); og.drawImage(c, 0, 0); const a = document.createElement("a"); a.href = o.toDataURL("image/png"); a.download = "whiteboard.png"; a.click(); };
+addEventListener("keydown", (e) => { if ((e.ctrlKey || e.metaKey) && e.key === "z") { e.preventDefault(); (e.shiftKey ? $("#redo") : $("#undo")).click(); } });
+$("#name").oninput = (e) => { me.name = e.target.value || "Guest"; store("vjl-wb-name", me.name); };
+$("#tab").onclick = () => open(location.href, "_blank");
+$("#wsb").onclick = () => { try { ws?.close(); ws = new WebSocket($("#ws").value.trim()); setStatus($("#wss"), "busy", "Connecting");
+  ws.onopen = () => { setStatus($("#wss"), "ok", "Server connected"); send({ type: "hello" }); }; ws.onclose = () => setStatus($("#wss"), "idle", "Tabs only"); ws.onerror = () => setStatus($("#wss"), "err", "Server not reachable");
+  ws.onmessage = (e) => apply(JSON.parse(e.data)); } catch { setStatus($("#wss"), "err", "Enter a ws:// or wss:// address"); } };
+ch.onmessage = (e) => apply(e.data);
+addEventListener("pagehide", () => send({ type: "bye" }));
+new ResizeObserver(fit).observe(board); send({ type: "hello" });
+if (!strokes.length) { const demo = (tool, color, w, pts) => strokes.push({ id: "d" + strokes.length, by: "demo", tool, color, w, points: pts });
+  demo("pen", "#E03131", 5, Array.from({ length: 60 }, (_, i) => [80 + i * 6, 200 + Math.sin(i / 6) * 50, 0.5])); demo("rect", "#1971C2", 5, [[520, 120], [720, 260]]); demo("ellipse", "#2B8A3E", 5, [[120, 320], [300, 440]]); demo("hl", "#F76707", 8, [[500, 360], [800, 360]]); }
+</script>
+</body>
+</html>
