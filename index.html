@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>50 Free Vanilla JavaScript Projects with Live Demos and Source Code</title>
+<meta name="description" content="10 free vanilla JavaScript projects live now, growing to 50. Local AI chatbot, speech to text, background remover, QR scanner and more, each with a live demo.">
+<meta name="keywords" content="vanilla javascript projects, javascript projects for beginners, javascript projects with source code, ai javascript projects, webgpu projects, free javascript projects">
+<meta name="author" content="mmrahmanbappi">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vanilla JavaScript Projects">
+<meta property="og:title" content="50 Free Vanilla JavaScript Projects with Live Demos and Source Code">
+<meta property="og:description" content="10 free vanilla JavaScript projects live now, growing to 50. Local AI chatbot, speech to text, background remover, QR scanner and more, each with a live demo.">
+<meta property="og:url" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/001-local-ai-chatbot/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="50 Free Vanilla JavaScript Projects with Live Demos and Source Code">
+<meta name="twitter:description" content="10 free vanilla JavaScript projects live now, growing to 50. Local AI chatbot, speech to text, background remover, QR scanner and more, each with a live demo.">
+<meta name="twitter:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/001-local-ai-chatbot/preview.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317191f'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'%3EJS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#fbfbf8;--ink:#17191f;--muted:#5a5f6b;--line:#e4e3dc;--blue:#2445d6;--card:#fff}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Instrument Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:17px}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.bar{border-bottom:1px solid var(--line);background:#fff}
+.bar div{max-width:1120px;margin:0 auto;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.bar a.logo{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);text-decoration:none}
+.bar nav a{margin-left:18px;color:var(--ink);font-weight:600;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.crumbs{font-size:.9rem;color:var(--muted);padding:22px 0 0}
+.crumbs a{color:var(--muted)}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin:14px 0 14px;max-width:22ch}
+h2{font-size:1.6rem;margin:0 0 14px}
+h3{font-size:1.15rem}
+.lead{font-size:1.15rem;color:var(--muted);max-width:62ch}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:#fff}
+.btn.main{background:var(--ink);color:#fff}
+.shot{display:block;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 50px rgba(20,20,40,.12)}
+.shot img{display:block;width:100%;height:auto}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:50px;padding:60px 0}
+.cols p{margin-bottom:14px;max-width:65ch}
+ul.list{padding-left:20px}
+ul.list li{margin-bottom:6px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.code{position:relative;margin:0 0 60px}
+pre{background:#1d2030;color:#e8eaf3;border-radius:14px;padding:24px;overflow-x:auto;font-size:.9rem;line-height:1.6}
+.copy{position:absolute;top:12px;right:12px;font:inherit;font-size:.85rem;font-weight:700;border:0;border-radius:8px;padding:6px 12px;background:#fff;color:var(--ink);cursor:pointer}
+ol.steps{padding-left:22px;max-width:65ch;margin-bottom:60px}
+ol.steps li{margin-bottom:8px}
+details{border-top:1px solid var(--line);padding:16px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{font-weight:700;cursor:pointer;font-size:1.05rem}
+details p{margin-top:10px;color:var(--muted);max-width:70ch}
+.faq{margin-bottom:60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;margin:26px 0 60px}
+.tile{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tile img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+.tile div{padding:14px 16px}
+.tile small{color:var(--muted)}
+.tile:hover{border-color:var(--ink)}
+.cat{margin:50px 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.soon{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:20px 0 70px}
+.soon div{border:1px dashed #c9c7bd;border-radius:12px;padding:18px;color:var(--muted)}
+.soon b{color:var(--ink);display:block}
+.pager{display:flex;justify-content:space-between;gap:16px;margin:0 0 60px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;color:var(--muted);font-size:.95rem}
+@media(max-width:820px){.cols{grid-template-columns:1fr;gap:30px;padding:40px 0}.bar nav a:first-child{display:none}}
+.support{font-size:.95rem;color:var(--muted);margin-top:14px}
+.how{padding-left:22px;max-width:65ch;margin-bottom:40px}.how li{margin-bottom:10px}.how b{display:block}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/#site","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/","name":"Vanilla JavaScript Projects","description":"10 free vanilla JavaScript projects live now, growing to 50. Local AI chatbot, speech to text, background remover, QR scanner and more, each with a live demo.","inLanguage":"en","publisher":{"@type":"Person","name":"mmrahmanbappi","url":"https://github.com/mmrahmanbappi"}},{"@type":"CollectionPage","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/","name":"50 Free Vanilla JavaScript Projects with Live Demos and Source Code","description":"10 free vanilla JavaScript projects live now, growing to 50. Local AI chatbot, speech to text, background remover, QR scanner and more, each with a live demo.","isPartOf":{"@id":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/#site"},"mainEntity":{"@type":"ItemList","numberOfItems":10,"itemListElement":[{"@type":"ListItem","position":1,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/001-local-ai-chatbot/","name":"Local AI Chatbot JavaScript Project"},{"@type":"ListItem","position":2,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/002-image-classifier/","name":"Image Classifier JavaScript Project"},{"@type":"ListItem","position":3,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/003-speech-to-text-notes/","name":"Speech to Text Notes JavaScript Project"},{"@type":"ListItem","position":4,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/004-ai-text-summarizer/","name":"AI Text Summarizer JavaScript Project"},{"@type":"ListItem","position":5,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/005-smart-writing-assistant/","name":"Smart Writing Assistant JavaScript Project"},{"@type":"ListItem","position":6,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/006-live-translator/","name":"Live Translator JavaScript Project"},{"@type":"ListItem","position":7,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/007-background-remover/","name":"Background Remover JavaScript Project"},{"@type":"ListItem","position":8,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/008-semantic-search-notes/","name":"Semantic Search for Notes JavaScript Project"},{"@type":"ListItem","position":9,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/009-voice-command-controller/","name":"Voice Command Controller JavaScript Project"},{"@type":"ListItem","position":10,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/010-barcode-qr-scanner/","name":"QR and Barcode Scanner JavaScript Project"}]}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are these JavaScript projects really free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Every project is released under the MIT license. You can use them for learning, client work and paid products. Some AI models have their own license, and the project page says so when that matters."}},{"@type":"Question","name":"Do I need React or a framework?","acceptedAnswer":{"@type":"Answer","text":"No. Each project is one HTML file with plain JavaScript and CSS inside. There is no build step and no npm install. Serve the folder and open it in a browser."}},{"@type":"Question","name":"Are these good projects for a portfolio?","acceptedAnswer":{"@type":"Answer","text":"Yes. Each one uses a newer browser feature, like WebGPU, WebCodecs or passkeys, that many developers have not tried yet. That makes them stand out more than another to do list."}},{"@type":"Question","name":"How often are new projects added?","acceptedAnswer":{"@type":"Answer","text":"New projects are added in batches of ten until all 50 are live. Star the GitHub repo to see them as they arrive."}}]}]}</script>
+</head>
+<body>
+<header class="bar"><div><a class="logo" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Vanilla JavaScript Projects</a><nav><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/#categories">Categories</a><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">GitHub</a></nav></div></header>
+<main class="wrap">
+<h1 style="margin-top:50px">50 free JavaScript projects you can open, learn from and use</h1>
+<p class="lead">10 projects are live, with more added in batches. Every one is plain JavaScript in a single HTML file, built around a browser feature worth knowing in 2026: AI that runs on your own device, WebGPU, WebRTC, passkeys, offline apps and more. Open the demo, read the code, then make it yours.</p>
+<div class="actions"><a class="btn main" href="#categories">Browse the projects</a><a class="btn" href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/archive/refs/heads/main.zip">Download everything (ZIP)</a><a class="btn" href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">Star on GitHub</a></div>
+<section id="categories"><div class="cat"><h2>1. AI in the Browser</h2><a href="01-ai-in-the-browser/">See all 10 AI in the Browser projects</a></div><div class="grid"><a class="tile" href="01-ai-in-the-browser/001-local-ai-chatbot/"><img src="01-ai-in-the-browser/001-local-ai-chatbot/preview.png" alt="Local AI Chatbot JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>001. Local AI Chatbot</h3><small>A private chat assistant that runs on your graphics card</small></div></a><a class="tile" href="01-ai-in-the-browser/002-image-classifier/"><img src="01-ai-in-the-browser/002-image-classifier/preview.png" alt="Image Classifier JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>002. Image Classifier</h3><small>Drop a photo and see what the AI thinks it is</small></div></a><a class="tile" href="01-ai-in-the-browser/003-speech-to-text-notes/"><img src="01-ai-in-the-browser/003-speech-to-text-notes/preview.png" alt="Speech to Text Notes JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>003. Speech to Text Notes</h3><small>A voice notes app that writes down what you say</small></div></a><a class="tile" href="01-ai-in-the-browser/004-ai-text-summarizer/"><img src="01-ai-in-the-browser/004-ai-text-summarizer/preview.png" alt="AI Text Summarizer JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>004. AI Text Summarizer</h3><small>Paste a long article and get the key points</small></div></a><a class="tile" href="01-ai-in-the-browser/005-smart-writing-assistant/"><img src="01-ai-in-the-browser/005-smart-writing-assistant/preview.png" alt="Smart Writing Assistant JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>005. Smart Writing Assistant</h3><small>A writing helper that drafts, rewrites and checks your text</small></div></a><a class="tile" href="01-ai-in-the-browser/006-live-translator/"><img src="01-ai-in-the-browser/006-live-translator/preview.png" alt="Live Translator JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>006. Live Translator</h3><small>A translator that works as you type, in 15 languages</small></div></a><a class="tile" href="01-ai-in-the-browser/007-background-remover/"><img src="01-ai-in-the-browser/007-background-remover/preview.png" alt="Background Remover JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>007. Background Remover</h3><small>Cut the background out of any photo in seconds</small></div></a><a class="tile" href="01-ai-in-the-browser/008-semantic-search-notes/"><img src="01-ai-in-the-browser/008-semantic-search-notes/preview.png" alt="Semantic Search for Notes JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>008. Semantic Search for Notes</h3><small>Search your notes by meaning, not exact words</small></div></a><a class="tile" href="01-ai-in-the-browser/009-voice-command-controller/"><img src="01-ai-in-the-browser/009-voice-command-controller/preview.png" alt="Voice Command Controller JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>009. Voice Command Controller</h3><small>Control a smart home dashboard with your voice</small></div></a><a class="tile" href="01-ai-in-the-browser/010-barcode-qr-scanner/"><img src="01-ai-in-the-browser/010-barcode-qr-scanner/preview.png" alt="QR and Barcode Scanner JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>010. QR and Barcode Scanner</h3><small>Scan QR codes and barcodes with your camera</small></div></a></div>
+<h2 style="margin-top:30px">More categories on the way</h2><div class="soon"><div><b>2. Modern UI</b>Coming soon</div><div><b>3. PWA and Offline</b>Coming soon</div><div><b>4. Security and Auth</b>Coming soon</div><div><b>5. Media and Real Time</b>Coming soon</div><div><b>6. Hardware and Performance</b>Coming soon</div><div><b>7. Developer Tools</b>Coming soon</div></div></section>
+<section class="faq"><h2>Questions people ask</h2><details><summary>Are these JavaScript projects really free?</summary><p>Yes. Every project is released under the MIT license. You can use them for learning, client work and paid products. Some AI models have their own license, and the project page says so when that matters.</p></details><details><summary>Do I need React or a framework?</summary><p>No. Each project is one HTML file with plain JavaScript and CSS inside. There is no build step and no npm install. Serve the folder and open it in a browser.</p></details><details><summary>Are these good projects for a portfolio?</summary><p>Yes. Each one uses a newer browser feature, like WebGPU, WebCodecs or passkeys, that many developers have not tried yet. That makes them stand out more than another to do list.</p></details><details><summary>How often are new projects added?</summary><p>New projects are added in batches of ten until all 50 are live. Star the GitHub repo to see them as they arrive.</p></details></section>
+</main>
+<footer>Free under the MIT license. Made by <a href="https://github.com/mmrahmanbappi">mmrahmanbappi</a>. <a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">Star the repo on GitHub</a> to get new projects.</footer>
+<script>document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.nextElementSibling.innerText).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy code',1500)})})</script>
+</body>
+</html>

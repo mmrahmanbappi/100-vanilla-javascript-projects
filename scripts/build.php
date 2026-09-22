@@ -1,0 +1,366 @@
+<?php
+/**
+ * Builds every project page, category page, README and the sitemap from projects.php.
+ * The demo.html files are the projects themselves and are never changed by this script.
+ * Run from the repo root:  php scripts/build.php
+ */
+require __DIR__ . '/projects.php';
+
+$ROOT = dirname(__DIR__);
+$B = $SITE['base'];
+
+function e($s) { return htmlspecialchars((string)$s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
+function jsonld($a) { return json_encode($a, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); }
+
+const CSS = <<<'CSS'
+:root{--bg:#fbfbf8;--ink:#17191f;--muted:#5a5f6b;--line:#e4e3dc;--blue:#2445d6;--card:#fff}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Instrument Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:17px}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.bar{border-bottom:1px solid var(--line);background:#fff}
+.bar div{max-width:1120px;margin:0 auto;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.bar a.logo{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);text-decoration:none}
+.bar nav a{margin-left:18px;color:var(--ink);font-weight:600;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.crumbs{font-size:.9rem;color:var(--muted);padding:22px 0 0}
+.crumbs a{color:var(--muted)}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin:14px 0 14px;max-width:22ch}
+h2{font-size:1.6rem;margin:0 0 14px}
+h3{font-size:1.15rem}
+.lead{font-size:1.15rem;color:var(--muted);max-width:62ch}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:#fff}
+.btn.main{background:var(--ink);color:#fff}
+.shot{display:block;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 50px rgba(20,20,40,.12)}
+.shot img{display:block;width:100%;height:auto}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:50px;padding:60px 0}
+.cols p{margin-bottom:14px;max-width:65ch}
+ul.list{padding-left:20px}
+ul.list li{margin-bottom:6px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.code{position:relative;margin:0 0 60px}
+pre{background:#1d2030;color:#e8eaf3;border-radius:14px;padding:24px;overflow-x:auto;font-size:.9rem;line-height:1.6}
+.copy{position:absolute;top:12px;right:12px;font:inherit;font-size:.85rem;font-weight:700;border:0;border-radius:8px;padding:6px 12px;background:#fff;color:var(--ink);cursor:pointer}
+ol.steps{padding-left:22px;max-width:65ch;margin-bottom:60px}
+ol.steps li{margin-bottom:8px}
+details{border-top:1px solid var(--line);padding:16px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{font-weight:700;cursor:pointer;font-size:1.05rem}
+details p{margin-top:10px;color:var(--muted);max-width:70ch}
+.faq{margin-bottom:60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;margin:26px 0 60px}
+.tile{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tile img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+.tile div{padding:14px 16px}
+.tile small{color:var(--muted)}
+.tile:hover{border-color:var(--ink)}
+.cat{margin:50px 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.soon{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:20px 0 70px}
+.soon div{border:1px dashed #c9c7bd;border-radius:12px;padding:18px;color:var(--muted)}
+.soon b{color:var(--ink);display:block}
+.pager{display:flex;justify-content:space-between;gap:16px;margin:0 0 60px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;color:var(--muted);font-size:.95rem}
+@media(max-width:820px){.cols{grid-template-columns:1fr;gap:30px;padding:40px 0}.bar nav a:first-child{display:none}}
+CSS;
+
+const FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">';
+
+function head($title, $desc, $url, $image, $keywords, $schema) {
+    global $SITE, $B;
+    $t = e($title); $d = e($desc);
+    return "<!DOCTYPE html>
+<html lang=\"en\">
+<head>
+<meta charset=\"UTF-8\">
+<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+<title>$t</title>
+<meta name=\"description\" content=\"$d\">
+<meta name=\"keywords\" content=\"" . e($keywords) . "\">
+<meta name=\"author\" content=\"" . e($SITE['author']) . "\">
+<meta name=\"robots\" content=\"index, follow, max-image-preview:large\">
+<link rel=\"canonical\" href=\"$url\">
+<meta property=\"og:type\" content=\"website\">
+<meta property=\"og:site_name\" content=\"{$SITE['name']}\">
+<meta property=\"og:title\" content=\"$t\">
+<meta property=\"og:description\" content=\"$d\">
+<meta property=\"og:url\" content=\"$url\">
+<meta property=\"og:image\" content=\"$image\">
+<meta name=\"twitter:card\" content=\"summary_large_image\">
+<meta name=\"twitter:title\" content=\"$t\">
+<meta name=\"twitter:description\" content=\"$d\">
+<meta name=\"twitter:image\" content=\"$image\">
+<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317191f'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'%3EJS%3C/text%3E%3C/svg%3E\">
+" . FONTS . "
+<style>" . CSS . "
+.support{font-size:.95rem;color:var(--muted);margin-top:14px}
+.how{padding-left:22px;max-width:65ch;margin-bottom:40px}.how li{margin-bottom:10px}.how b{display:block}
+</style>
+<script type=\"application/ld+json\">" . jsonld($schema) . "</script>
+</head>
+<body>
+<header class=\"bar\"><div><a class=\"logo\" href=\"$B\">Vanilla JavaScript Projects</a><nav><a href=\"{$B}#categories\">Categories</a><a href=\"{$SITE['repo']}\">GitHub</a></nav></div></header>
+";
+}
+
+function foot() {
+    global $SITE;
+    return "<footer>Free under the MIT license. Made by <a href=\"{$SITE['author_url']}\">{$SITE['author']}</a>. <a href=\"{$SITE['repo']}\">Star the repo on GitHub</a> to get new projects.</footer>
+<script>document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.nextElementSibling.innerText).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy code',1500)})})</script>
+</body>
+</html>";
+}
+
+function crumbs_schema($items) {
+    $list = [];
+    foreach ($items as $i => [$n, $u]) $list[] = ['@type' => 'ListItem', 'position' => $i + 1, 'name' => $n, 'item' => $u];
+    return ['@type' => 'BreadcrumbList', 'itemListElement' => $list];
+}
+
+function faq_schema($faq) {
+    $q = [];
+    foreach ($faq as [$question, $answer]) $q[] = ['@type' => 'Question', 'name' => $question, 'acceptedAnswer' => ['@type' => 'Answer', 'text' => $answer]];
+    return ['@type' => 'FAQPage', 'mainEntity' => $q];
+}
+
+function cat_of($slug) { global $CATEGORIES; foreach ($CATEGORIES as $c) if ($c['slug'] === $slug) return $c; }
+function purl($p) { global $B; return "$B{$p['cat']}/{$p['slug']}/"; }
+function in_cat($slug) { global $PROJECTS; return array_values(array_filter($PROJECTS, fn($p) => $p['cat'] === $slug)); }
+
+function tile($p, $prefix) {
+    $n = e($p['name']);
+    return sprintf('<a class="tile" href="%s%s/"><img src="%s%s/preview.png" alt="%s JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>%03d. %s</h3><small>%s</small></div></a>',
+        $prefix, $p['slug'], $prefix, $p['slug'], $n, $p['num'], $n, e(ucfirst($p['example'])));
+}
+
+function out($path, $text) {
+    global $ROOT;
+    $full = "$ROOT/$path";
+    if (!is_dir(dirname($full))) mkdir(dirname($full), 0777, true);
+    file_put_contents($full, $text);
+}
+
+function items_list($items) {
+    $l = [];
+    foreach ($items as $k => $p) $l[] = ['@type' => 'ListItem', 'position' => $k + 1, 'url' => purl($p), 'name' => $p['name'] . ' JavaScript Project'];
+    return $l;
+}
+
+function lis($arr) { return implode('', array_map(fn($x) => '<li>' . e($x) . '</li>', $arr)); }
+function faq_html($faq) { return implode('', array_map(fn($f) => '<details><summary>' . e($f[0]) . '</summary><p>' . e($f[1]) . '</p></details>', $faq)); }
+
+function project_page($p, $i, $sib) {
+    global $SITE, $B;
+    $c = cat_of($p['cat']);
+    $url = purl($p); $img = $url . 'preview.png'; $demo = $url . 'demo.html';
+    $fname = substr($p['slug'], 4) . '.html';
+    $person = ['@type' => 'Person', 'name' => $SITE['author'], 'url' => $SITE['author_url']];
+    $schema = ['@context' => 'https://schema.org', '@graph' => [
+        ['@type' => 'WebPage', '@id' => $url, 'url' => $url, 'name' => $p['title'], 'description' => $p['desc'],
+         'isPartOf' => ['@type' => 'WebSite', 'name' => $SITE['name'], 'url' => $B],
+         'primaryImageOfPage' => ['@type' => 'ImageObject', 'url' => $img, 'width' => 1280, 'height' => 800],
+         'datePublished' => $SITE['published'], 'dateModified' => $SITE['published'], 'inLanguage' => 'en'],
+        ['@type' => 'SoftwareSourceCode', 'name' => "{$p['name']} in Vanilla JavaScript", 'description' => $p['desc'],
+         'image' => $img, 'url' => $url, 'codeRepository' => $SITE['repo'], 'programmingLanguage' => ['JavaScript', 'HTML', 'CSS'],
+         'runtimePlatform' => 'Web browser', 'license' => 'https://opensource.org/licenses/MIT', 'isAccessibleForFree' => true,
+         'keywords' => $p['keywords'], 'author' => $person],
+        ['@type' => 'SoftwareApplication', 'name' => $p['name'], 'url' => $demo, 'applicationCategory' => 'DeveloperApplication',
+         'operatingSystem' => 'Any modern web browser', 'image' => $img, 'description' => $p['desc'],
+         'offers' => ['@type' => 'Offer', 'price' => '0', 'priceCurrency' => 'USD']],
+        crumbs_schema([['Home', $B], [$c['name'], $B . $c['slug'] . '/'], [$p['name'], $url]]),
+        faq_schema($p['faq'])]];
+    $n = e($p['name']); $nl = e(strtolower($p['name'])); $cn = e($c['name']);
+    $what = implode('', array_map(fn($x) => '<p>' . e($x) . '</p>', $p['what']));
+    $how = implode('', array_map(fn($s) => '<li><b>' . e($s[0]) . '</b>' . e($s[1]) . '</li>', $p['steps']));
+    $prev = $sib[$i - 1] ?? null; $next = $sib[$i + 1] ?? null;
+    $pager = '<nav class="pager" aria-label="More projects">'
+        . ($prev ? "<a href=\"../{$prev['slug']}/\">Previous: " . e($prev['name']) . '</a>' : '<span></span>')
+        . ($next ? "<a href=\"../{$next['slug']}/\">Next: " . e($next['name']) . '</a>' : '<span></span>') . '</nav>';
+    $related = implode('', array_map(fn($s) => tile($s, '../'), array_slice(array_values(array_filter($sib, fn($s) => $s['slug'] !== $p['slug'])), 0, 6)));
+    $body = "<main class=\"wrap\">
+<p class=\"crumbs\"><a href=\"$B\">Home</a> / <a href=\"../\">$cn</a> / $n</p>
+<h1>$n in JavaScript, Free with Live Demo</h1>
+<p class=\"lead\">" . e($p['desc']) . "</p>
+<div class=\"actions\"><a class=\"btn main\" href=\"demo.html\">Open live demo</a><a class=\"btn\" href=\"demo.html\" download=\"$fname\">Download HTML file</a><a class=\"btn\" href=\"{$SITE['repo']}/tree/main/{$p['cat']}/{$p['slug']}\">View code on GitHub</a></div>
+<a class=\"shot\" href=\"demo.html\"><img src=\"preview.png\" alt=\"$n JavaScript project: " . e($p['example']) . "\" width=\"1280\" height=\"800\"></a>
+<p class=\"support\">Runs on: " . e($p['runs']) . ". " . e($p['browsers']) . "</p>
+<section class=\"cols\"><div><h2>What is the $n?</h2>$what</div>
+<div class=\"box\"><h3>Good for</h3><ul class=\"list\">" . lis($p['when']) . "</ul></div></section>
+<section><h2>What this project does</h2><ul class=\"list\" style=\"margin-bottom:40px\">" . lis($p['features']) . "</ul></section>
+<section><h2>How it works</h2><ol class=\"how\">$how</ol></section>
+<section><h2>The key JavaScript</h2><p style=\"margin-bottom:14px\">This is the heart of the project. The full file has the rest, including the screen layout and error handling.</p>
+<div class=\"code\"><button class=\"copy\" type=\"button\">Copy code</button><pre><code>" . e($p['code']) . "</code></pre></div></section>
+<section><h2>How to use it</h2><ol class=\"steps\"><li>Click Download HTML file above.</li><li>Open the file in a code editor, like VS Code.</li><li>Run it from a local server with <code>npx serve .</code> so the camera, microphone and AI features are allowed.</li><li>Change the text and colors, then upload it to GitHub Pages, Netlify or your own site. It is one file with no build step.</li></ol></section>
+<section class=\"faq\"><h2>Questions people ask</h2>" . faq_html($p['faq']) . "</section>
+$pager
+<section><h2>More $cn projects</h2><div class=\"grid\">$related</div></section>
+</main>
+";
+    out("{$p['cat']}/{$p['slug']}/index.html", head($p['title'], $p['desc'], $url, $img, $p['keywords'], $schema) . $body . foot());
+
+    $paras = implode("\n", array_map(fn($x) => $x . "\n", $p['what']));
+    $feats = implode("\n", array_map(fn($x) => "- $x", $p['features']));
+    $steps = implode("\n", array_map(fn($k, $s) => ($k + 1) . ". **{$s[0]}.** {$s[1]}", array_keys($p['steps']), $p['steps']));
+    $faq = implode("\n", array_map(fn($f) => "**{$f[0]}**\n\n{$f[1]}\n", $p['faq']));
+    out("{$p['cat']}/{$p['slug']}/README.md", "# {$p['name']} in JavaScript (Free Project)
+
+![{$p['name']} JavaScript project preview](preview.png)
+
+**Live demo:** {$demo}
+**Details and code:** $url
+
+{$p['desc']}
+
+## What is the {$p['name']}?
+
+$paras
+## What it does
+
+$feats
+
+## How it works
+
+$steps
+
+## The key JavaScript
+
+```js
+{$p['code']}
+```
+
+## Browser support
+
+{$p['browsers']}
+
+## How to use
+
+1. Download `demo.html` from this folder.
+2. Serve the folder with `npx serve .` or `python -m http.server`, then open it in your browser.
+3. Change the text and colors, and upload it anywhere. One file, no build step.
+
+## Questions
+
+$faq
+## License
+
+MIT. Free for personal and commercial use.
+");
+}
+
+function category_page($c) {
+    global $SITE, $B;
+    $items = in_cat($c['slug']);
+    $url = $B . $c['slug'] . '/';
+    $img = purl($items[0]) . 'preview.png';
+    $schema = ['@context' => 'https://schema.org', '@graph' => [
+        ['@type' => 'CollectionPage', '@id' => $url, 'url' => $url, 'name' => $c['title'], 'description' => $c['desc'],
+         'isPartOf' => ['@type' => 'WebSite', 'name' => $SITE['name'], 'url' => $B], 'inLanguage' => 'en',
+         'mainEntity' => ['@type' => 'ItemList', 'numberOfItems' => count($items), 'itemListElement' => items_list($items)]],
+        crumbs_schema([['Home', $B], [$c['name'], $url]])]];
+    $tiles = implode('', array_map(fn($p) => tile($p, ''), $items));
+    $cn = e($c['name']);
+    $body = "<main class=\"wrap\">
+<p class=\"crumbs\"><a href=\"$B\">Home</a> / $cn</p>
+<h1>$cn JavaScript Projects</h1>
+<p class=\"lead\">" . e($c['intro']) . "</p>
+<div class=\"grid\">$tiles</div>
+</main>
+";
+    out("{$c['slug']}/index.html", head($c['title'], $c['desc'], $url, $img, $c['keywords'] ?? 'javascript projects', $schema) . $body . foot());
+}
+
+function home() {
+    global $SITE, $B, $CATEGORIES, $PROJECTS;
+    $live = count($PROJECTS);
+    $title = '50 Free Vanilla JavaScript Projects with Live Demos and Source Code';
+    $desc = "$live free vanilla JavaScript projects live now, growing to 50. Local AI chatbot, speech to text, background remover, QR scanner and more, each with a live demo.";
+    $img = purl($PROJECTS[0]) . 'preview.png';
+    $faq = [
+        ['Are these JavaScript projects really free?', 'Yes. Every project is released under the MIT license. You can use them for learning, client work and paid products. Some AI models have their own license, and the project page says so when that matters.'],
+        ['Do I need React or a framework?', 'No. Each project is one HTML file with plain JavaScript and CSS inside. There is no build step and no npm install. Serve the folder and open it in a browser.'],
+        ['Are these good projects for a portfolio?', 'Yes. Each one uses a newer browser feature, like WebGPU, WebCodecs or passkeys, that many developers have not tried yet. That makes them stand out more than another to do list.'],
+        ['How often are new projects added?', 'New projects are added in batches of ten until all 50 are live. Star the GitHub repo to see them as they arrive.'],
+    ];
+    $schema = ['@context' => 'https://schema.org', '@graph' => [
+        ['@type' => 'WebSite', '@id' => $B . '#site', 'url' => $B, 'name' => $SITE['name'], 'description' => $desc, 'inLanguage' => 'en',
+         'publisher' => ['@type' => 'Person', 'name' => $SITE['author'], 'url' => $SITE['author_url']]],
+        ['@type' => 'CollectionPage', 'url' => $B, 'name' => $title, 'description' => $desc, 'isPartOf' => ['@id' => $B . '#site'],
+         'mainEntity' => ['@type' => 'ItemList', 'numberOfItems' => $live, 'itemListElement' => items_list($PROJECTS)]],
+        faq_schema($faq)]];
+    $sections = ''; $soon = '';
+    foreach ($CATEGORIES as $c) {
+        $cn = e($c['name']);
+        if ($c['ready']) {
+            $items = in_cat($c['slug']);
+            $sections .= "<div class=\"cat\"><h2>{$c['num']}. $cn</h2><a href=\"{$c['slug']}/\">See all " . count($items) . " $cn projects</a></div><div class=\"grid\">"
+                . implode('', array_map(fn($p) => tile($p, $c['slug'] . '/'), $items)) . '</div>';
+        } else {
+            $soon .= "<div><b>{$c['num']}. $cn</b>Coming soon</div>";
+        }
+    }
+    $body = "<main class=\"wrap\">
+<h1 style=\"margin-top:50px\">50 free JavaScript projects you can open, learn from and use</h1>
+<p class=\"lead\">$live projects are live, with more added in batches. Every one is plain JavaScript in a single HTML file, built around a browser feature worth knowing in 2026: AI that runs on your own device, WebGPU, WebRTC, passkeys, offline apps and more. Open the demo, read the code, then make it yours.</p>
+<div class=\"actions\"><a class=\"btn main\" href=\"#categories\">Browse the projects</a><a class=\"btn\" href=\"{$SITE['repo']}/archive/refs/heads/main.zip\">Download everything (ZIP)</a><a class=\"btn\" href=\"{$SITE['repo']}\">Star on GitHub</a></div>
+<section id=\"categories\">$sections
+<h2 style=\"margin-top:30px\">More categories on the way</h2><div class=\"soon\">$soon</div></section>
+<section class=\"faq\"><h2>Questions people ask</h2>" . faq_html($faq) . "</section>
+</main>
+";
+    out('index.html', head($title, $desc, $B, $img, 'vanilla javascript projects, javascript projects for beginners, javascript projects with source code, ai javascript projects, webgpu projects, free javascript projects', $schema) . $body . foot());
+}
+
+function root_readme() {
+    global $B, $CATEGORIES, $PROJECTS;
+    $rows = implode("\n", array_map(fn($p) => sprintf('| %03d | [%s](%s) | %s | [Demo](%sdemo.html) | <img src="%s/%s/preview.png" width="260" alt="%s preview"> |',
+        $p['num'], $p['name'], purl($p), ucfirst($p['example']), purl($p), $p['cat'], $p['slug'], $p['name']), $PROJECTS));
+    $cats = implode("\n", array_map(fn($c) => "- {$c['num']}. {$c['name']} (" . ($c['ready'] ? 'live' : 'coming soon') . ')', $CATEGORIES));
+    out('README.md', "# 50 Free Vanilla JavaScript Projects
+
+Real projects built with plain JavaScript and the newest browser features, each with a live demo and a single HTML file. No framework, no build step, free for commercial use.
+
+**Live gallery:** $B
+
+![Preview of the first project](01-ai-in-the-browser/001-local-ai-chatbot/preview.png)
+
+## Projects so far
+
+| # | Project | What it does | Live | Preview |
+|---|---|---|---|---|
+$rows
+
+## Categories
+
+$cats
+
+## How to use a project
+
+1. Open the project folder and download `demo.html`.
+2. Serve it with `npx serve .` or `python -m http.server`, since camera, microphone and AI features do not run from `file://`.
+3. Change the text and colors, then upload it anywhere: GitHub Pages, Netlify, Vercel or your own server.
+
+## License
+
+MIT. Use these projects in personal and commercial work. Project 007 uses the RMBG 1.4 model, which is for non-commercial use only. A star on the repo helps more people find them.
+");
+}
+
+function sitemap() {
+    global $SITE, $B, $CATEGORIES, $PROJECTS;
+    $urls = [$B];
+    foreach ($CATEGORIES as $c) if ($c['ready']) $urls[] = $B . $c['slug'] . '/';
+    foreach ($PROJECTS as $p) { $urls[] = purl($p); $urls[] = purl($p) . 'demo.html'; }
+    $body = implode('', array_map(fn($u) => "<url><loc>$u</loc><lastmod>{$SITE['published']}</lastmod></url>", $urls));
+    out('sitemap.xml', "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">$body</urlset>\n");
+    out('robots.txt', "User-agent: *\nAllow: /\n\nSitemap: {$B}sitemap.xml\n");
+}
+
+foreach ($CATEGORIES as $c) {
+    if (!$c['ready']) continue;
+    $sib = in_cat($c['slug']);
+    foreach ($sib as $i => $p) project_page($p, $i, $sib);
+    category_page($c);
+}
+home(); root_readme(); sitemap();
+echo 'Built ' . count($PROJECTS) . " projects\n";

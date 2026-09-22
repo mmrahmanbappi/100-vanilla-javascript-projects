@@ -1,0 +1,21 @@
+name: Build pages and previews
+on:
+  push:
+    paths: ["**/demo.html", "scripts/**"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with: { php-version: "8.3" }
+      - run: php scripts/build.php
+      - run: php scripts/screenshot.php
+      - run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git diff --cached --quiet || (git commit -m "Update pages and previews" && git push)

@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Voice Command Controller Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Control a smart home dashboard with your voice. Say “turn on the living room light” or “set temperature to 22” and the Web Speech API does the rest, with spoken replies. Free vanilla JavaScript source code.">
+<meta name="keywords" content="web speech api, speech recognition javascript, voice commands website, speech synthesis, smart home dashboard, vanilla js project">
+<meta property="og:title" content="Voice Command Controller with the Web Speech API (Vanilla JS Smart Home Demo)">
+<meta property="og:description" content="Control a smart home dashboard with your voice. Say “turn on the living room light” or “set temperature to 22” and the Web Speech API does the rest, with spoken replies. Free vanilla JavaScript source code.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/009-voice-command-controller/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/009-voice-command-controller/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4C7A1F">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234C7A1F'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Voice Command Controller", "description": "Control a smart home dashboard with your voice. Say \u201cturn on the living room light\u201d or \u201cset temperature to 22\u201d and the Web Speech API does the rest, with spoken replies. Free vanilla JavaScript source code.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "web speech api, speech recognition javascript, voice commands website, speech synthesis, smart home dashboard, vanilla js project"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+:root{--accent:#4C7A1F}
+.console{display:grid;grid-template-columns:280px 1fr;gap:24px}
+.mic{width:120px;height:120px;border-radius:50%;border:0;background:var(--accent);color:#fff;cursor:pointer;display:grid;place-items:center;margin:6px auto 12px;position:relative}
+.mic svg{width:44px;height:44px}
+.mic[aria-pressed=true]::after{content:"";position:absolute;inset:-10px;border-radius:50%;border:4px solid var(--accent);animation:ring 1.4s ease-out infinite}
+@keyframes ring{from{transform:scale(.9);opacity:1}to{transform:scale(1.25);opacity:0}}
+.heard{min-height:54px;text-align:center;font:700 18px/1.3 var(--display);margin:0 0 12px}
+.heard.interim{color:var(--muted)}
+.toggles{display:flex;flex-direction:column;gap:8px;font-size:15px}
+.devices{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.dev{border:1px solid var(--line);border-radius:var(--r-md);padding:14px;background:var(--sunk);cursor:pointer;text-align:left;font:inherit;color:inherit;transition:background .25s,border-color .25s}
+.dev svg{width:44px;height:44px;margin-bottom:10px;color:var(--muted)}
+.dev b{display:block;font-size:15px}.dev span{font-size:13px;color:var(--muted)}
+.dev.on{background:color-mix(in srgb,var(--accent) 14%,var(--panel));border-color:var(--accent)}
+.dev.on svg{color:var(--accent)}
+.dev.on.light svg{color:#E0A800}
+.dev.on.fan svg .blades{animation:spin 1s linear infinite;transform-origin:24px 24px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.log{list-style:none;padding:0;margin:14px 0 0;max-height:190px;overflow:auto;font-size:14px}
+.log li{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:7px 0}
+.log .no{color:var(--err)}.log .ok{color:var(--ok)}
+.type{display:flex;gap:8px;margin-top:14px}
+.help{font-size:14px;color:var(--muted);margin:12px 0 0}
+@media (max-width:820px){.console{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="7" fill="var(--ink)"/><path d="M10 21V11h5.5a3 3 0 0 1 0 6H10m5.5 0 4.5 4" stroke="var(--paper)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="10" r="2.6" fill="var(--accent)"/></svg>Vanilla JS Projects</a>
+  <nav><span>Project 09 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 09, AI in the browser</p>
+    <h1>Voice Command Controller</h1>
+    <p class="lede">Say “turn on the fan” or “set temperature to 22” and watch the room respond. It answers back out loud, and you can type commands if you prefer.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A speech bubble turning on a light bulb">
+  <path d="M30 40h130a16 16 0 0 1 16 16v50a16 16 0 0 1-16 16H80l-26 22v-22H30a16 16 0 0 1-16-16V56a16 16 0 0 1 16-16z" fill="var(--accent)"/>
+  <text x="95" y="90" text-anchor="middle" font-family="var(--display)" font-weight="800" font-size="22" fill="#fff">Lights on</text>
+  <circle cx="232" cy="120" r="70" fill="var(--accent)" opacity=".14"/>
+  <path d="M232 70a38 38 0 0 0-22 69c5 4 8 10 8 16v5h28v-5c0-6 3-12 8-16a38 38 0 0 0-22-69z" fill="#F7C948" stroke="var(--ink)" stroke-width="4"/>
+  <rect x="216" y="166" width="32" height="10" rx="3" fill="var(--ink)"/><rect x="220" y="180" width="24" height="10" rx="3" fill="var(--ink)"/>
+  <g stroke="#F7C948" stroke-width="5" stroke-linecap="round"><path d="M232 34v-14M284 60l10-10M180 60l-10-10M306 118h14"/></g>
+</svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Runs on</dt><dd>Browser speech service</dd></div><div><dt>Model</dt><dd>Browser speech recognition</dd></div><div><dt>First download</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <div class="console">
+    <div>
+      <h2 id="w-title" style="text-align:center">Talk to the room</h2>
+      <button class="mic" id="mic" type="button" aria-pressed="false" aria-label="Start listening"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="8" y="2" width="8" height="13" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></button>
+      <p class="heard" id="heard" aria-live="polite">Press the button and speak</p>
+      <div class="toggles">
+        <label><input type="checkbox" id="cont"> Keep listening</label>
+        <label><input type="checkbox" id="talk" checked> Speak replies</label>
+        <label class="field" style="flex-direction:row;align-items:center;gap:8px">Accent<select id="lang"><option value="en-US">English (US)</option><option value="en-GB">English (UK)</option><option value="en-IN">English (India)</option></select></label>
+      </div>
+      <div class="type"><label class="sr-only" for="cmd">Type a command</label><input type="text" id="cmd" placeholder="Or type: turn on the fan"><button class="btn" id="run" type="button">Run</button></div>
+      <p class="help">Try: “turn on the bedroom light”, “set temperature to 20”, “lock the door”, “play music”, “what is on”, “turn everything off”.</p>
+    </div>
+    <div>
+      <div class="devices" id="devices"></div>
+      <ul class="log" id="log" aria-label="Command log"></ul>
+    </div>
+  </div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Listen</strong><span>SpeechRecognition streams words as you speak, and the final phrase is passed on when you pause.</span></li><li><strong>Understand</strong><span>A small parser finds the action (on, off, set, lock), the device and any number in the phrase.</span></li><li><strong>Act and reply</strong><span>The device card updates, the log records the command, and the page speaks a short confirmation.</span></li></ol></div>
+  <pre><code><span class="k">const</span> SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+<span class="k">const</span> rec = <span class="k">new</span> SR();
+rec.lang = &quot;en-US&quot;;
+rec.interimResults = true;
+
+rec.onresult = (e) =&gt; {
+  <span class="k">const</span> r = e.results[e.results.length - 1];
+  <span class="k">if</span> (r.isFinal) handle(r[0].transcript); <span class="c">// &quot;turn on the fan&quot;</span>
+};
+rec.start();
+
+<span class="c">// Talk back</span>
+speechSynthesis.speak(<span class="k">new</span> SpeechSynthesisUtterance(&quot;Fan is on&quot;));</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Voice Command Controller. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/01-ai-in-the-browser/009-voice-command-controller">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script type="module">
+const I = {
+  bulb: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><path d="M24 5a14 14 0 0 0-8 25.5c2 1.5 3 3.5 3 6V38h10v-1.5c0-2.5 1-4.5 3-6A14 14 0 0 0 24 5z" fill="currentColor" fill-opacity=".2"/><path d="M19 43h10" stroke-linecap="round"/></svg>',
+  fan: '<svg viewBox="0 0 48 48" fill="currentColor"><g class="blades"><path d="M24 24c-2-8 0-17 6-17s4 10-6 17zM24 24c8-2 17 0 17 6s-10 4-17-6zM24 24c2 8 0 17-6 17s-4-10 6-17zM24 24c-8 2-17 0-17-6s10-4 17 6z" fill-opacity=".85"/></g><circle cx="24" cy="24" r="3.5"/></svg>',
+  tv: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><rect x="5" y="9" width="38" height="25" rx="3" fill="currentColor" fill-opacity=".2"/><path d="M17 41h14M24 34v7" stroke-linecap="round"/></svg>',
+  ac: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M24 6v36M8.4 15l31.2 18M8.4 33l31.2-18M19 9l5 4 5-4M19 39l5-4 5 4"/></svg>',
+  music: '<svg viewBox="0 0 48 48" fill="currentColor"><path d="M18 34V10l22-4v24" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><circle cx="13" cy="35" r="6"/><circle cx="35" cy="31" r="6"/></svg>',
+  lock: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><rect x="9" y="21" width="30" height="21" rx="4" fill="currentColor" fill-opacity=".2"/><path d="M16 21v-6a8 8 0 0 1 16 0v6" stroke-linecap="round"/></svg>',
+};
+const devices = [
+  { id: "living", name: "Living room light", icon: "bulb", cls: "light", words: ["living room", "living", "main light", "lamp"], on: true },
+  { id: "bedroom", name: "Bedroom light", icon: "bulb", cls: "light", words: ["bedroom", "bed room"], on: false },
+  { id: "fan", name: "Ceiling fan", icon: "fan", cls: "fan", words: ["fan"], on: false },
+  { id: "tv", name: "TV", icon: "tv", cls: "", words: ["tv", "television", "t.v."], on: false },
+  { id: "ac", name: "Air conditioner", icon: "ac", cls: "", words: ["ac", "air conditioner", "aircon", "air con", "cooling", "temperature"], on: false, temp: 24 },
+  { id: "music", name: "Music", icon: "music", cls: "", words: ["music", "song", "speaker"], on: false },
+  { id: "door", name: "Front door", icon: "lock", cls: "", words: ["door", "front door", "lock"], on: true, lock: true },
+];
+const label = (d) => d.lock ? (d.on ? "Locked" : "Unlocked") : d.id === "ac" ? (d.on ? `On, ${d.temp}°C` : "Off") : d.on ? "On" : "Off";
+function draw() { $("#devices").innerHTML = devices.map((d) => `<button type="button" class="dev ${d.cls} ${d.on ? "on" : ""}" data-id="${d.id}" aria-pressed="${d.on}">${I[d.icon]}<b>${d.name}</b><span>${label(d)}</span></button>`).join(""); }
+draw();
+$("#devices").onclick = (e) => { const b = e.target.closest(".dev"); if (!b) return; const d = devices.find((x) => x.id === b.dataset.id); d.on = !d.on; draw(); };
+
+function say(t) { if (!$("#talk").checked || !("speechSynthesis" in window)) return; const u = new SpeechSynthesisUtterance(t); u.lang = $("#lang").value; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+function log(cmd, reply, ok) { const li = document.createElement("li"); li.innerHTML = `<span>“${esc(cmd)}”</span><span class="${ok ? "ok" : "no"}">${esc(reply)}</span>`; $("#log").prepend(li); }
+
+function handle(raw) {
+  const t = " " + raw.toLowerCase().replace(/[.,!?]/g, "") + " ";
+  const num = t.match(/(\d+)/)?.[1];
+  const find = () => devices.find((d) => d.words.some((w) => t.includes(" " + w + " ") || t.includes(" " + w + "s ")));
+  let reply = null;
+  if (/\b(everything|all)\b/.test(t) && /\b(off|stop)\b/.test(t)) { devices.forEach((d) => !d.lock && (d.on = false)); reply = "Everything is off"; }
+  else if (/\b(everything|all)\b/.test(t) && /\bon\b/.test(t)) { devices.forEach((d) => !d.lock && (d.on = true)); reply = "Everything is on"; }
+  else if (/what('?s| is) on|status/.test(t)) { const on = devices.filter((d) => d.on && !d.lock).map((d) => d.name.toLowerCase()); reply = on.length ? "On right now: " + on.join(", ") : "Nothing is on"; }
+  else if (/\b(cooler|colder)\b/.test(t)) { const ac = devices[4]; ac.on = true; ac.temp = Math.max(16, ac.temp - 2); reply = `Cooling to ${ac.temp} degrees`; }
+  else if (/\b(warmer|hotter)\b/.test(t)) { const ac = devices[4]; ac.temp = Math.min(30, ac.temp + 2); reply = `Set to ${ac.temp} degrees`; }
+  else if (/\btemperature|degrees?\b/.test(t) && num) { const ac = devices[4]; ac.on = true; ac.temp = Math.min(30, Math.max(16, +num)); reply = `Temperature set to ${ac.temp} degrees`; }
+  else if (/\bunlock\b/.test(t)) { devices[6].on = false; reply = "Front door unlocked"; }
+  else if (/\block\b/.test(t)) { devices[6].on = true; reply = "Front door locked"; }
+  else if (/\b(play|start)\b/.test(t) && /music|song/.test(t)) { devices[5].on = true; reply = "Playing music"; }
+  else if (/\b(stop|pause)\b/.test(t) && /music|song/.test(t)) { devices[5].on = false; reply = "Music stopped"; }
+  else {
+    const d = find();
+    const on = /\b(on|open|start)\b/.test(t) && !/\boff\b/.test(t), off = /\b(off|close|shut|stop)\b/.test(t);
+    if (d && (on || off)) { d.on = on; reply = `${d.name} ${on ? "is on" : "is off"}`; }
+    else if (d) { d.on = !d.on; reply = `${d.name} ${d.on ? "is on" : "is off"}`; }
+  }
+  draw(); log(raw, reply || "Not understood", !!reply); say(reply || "Sorry, I did not catch a device or action");
+}
+
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition; let rec = null, listening = false;
+support(SR ? true : null, SR ? "Voice supported" : "Typing only");
+if (!SR) { $("#heard").textContent = "Voice input is not available in this browser. Type a command below."; $("#mic").disabled = true; }
+function start() {
+  rec = new SR(); rec.lang = $("#lang").value; rec.interimResults = true; rec.continuous = $("#cont").checked;
+  rec.onresult = (e) => { const r = e.results[e.results.length - 1]; $("#heard").textContent = r[0].transcript; $("#heard").classList.toggle("interim", !r.isFinal); if (r.isFinal) handle(r[0].transcript); };
+  rec.onerror = (e) => { $("#heard").textContent = e.error === "not-allowed" ? "Microphone blocked. Allow it in the address bar." : e.error === "no-speech" ? "Did not hear anything. Try again." : "Voice error: " + e.error; };
+  rec.onend = () => { if (listening && $("#cont").checked) return rec.start(); listening = false; $("#mic").setAttribute("aria-pressed", "false"); $("#mic").setAttribute("aria-label", "Start listening"); };
+  rec.start(); listening = true; $("#mic").setAttribute("aria-pressed", "true"); $("#mic").setAttribute("aria-label", "Stop listening"); $("#heard").textContent = "Listening…";
+}
+$("#mic").onclick = () => { if (listening) { listening = false; rec.stop(); } else start(); };
+$("#run").onclick = () => { const v = $("#cmd").value.trim(); if (v) { $("#heard").textContent = v; handle(v); $("#cmd").value = ""; } };
+$("#cmd").addEventListener("keydown", (e) => e.key === "Enter" && $("#run").click());
+</script>
+</body>
+</html>
