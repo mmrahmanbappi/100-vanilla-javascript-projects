@@ -302,7 +302,7 @@ function home() {
     $body = "<main class=\"wrap\">
 <h1 style=\"margin-top:50px\">50 free JavaScript projects you can open, learn from and use</h1>
 <p class=\"lead\">All $live projects are live, sorted into 7 categories. Every one is plain JavaScript in a single HTML file, built around a browser feature worth knowing in 2026: AI that runs on your own device, WebGPU, WebRTC, passkeys, offline apps and more. Open the demo, read the code, then make it yours.</p>
-<div class=\"actions\"><a class=\"btn main\" href=\"#categories\">Browse the projects</a><a class=\"btn\" href=\"{$SITE['repo']}/archive/refs/heads/main.zip\">Download everything (ZIP)</a><a class=\"btn\" href=\"{$SITE['repo']}\">Star on GitHub</a></div>
+<div class=\"actions\"><a class=\"btn main\" href=\"#categories\">Browse the projects</a><a class=\"btn\" href=\"{$SITE['repo']}\">Star on GitHub</a></div>
 <section id=\"categories\">$sections
 " . ($soon ? "<h2 style=\"margin-top:30px\">More categories on the way</h2><div class=\"soon\">$soon</div>" : "") . "</section>
 <section class=\"faq\"><h2>Questions people ask</h2>" . faq_html($faq) . "</section>

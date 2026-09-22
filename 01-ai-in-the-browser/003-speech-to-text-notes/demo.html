@@ -145,9 +145,9 @@ footer.foot a{color:var(--muted)}
 :root{--accent:#B42359}
 .rec{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .recbtn{width:76px;height:76px;border-radius:50%;border:0;background:var(--accent);color:#fff;cursor:pointer;display:grid;place-items:center;flex:none}
-.recbtn svg{width:30px;height:30px}
+.recbtn{font:700 16px var(--display)}
 .recbtn[aria-pressed=true]{box-shadow:0 0 0 8px color-mix(in srgb,var(--accent) 25%,transparent)}
-.recbtn[aria-pressed=true] .mic{display:none}.recbtn[aria-pressed=false] .sq{display:none}
+.recbtn[aria-pressed=true] .t1{display:none}.recbtn[aria-pressed=false] .t2{display:none}
 .meter{flex:1;min-width:200px;height:56px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--sunk)}
 .timer{font:700 28px/1 var(--display);font-variant-numeric:tabular-nums;min-width:80px}
 .notes{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
@@ -163,7 +163,7 @@ mark{background:color-mix(in srgb,var(--accent) 30%,transparent);color:inherit}
 <body>
 <div class="wrap">
 <header class="topbar">
-  <a class="brand" href="../../"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="7" fill="var(--ink)"/><path d="M10 21V11h5.5a3 3 0 0 1 0 6H10m5.5 0 4.5 4" stroke="var(--paper)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="10" r="2.6" fill="var(--accent)"/></svg>Vanilla JS Projects</a>
+  <a class="brand" href="../../">Vanilla JavaScript Projects</a>
   <nav><span>Project 03 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
 </header>
 <main>
@@ -196,10 +196,7 @@ mark{background:color-mix(in srgb,var(--accent) 30%,transparent);color:inherit}
       <h2 id="w-title">Record a note</h2>
       <p class="sub">The model downloads the first time you transcribe.</p>
       <div class="rec">
-        <button class="recbtn" id="rec" type="button" aria-pressed="false" aria-label="Start recording">
-          <svg class="mic" viewBox="0 0 24 24" fill="currentColor"><rect x="8" y="2" width="8" height="13" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-          <svg class="sq" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
-        </button>
+        <button class="recbtn" id="rec" type="button" aria-pressed="false"><span class="t1">Record</span><span class="t2">Stop</span></button>
         <span class="timer" id="timer">0:00</span>
         <canvas class="meter" id="meter" width="600" height="112" aria-hidden="true"></canvas>
       </div>
