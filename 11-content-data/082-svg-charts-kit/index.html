@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SVG Charts in Vanilla JavaScript: Line, Bar and Donut Charts with Tooltips (No Library)</title>
+<meta name="description" content="Free SVG charts in plain JavaScript. Line, bar and donut charts that scale to any width, with tooltips, keyboard focus, series toggles, animation and an accessible data table.">
+<meta name="keywords" content="svg charts javascript, line chart without library, bar chart javascript, donut chart svg, chart tooltip, vanilla js charts">
+<meta name="author" content="mmrahmanbappi">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vanilla JavaScript Projects">
+<meta property="og:title" content="SVG Charts in Vanilla JavaScript: Line, Bar and Donut Charts with Tooltips (No Library)">
+<meta property="og:description" content="Free SVG charts in plain JavaScript. Line, bar and donut charts that scale to any width, with tooltips, keyboard focus, series toggles, animation and an accessible data table.">
+<meta property="og:url" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SVG Charts in Vanilla JavaScript: Line, Bar and Donut Charts with Tooltips (No Library)">
+<meta name="twitter:description" content="Free SVG charts in plain JavaScript. Line, bar and donut charts that scale to any width, with tooltips, keyboard focus, series toggles, animation and an accessible data table.">
+<meta name="twitter:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/preview.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317191f'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'%3EJS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#fbfbf8;--ink:#17191f;--muted:#5a5f6b;--line:#e4e3dc;--blue:#2445d6;--card:#fff}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Instrument Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:17px}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.bar{border-bottom:1px solid var(--line);background:#fff}
+.bar div{max-width:1120px;margin:0 auto;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.bar a.logo{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);text-decoration:none}
+.bar nav a{margin-left:18px;color:var(--ink);font-weight:600;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.crumbs{font-size:.9rem;color:var(--muted);padding:22px 0 0}
+.crumbs a{color:var(--muted)}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin:14px 0 14px;max-width:22ch}
+h2{font-size:1.6rem;margin:0 0 14px}
+h3{font-size:1.15rem}
+.lead{font-size:1.15rem;color:var(--muted);max-width:62ch}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:#fff}
+.btn.main{background:var(--ink);color:#fff}
+.shot{display:block;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 50px rgba(20,20,40,.12)}
+.shot img{display:block;width:100%;height:auto}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:50px;padding:60px 0}
+.cols p{margin-bottom:14px;max-width:65ch}
+ul.list{padding-left:20px}
+ul.list li{margin-bottom:6px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.code{position:relative;margin:0 0 60px}
+pre{background:#1d2030;color:#e8eaf3;border-radius:14px;padding:24px;overflow-x:auto;font-size:.9rem;line-height:1.6}
+.copy{position:absolute;top:12px;right:12px;font:inherit;font-size:.85rem;font-weight:700;border:0;border-radius:8px;padding:6px 12px;background:#fff;color:var(--ink);cursor:pointer}
+ol.steps{padding-left:22px;max-width:65ch;margin-bottom:60px}
+ol.steps li{margin-bottom:8px}
+details{border-top:1px solid var(--line);padding:16px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{font-weight:700;cursor:pointer;font-size:1.05rem}
+details p{margin-top:10px;color:var(--muted);max-width:70ch}
+.faq{margin-bottom:60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;margin:26px 0 60px}
+.tile{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tile img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+.tile div{padding:14px 16px}
+.tile small{color:var(--muted)}
+.tile:hover{border-color:var(--ink)}
+.cat{margin:50px 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.soon{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:20px 0 70px}
+.soon div{border:1px dashed #c9c7bd;border-radius:12px;padding:18px;color:var(--muted)}
+.soon b{color:var(--ink);display:block}
+.pager{display:flex;justify-content:space-between;gap:16px;margin:0 0 60px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;color:var(--muted);font-size:.95rem}
+@media(max-width:820px){.cols{grid-template-columns:1fr;gap:30px;padding:40px 0}.bar nav a:first-child{display:none}}
+.support{font-size:.95rem;color:var(--muted);margin-top:14px}
+.how{padding-left:22px;max-width:65ch;margin-bottom:40px}.how li{margin-bottom:10px}.how b{display:block}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/","name":"SVG Charts in Vanilla JavaScript: Line, Bar and Donut Charts with Tooltips (No Library)","description":"Free SVG charts in plain JavaScript. Line, bar and donut charts that scale to any width, with tooltips, keyboard focus, series toggles, animation and an accessible data table.","isPartOf":{"@type":"WebSite","name":"Vanilla JavaScript Projects","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/preview.png","width":1280,"height":800},"datePublished":"2026-09-23","dateModified":"2026-09-23","inLanguage":"en"},{"@type":"SoftwareSourceCode","name":"SVG Charts Kit in Vanilla JavaScript","description":"Free SVG charts in plain JavaScript. Line, bar and donut charts that scale to any width, with tooltips, keyboard focus, series toggles, animation and an accessible data table.","image":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/preview.png","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/","codeRepository":"https://github.com/mmrahmanbappi/vanilla-javascript-projects","programmingLanguage":["JavaScript","HTML","CSS"],"runtimePlatform":"Web browser","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"keywords":"svg charts javascript, line chart without library, bar chart javascript, donut chart svg, chart tooltip, vanilla js charts","author":{"@type":"Person","name":"mmrahmanbappi","url":"https://github.com/mmrahmanbappi"}},{"@type":"SoftwareApplication","name":"SVG Charts Kit","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/demo.html","applicationCategory":"DeveloperApplication","operatingSystem":"Any modern web browser","image":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/preview.png","description":"Free SVG charts in plain JavaScript. Line, bar and donut charts that scale to any width, with tooltips, keyboard focus, series toggles, animation and an accessible data table.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},{"@type":"ListItem","position":2,"name":"Content and Data","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/"},{"@type":"ListItem","position":3,"name":"SVG Charts Kit","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When should I use a chart library instead?","acceptedAnswer":{"@type":"Answer","text":"For zooming, huge datasets or many chart types. For a few simple charts, plain SVG is lighter and easier to style."}},{"@type":"Question","name":"Are SVG charts accessible?","acceptedAnswer":{"@type":"Answer","text":"They can be. Here every point has a label, points are focusable and the data is also available as a table."}},{"@type":"Question","name":"How do I use my own data?","acceptedAnswer":{"@type":"Answer","text":"Replace the generated arrays with numbers from your API and call the draw functions again."}}]}]}</script>
+</head>
+<body>
+<header class="bar"><div><a class="logo" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Vanilla JavaScript Projects</a><nav><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/#categories">Categories</a><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">GitHub</a></nav></div></header>
+<main class="wrap">
+<p class="crumbs"><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Home</a> / <a href="../">Content and Data</a> / SVG Charts Kit</p>
+<h1>SVG Charts Kit in JavaScript, Free with Live Demo</h1>
+<p class="lead">Free SVG charts in plain JavaScript. Line, bar and donut charts that scale to any width, with tooltips, keyboard focus, series toggles, animation and an accessible data table.</p>
+<div class="actions"><a class="btn main" href="demo.html">Open live demo</a><a class="btn" href="demo.html" download="svg-charts-kit.html">Download HTML file</a><a class="btn" href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/11-content-data/082-svg-charts-kit">View code on GitHub</a></div>
+<a class="shot" href="demo.html"><img src="preview.png" alt="SVG Charts Kit JavaScript project: line, bar and donut charts drawn with plain SVG, with tooltips and a data table" width="1280" height="800"></a>
+<p class="support">Runs on: SVG and path math. Works in all modern browsers.</p>
+<section class="cols"><div><h2>What is the SVG Charts Kit?</h2><p>A small dashboard with three hand-made SVG charts: monthly revenue as a line chart with two series, orders by weekday as bars, and sales by channel as a donut.</p><p>Hover or tab to any point for a tooltip, switch series on and off, shuffle the data to see the charts redraw with animation, and open the data as a plain table.</p></div>
+<div class="box"><h3>Good for</h3><ul class="list"><li>Admin dashboards</li><li>Reports and landing page stats</li><li>Small apps that do not want a chart library</li><li>Learning how charts are drawn</li></ul></div></section>
+<section><h2>What this project does</h2><ul class="list" style="margin-bottom:40px"><li>Line chart with area fill and two series</li><li>Bar chart with the best day highlighted</li><li>Donut chart with a total in the middle</li><li>Tooltips on hover and keyboard focus</li><li>Legend toggles, animation and data table</li></ul></section>
+<section><h2>How it works</h2><ol class="how"><li><b>Scale data to pixels</b>Each chart maps values to a viewBox with two tiny functions, x(i) and y(v). The viewBox makes the chart scale to any width.</li><li><b>Draw with paths</b>The line is one path of M and L commands. Bars are rects. The donut uses circles with stroke-dasharray slices.</li><li><b>Tooltips for mouse and keyboard</b>Every point is a focusable group with a label. Hover or focus shows the same tooltip, and screen readers read the label.</li></ol></section>
+<section><h2>The key JavaScript</h2><p style="margin-bottom:14px">This is the heart of the project. The full file has the rest, including the screen layout and error handling.</p>
+<div class="code"><button class="copy" type="button">Copy code</button><pre><code>const x = (i) =&gt; pad + i * (width - pad * 2) / (values.length - 1);
+const y = (v) =&gt; height - pad - (v / max) * (height - pad * 2);
+const d = values.map((v, i) =&gt; (i ? &quot;L&quot; : &quot;M&quot;) + x(i) + &quot; &quot; + y(v)).join(&quot; &quot;);
+svg.innerHTML = `&lt;path d=&quot;${d}&quot; fill=&quot;none&quot; stroke=&quot;#7C3AED&quot; stroke-width=&quot;3&quot;/&gt;`;
+
+// donut slice
+const len = (value / total) * 2 * Math.PI * r;
+circle.setAttribute(&quot;stroke-dasharray&quot;, `${len} ${circumference - len}`);</code></pre></div></section>
+<section><h2>How to use it</h2><ol class="steps"><li>Click Download HTML file above.</li><li>Open the file in a code editor, like VS Code.</li><li>Run it from a local server with <code>npx serve .</code> so the camera, microphone and AI features are allowed.</li><li>Change the text and colors, then upload it to GitHub Pages, Netlify or your own site. It is one file with no build step.</li></ol></section>
+<section class="faq"><h2>Questions people ask</h2><details><summary>When should I use a chart library instead?</summary><p>For zooming, huge datasets or many chart types. For a few simple charts, plain SVG is lighter and easier to style.</p></details><details><summary>Are SVG charts accessible?</summary><p>They can be. Here every point has a label, points are focusable and the data is also available as a table.</p></details><details><summary>How do I use my own data?</summary><p>Replace the generated arrays with numbers from your API and call the draw functions again.</p></details></section>
+<nav class="pager" aria-label="More projects"><a href="../081-data-table/">Previous: Data Table</a><a href="../083-markdown-blog-engine/">Next: Markdown Blog Engine</a></nav>
+<section><h2>More Content and Data projects</h2><div class="grid"><a class="tile" href="../081-data-table/"><img src="../081-data-table/preview.png" alt="Data Table JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>081. Data Table</h3><small>A sortable, searchable table with filters, pages, row selection and CSV export</small></div></a><a class="tile" href="../083-markdown-blog-engine/"><img src="../083-markdown-blog-engine/preview.png" alt="Markdown Blog Engine JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>083. Markdown Blog Engine</h3><small>A tiny blog that reads Markdown posts, with tags, search and reading time</small></div></a><a class="tile" href="../084-blur-up-lazy-images/"><img src="../084-blur-up-lazy-images/preview.png" alt="Blur-up Lazy Images JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>084. Blur-up Lazy Images</h3><small>A photo grid that shows tiny blurred placeholders and loads full images when they scroll into view</small></div></a><a class="tile" href="../085-countdown-timer-kit/"><img src="../085-countdown-timer-kit/preview.png" alt="Countdown Timer Kit JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>085. Countdown Timer Kit</h3><small>An event countdown, a sale timer, a kitchen timer with sound and a stopwatch with laps</small></div></a><a class="tile" href="../086-toast-notification-center/"><img src="../086-toast-notification-center/preview.png" alt="Toast Notification Center JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>086. Toast Notification Center</h3><small>Toast messages with types, positions, undo actions and a notification history</small></div></a><a class="tile" href="../087-threaded-comments/"><img src="../087-threaded-comments/preview.png" alt="Threaded Comments JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>087. Threaded Comments</h3><small>A comment section with nested replies, likes, editing, sorting and relative times</small></div></a></div></section>
+</main>
+<footer>Free under the MIT license. Made by <a href="https://github.com/mmrahmanbappi">mmrahmanbappi</a>. <a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">Star the repo on GitHub</a> to help more people find these projects.</footer>
+<script>document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.nextElementSibling.innerText).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy code',1500)})})</script>
+</body>
+</html>

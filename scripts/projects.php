@@ -112,6 +112,16 @@ $CATEGORIES = [
         'keywords' => 'javascript shopping cart, ecommerce javascript components, product filter, checkout form, invoice generator, booking calendar, store locator',
         'intro' => 'These are the building blocks of a small online business. A cart with coupons, product options, filters that live in the URL, a checkout with card checks, prices in local currencies, invoices, appointment booking, a store finder, order tracking and a wishlist. Each is one HTML file with real photos, and each shows the technique you need to connect it to your own backend.',
     ],
+    [
+        'num' => 11,
+        'slug' => '11-content-data',
+        'name' => 'Content and Data',
+        'ready' => true,
+        'title' => 'Free JavaScript Content and Data Projects: Data Table, SVG Charts, Blog, Comments',
+        'desc' => '10 free content and data projects in plain JavaScript with live demos: data table, SVG charts, Markdown blog, lazy images, timers, toasts, comments, translations, FAQ and more.',
+        'keywords' => 'javascript data table, svg charts javascript, markdown blog, lazy loading images, countdown timer, toast notifications, threaded comments, i18n javascript',
+        'intro' => 'Most websites are really about showing content well. These ten projects cover tables you can sort and export, charts without a library, a tiny Markdown blog, fast loading images, timers, notifications, comment threads, multiple languages, a searchable FAQ and a before and after slider. Each one is a single HTML file with real content and photos, ready to copy into your own site.',
+    ],
 ];
 
 $PROJECTS = [
@@ -5552,6 +5562,669 @@ const best = Math.min(...values);',
             [
                 'Is the share link private?',
                 'It only lists product numbers, nothing personal. Anyone with the link sees those products.',
+            ],
+        ],
+    ],
+    [
+        'num' => 81,
+        'cat' => '11-content-data',
+        'slug' => '081-data-table',
+        'name' => 'Data Table',
+        'example' => 'a sortable, searchable table with filters, pages, row selection and CSV export',
+        'title' => 'Data Table in Vanilla JavaScript: Sort, Search, Filter, Paginate and Export CSV',
+        'desc' => 'Free data table in plain JavaScript. Click headers to sort, search every column, filter by department, choose page size, select rows and export the results to a CSV file.',
+        'keywords' => 'data table javascript, sortable table, table pagination, search table javascript, export csv javascript, datatable without jquery',
+        'runs' => 'Intl.Collator and Blob downloads',
+        'what' => [
+            'A table of 64 team members. Click any header to sort up or down, search across every column with matches highlighted, and filter by department.',
+            'Choose how many rows per page, move between pages, tick rows or a whole page and export either the selection or all filtered rows as a CSV file.',
+        ],
+        'when' => [
+            'Admin panels and dashboards',
+            'Order and customer lists',
+            'Reports and exports',
+            'Internal directories',
+        ],
+        'features' => [
+            'Sortable headers with aria-sort',
+            'Search across all columns with highlights',
+            'Department filter and page size',
+            'Pagination with smart page numbers',
+            'Row selection and CSV export',
+        ],
+        'steps' => [
+            [
+                'Filter, sort, slice',
+                'Every change runs the same pipeline: filter by search and department, sort by the chosen column, then take one page.',
+            ],
+            [
+                'Sort like a human',
+                'Intl.Collator with numeric set compares names in the right language order and sorts Item 2 before Item 10.',
+            ],
+            [
+                'Export what you see',
+                'CSV is built from the filtered rows, or only the ticked ones, then downloaded through a Blob link. A BOM makes Excel read accents correctly.',
+            ],
+        ],
+        'code' => 'const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
+const view = data
+  .filter((r) => Object.values(r).join(" ").toLowerCase().includes(query))
+  .sort((a, b) => collator.compare(a[key], b[key]) * dir)
+  .slice((page - 1) * size, page * size);
+
+const csv = [headers, ...rows.map((r) => keys.map((k) => r[k]))].map((r) => r.join(",")).join("\\n");
+link.href = URL.createObjectURL(new Blob(["\\ufeff" + csv], { type: "text/csv" }));',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'How many rows can it handle?',
+                'A few thousand rows sort and search instantly. For more, load pages from your server with the same sort and search values.',
+            ],
+            [
+                'Why add a BOM to the CSV?',
+                'Excel needs it to read accented letters like ü correctly. Other apps ignore it.',
+            ],
+            [
+                'Is the sticky header accessible?',
+                'Yes. The headers are real buttons inside th elements, and aria-sort tells screen readers the sort direction.',
+            ],
+        ],
+    ],
+    [
+        'num' => 82,
+        'cat' => '11-content-data',
+        'slug' => '082-svg-charts-kit',
+        'name' => 'SVG Charts Kit',
+        'example' => 'line, bar and donut charts drawn with plain SVG, with tooltips and a data table',
+        'title' => 'SVG Charts in Vanilla JavaScript: Line, Bar and Donut Charts with Tooltips (No Library)',
+        'desc' => 'Free SVG charts in plain JavaScript. Line, bar and donut charts that scale to any width, with tooltips, keyboard focus, series toggles, animation and an accessible data table.',
+        'keywords' => 'svg charts javascript, line chart without library, bar chart javascript, donut chart svg, chart tooltip, vanilla js charts',
+        'runs' => 'SVG and path math',
+        'what' => [
+            'A small dashboard with three hand-made SVG charts: monthly revenue as a line chart with two series, orders by weekday as bars, and sales by channel as a donut.',
+            'Hover or tab to any point for a tooltip, switch series on and off, shuffle the data to see the charts redraw with animation, and open the data as a plain table.',
+        ],
+        'when' => [
+            'Admin dashboards',
+            'Reports and landing page stats',
+            'Small apps that do not want a chart library',
+            'Learning how charts are drawn',
+        ],
+        'features' => [
+            'Line chart with area fill and two series',
+            'Bar chart with the best day highlighted',
+            'Donut chart with a total in the middle',
+            'Tooltips on hover and keyboard focus',
+            'Legend toggles, animation and data table',
+        ],
+        'steps' => [
+            [
+                'Scale data to pixels',
+                'Each chart maps values to a viewBox with two tiny functions, x(i) and y(v). The viewBox makes the chart scale to any width.',
+            ],
+            [
+                'Draw with paths',
+                'The line is one path of M and L commands. Bars are rects. The donut uses circles with stroke-dasharray slices.',
+            ],
+            [
+                'Tooltips for mouse and keyboard',
+                'Every point is a focusable group with a label. Hover or focus shows the same tooltip, and screen readers read the label.',
+            ],
+        ],
+        'code' => 'const x = (i) => pad + i * (width - pad * 2) / (values.length - 1);
+const y = (v) => height - pad - (v / max) * (height - pad * 2);
+const d = values.map((v, i) => (i ? "L" : "M") + x(i) + " " + y(v)).join(" ");
+svg.innerHTML = `<path d="${d}" fill="none" stroke="#7C3AED" stroke-width="3"/>`;
+
+// donut slice
+const len = (value / total) * 2 * Math.PI * r;
+circle.setAttribute("stroke-dasharray", `${len} ${circumference - len}`);',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'When should I use a chart library instead?',
+                'For zooming, huge datasets or many chart types. For a few simple charts, plain SVG is lighter and easier to style.',
+            ],
+            [
+                'Are SVG charts accessible?',
+                'They can be. Here every point has a label, points are focusable and the data is also available as a table.',
+            ],
+            [
+                'How do I use my own data?',
+                'Replace the generated arrays with numbers from your API and call the draw functions again.',
+            ],
+        ],
+    ],
+    [
+        'num' => 83,
+        'cat' => '11-content-data',
+        'slug' => '083-markdown-blog-engine',
+        'name' => 'Markdown Blog Engine',
+        'example' => 'a tiny blog that reads Markdown posts, with tags, search and reading time',
+        'title' => 'Markdown Blog in Vanilla JavaScript: Front Matter, Tags, Search and Hash Routing',
+        'desc' => 'Free Markdown blog engine in plain JavaScript. Write posts in Markdown with front matter, get a post list with tags, search, reading time and pretty post pages with hash routing.',
+        'keywords' => 'markdown blog javascript, static blog without framework, markdown parser javascript, front matter, hash router blog, simple blog engine',
+        'runs' => 'A tiny Markdown parser and hash routing',
+        'what' => [
+            'A small blog built from three Markdown posts stored in the page. The home view shows cards with cover photos, dates and reading time, with tag filters and search.',
+            'Clicking a post opens a clean article page with its own address, so the back button and shared links work. The Markdown parser handles headings, lists, quotes, code blocks, bold, italic and links.',
+        ],
+        'when' => [
+            'Personal blogs and journals',
+            'Changelogs and news pages',
+            'Documentation with a few pages',
+            'Learning how static blogs work',
+        ],
+        'features' => [
+            'Markdown posts with front matter',
+            'Post list with covers, dates and reading time',
+            'Tag filter and full text search',
+            'Hash routing with back button support',
+            'Small, safe Markdown parser',
+        ],
+        'steps' => [
+            [
+                'Posts live in script tags',
+                'Each post is Markdown inside a script tag with type text/markdown, so the browser ignores it and the script reads it.',
+            ],
+            [
+                'Front matter and a small parser',
+                'The block between the --- lines gives the title, date, tags and cover. A 30 line parser turns headings, lists, quotes, code and links into HTML.',
+            ],
+            [
+                'Hash routing',
+                'Links like #/post/sourdough-start switch to the post view. The hashchange event makes the back button work.',
+            ],
+        ],
+        'code' => 'const [, frontMatter, body] = text.match(/^---\\n([\\s\\S]*?)\\n---\\n([\\s\\S]*)$/);
+const meta = Object.fromEntries(frontMatter.split("\\n").map((l) => {
+  const i = l.indexOf(":");
+  return [l.slice(0, i).trim(), l.slice(i + 1).trim()];
+}));
+addEventListener("hashchange", () => {
+  const m = location.hash.match(/^#\\/post\\/(.+)/);
+  m ? showPost(m[1]) : showList();
+});',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Can I load posts from separate files?',
+                'Yes. Fetch each .md file and pass its text to the same parser. You need to serve the page from a web server for fetch to work.',
+            ],
+            [
+                'Is the Markdown parser safe?',
+                'Text is escaped before formatting and links must start with http or https, so posts cannot inject scripts.',
+            ],
+            [
+                'Is hash routing good for search engines?',
+                'Search engines can read it, but for the best results publish a real HTML page per post.',
+            ],
+        ],
+    ],
+    [
+        'num' => 84,
+        'cat' => '11-content-data',
+        'slug' => '084-blur-up-lazy-images',
+        'name' => 'Blur-up Lazy Images',
+        'example' => 'a photo grid that shows tiny blurred placeholders and loads full images when they scroll into view',
+        'title' => 'Lazy Loading Images with Blur-up Placeholders in JavaScript: IntersectionObserver and No Layout Shift',
+        'desc' => 'Free blur-up lazy image loading in plain JavaScript. Tiny blurred placeholders, full images loaded only when they scroll into view, fixed aspect ratios so nothing jumps, and live load stats.',
+        'keywords' => 'lazy load images javascript, blur up image placeholder, intersectionobserver images, image loading performance, prevent layout shift, progressive image loading',
+        'runs' => 'IntersectionObserver',
+        'what' => [
+            'A gallery of 15 photos where each tile first shows a tiny blurred version and loads the real photo only when it is about to scroll into view.',
+            'Counters show how many full images have loaded and how much data was saved. You can compare with the browser\'s native lazy loading and pretend to be on a slow connection.',
+        ],
+        'when' => [
+            'Photo galleries and portfolios',
+            'Shops with long product grids',
+            'Blogs with many images',
+            'Any page where speed matters',
+        ],
+        'features' => [
+            'Blur-up placeholders from a 20 pixel image',
+            'IntersectionObserver with a 200 pixel head start',
+            'Fixed aspect ratios to prevent layout shift',
+            'Live stats for loaded and saved data',
+            'Native lazy loading comparison and slow mode',
+        ],
+        'steps' => [
+            [
+                'Start with a tiny image',
+                'Each tile gets a 20 pixel wide version of the photo as a background, blurred. It is about 1 KB and shows the colours straight away.',
+            ],
+            [
+                'Load when nearly visible',
+                'IntersectionObserver fires when a tile comes within 200 pixels of the view. Only then is the full image requested.',
+            ],
+            [
+                'Reserve the space',
+                'Every tile has a fixed 3 by 2 aspect ratio, so the page never jumps as images arrive. That keeps layout shift scores low.',
+            ],
+        ],
+        'code' => 'const io = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    if (!e.isIntersecting) continue;
+    io.unobserve(e.target);
+    const img = e.target.querySelector("img");
+    img.src = img.dataset.src;                      // full image
+    img.onload = () => e.target.classList.add("done"); // fade in over blur
+  }
+}, { rootMargin: "200px" });
+tiles.forEach((t) => io.observe(t));',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Why not only use loading="lazy"?',
+                'Native lazy loading is great and simpler. Blur-up adds a nicer visual while waiting and gives you control over when loading starts.',
+            ],
+            [
+                'How do I make the tiny placeholders?',
+                'Most image services can resize on the fly, like ?w=20. You can also inline a tiny base64 image in the HTML.',
+            ],
+            [
+                'Does lazy loading hurt SEO?',
+                'No, as long as the images are real img elements with alt text. Search engines load them when they render the page.',
+            ],
+        ],
+    ],
+    [
+        'num' => 85,
+        'cat' => '11-content-data',
+        'slug' => '085-countdown-timer-kit',
+        'name' => 'Countdown Timer Kit',
+        'example' => 'an event countdown, a sale timer, a kitchen timer with sound and a stopwatch with laps',
+        'title' => 'Countdown Timer in JavaScript: Event Countdown, Sale Timer, Kitchen Timer and Stopwatch',
+        'desc' => 'Free countdown timer kit in plain JavaScript. Event countdown to any date and time zone, a daily sale timer, a kitchen timer with an alarm sound and a stopwatch with laps. Accurate even in background tabs.',
+        'keywords' => 'countdown timer javascript, event countdown, sale countdown timer, kitchen timer, stopwatch with laps, web audio beep',
+        'runs' => 'performance.now and the Web Audio API',
+        'what' => [
+            'Four timers in one kit. An event countdown to any date in any time zone, a daily sale timer that ends at midnight local time, a kitchen timer with a progress ring and alarm, and a stopwatch with laps.',
+            'All of them count from real clock times rather than adding up ticks, so they stay accurate after the tab has been hidden or the phone has been locked.',
+        ],
+        'when' => [
+            'Launch and event pages',
+            'Sales and offers',
+            'Cooking, workouts and study sessions',
+            'Games and quizzes',
+        ],
+        'features' => [
+            'Event countdown with time zone choice',
+            'Honest daily sale timer',
+            'Kitchen timer with ring, sound and vibration',
+            'Stopwatch with best and worst laps',
+            'Accurate in background tabs',
+        ],
+        'steps' => [
+            [
+                'Count to a target time',
+                'Timers store the end time, not a counter. Each tick works out what is left from the clock, so background tabs and slow devices never drift.',
+            ],
+            [
+                'Time zones done right',
+                'The event countdown converts the chosen date and zone into an exact moment, so everyone sees the same countdown wherever they are.',
+            ],
+            [
+                'Sound without files',
+                'The kitchen timer makes three beeps with the Web Audio API. The audio context starts on the Start click, which browsers require.',
+            ],
+        ],
+        'code' => 'let end = performance.now() + minutes * 60000;
+function tick() {
+  const left = Math.max(0, end - performance.now());   // no drift
+  display.textContent = format(left);
+  if (left === 0) beep(); else requestAnimationFrame(tick);
+}
+function beep() {
+  const ctx = new AudioContext(), osc = ctx.createOscillator();
+  osc.frequency.value = 880; osc.connect(ctx.destination);
+  osc.start(); osc.stop(ctx.currentTime + 0.3);
+}',
+        'browsers' => 'Works in all modern browsers. Sound needs one tap on Start first, which all browsers require.',
+        'faq' => [
+            [
+                'Why does my setInterval timer drift?',
+                'Browsers slow timers down in background tabs. Store the end time and calculate what is left on every tick instead.',
+            ],
+            [
+                'Are fake urgency timers a good idea?',
+                'No. Timers that reset on reload mislead customers and can break consumer law. This sale timer ends at a real time.',
+            ],
+            [
+                'Why is there no sound until I press Start?',
+                'Browsers only allow audio after a user action. The first click allows it.',
+            ],
+        ],
+    ],
+    [
+        'num' => 86,
+        'cat' => '11-content-data',
+        'slug' => '086-toast-notification-center',
+        'name' => 'Toast Notification Center',
+        'example' => 'toast messages with types, positions, undo actions and a notification history',
+        'title' => 'Toast Notifications in Vanilla JavaScript: Queue, Positions, Undo Actions and History',
+        'desc' => 'Free toast notification system in plain JavaScript. Success, error, warning and info toasts, six positions, progress bars that pause on hover, undo buttons, a stack limit and a history panel.',
+        'keywords' => 'toast notification javascript, snackbar javascript, notification center, undo toast, aria live notifications, vanilla js toast',
+        'runs' => 'ARIA live regions and the Web Animations API',
+        'what' => [
+            'A notification system for web apps. Send success, error, warning and info toasts, and a delete toast with an Undo button that really restores the action.',
+            'Choose from six screen positions, set how long toasts stay and how many can stack. Hovering pauses the countdown, Escape closes the newest, and every message is kept in a history panel.',
+        ],
+        'when' => [
+            'Web apps and dashboards',
+            'Forms that save in the background',
+            'Shops confirming add to cart',
+            'Admin tools with undo',
+        ],
+        'features' => [
+            'Four types with colour and icon',
+            'Six positions',
+            'Progress bar that pauses on hover and focus',
+            'Undo action and close button',
+            'Stack limit and notification history',
+        ],
+        'steps' => [
+            [
+                'One region per position',
+                'Toasts go into a container with aria-live, so screen readers announce them. Errors use role alert so they are read straight away.',
+            ],
+            [
+                'Timers you can pause',
+                'The progress bar is a Web Animation. Its onfinish closes the toast, and hovering or focusing pauses it, so people have time to read.',
+            ],
+            [
+                'Keep the stack short',
+                'When the limit is reached, the oldest toast leaves first. Every toast is also saved to the history panel with a time.',
+            ],
+        ],
+        'code' => 'function toast(title, { type = "info", duration = 5000, undo } = {}) {
+  const el = document.createElement("div");
+  el.setAttribute("role", type === "error" ? "alert" : "status");
+  el.innerHTML = `<b>${title}</b>${undo ? "<button>Undo</button>" : ""}<span class="bar"></span>`;
+  region.append(el);
+  const bar = el.querySelector(".bar").animate(
+    [{ transform: "scaleX(1)" }, { transform: "scaleX(0)" }], { duration });
+  bar.onfinish = () => el.remove();
+  el.onpointerenter = () => bar.pause();
+  el.onpointerleave = () => bar.play();
+}',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Are toasts accessible?',
+                'They can be. Use a live region so screen readers announce them, give people time to read and never put the only copy of important information in a toast.',
+            ],
+            [
+                'Should errors disappear by themselves?',
+                'Usually no. Set errors to stay until closed, or show them next to the problem instead.',
+            ],
+            [
+                'How does Undo work in a real app?',
+                'Wait until the toast closes before deleting on the server, or keep a copy so Undo can put it back.',
+            ],
+        ],
+    ],
+    [
+        'num' => 87,
+        'cat' => '11-content-data',
+        'slug' => '087-threaded-comments',
+        'name' => 'Threaded Comments',
+        'example' => 'a comment section with nested replies, likes, editing, sorting and relative times',
+        'title' => 'Threaded Comments in Vanilla JavaScript: Nested Replies, Likes, Edit and Sort',
+        'desc' => 'Free threaded comment section in plain JavaScript. Nested replies, likes, edit and delete your own comments, sort by newest or top, collapse threads and friendly times like 2 hours ago.',
+        'keywords' => 'comment section javascript, threaded comments, nested replies, like button javascript, relative time format, blog comments',
+        'runs' => 'Intl.RelativeTimeFormat and localStorage',
+        'what' => [
+            'A comment section with nested replies, avatars, likes and friendly times. Write a comment, reply to anyone, and mentions like @Amira are highlighted.',
+            'Your own comments can be edited or deleted, threads can be collapsed, and you can sort by top, newest or oldest. Everything is saved in your browser.',
+        ],
+        'when' => [
+            'Blog posts and articles',
+            'Product Q and A',
+            'Course lessons and community pages',
+            'Internal feedback tools',
+        ],
+        'features' => [
+            'Nested replies up to three levels',
+            'Likes with a remembered state',
+            'Edit and delete your own comments',
+            'Sort and collapse threads',
+            'Relative times and mention highlighting',
+        ],
+        'steps' => [
+            [
+                'Comments are a tree',
+                'Each comment has a list of replies, which have their own replies. One recursive function draws the whole tree, up to three levels deep.',
+            ],
+            [
+                'Friendly times',
+                'Intl.RelativeTimeFormat turns timestamps into 5 hours ago or yesterday, in the visitor\'s language.',
+            ],
+            [
+                'Keep threads readable',
+                'Deleting a comment with replies leaves a placeholder so the conversation still makes sense. Long threads can be collapsed.',
+            ],
+        ],
+        'code' => 'function render(comments, depth = 1) {
+  return "<ul>" + comments.map((c) => `
+    <li><b>${c.who}</b> <time>${ago(c.time)}</time>
+      <p>${escape(c.text)}</p>
+      ${depth < 3 ? `<button data-reply="${c.id}">Reply</button>` : ""}
+      ${c.replies.length ? render(c.replies, depth + 1) : ""}
+    </li>`).join("") + "</ul>";
+}
+const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+rtf.format(-1, "day"); // "yesterday"',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'How do I save comments for everyone?',
+                'Send new comments to your server with fetch and load the tree from there. The demo keeps them in localStorage only.',
+            ],
+            [
+                'Is user text safe to show?',
+                'Yes. Text is escaped before display, so nobody can inject HTML or scripts.',
+            ],
+            [
+                'Why limit nesting to three levels?',
+                'Deep threads get too narrow to read on phones. Three levels keeps conversations clear.',
+            ],
+        ],
+    ],
+    [
+        'num' => 88,
+        'cat' => '11-content-data',
+        'slug' => '088-language-switcher',
+        'name' => 'Language Switcher',
+        'example' => 'a page that switches between five languages, including right to left Arabic',
+        'title' => 'Language Switcher in JavaScript: i18n with JSON, RTL Support, Plurals and Local Formats',
+        'desc' => 'Free language switcher in plain JavaScript. Translations from JSON, right to left layout for Arabic, plural rules, dates, numbers and prices formatted for each language, and a remembered choice.',
+        'keywords' => 'language switcher javascript, i18n javascript, website translation, rtl support, intl pluralrules, multilingual website',
+        'runs' => 'Intl.PluralRules, Intl.DateTimeFormat and dir',
+        'what' => [
+            'A small bakery website that switches between English, Bengali, Arabic, Spanish and German. Every label, button and image description changes, and the choice is remembered.',
+            'Arabic flips the layout to right to left. Dates, numbers and prices use each language\'s format, and the basket line shows plural rules working, including Arabic\'s six plural forms.',
+        ],
+        'when' => [
+            'Sites with visitors from several countries',
+            'Shops and restaurants in tourist areas',
+            'Apps with right to left users',
+            'Learning how i18n works',
+        ],
+        'features' => [
+            'Five languages from JSON style objects',
+            'Right to left support for Arabic',
+            'Plural rules with Intl.PluralRules',
+            'Local dates, numbers and prices',
+            'Remembered choice and browser language guess',
+        ],
+        'steps' => [
+            [
+                'Text lives in one object per language',
+                'Every piece of text has a key like hero.title. Elements say which key they need with data-i18n, and one loop fills them in.',
+            ],
+            [
+                'Direction and language tags',
+                'Switching to Arabic sets dir="rtl" and lang="ar", so the layout mirrors and screen readers use the right voice.',
+            ],
+            [
+                'Let Intl do the grammar',
+                'Intl.PluralRules picks one, two, few, many or other for each language. Dates, numbers and prices use the matching locale.',
+            ],
+        ],
+        'code' => 'const t = translations[lang];
+document.querySelectorAll("[data-i18n]").forEach((el) => {
+  el.textContent = el.dataset.i18n.split(".").reduce((o, k) => o[k], t);
+});
+document.documentElement.lang = lang;
+document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+
+const rule = new Intl.PluralRules("ar").select(3);   // "few"
+const text = t.cart[rule].replace("{n}", 3);',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Should translations be in separate files?',
+                'For bigger sites, yes. Load /i18n/es.json with fetch when someone picks Spanish, so people only download their language.',
+            ],
+            [
+                'Is this good for SEO?',
+                'For search engines, give each language its own URL, like /es/, with hreflang tags. Client side switching is best for apps.',
+            ],
+            [
+                'Why do plurals need special handling?',
+                'Many languages have more than two forms. Arabic has six. Intl.PluralRules knows the rules for each language.',
+            ],
+        ],
+    ],
+    [
+        'num' => 89,
+        'cat' => '11-content-data',
+        'slug' => '089-searchable-faq',
+        'name' => 'Searchable FAQ',
+        'example' => 'an FAQ with instant search, categories, deep links, votes and automatic schema markup',
+        'title' => 'Searchable FAQ in JavaScript: Instant Search, Categories, Deep Links and FAQ Schema',
+        'desc' => 'Free searchable FAQ in plain JavaScript. Instant search with highlights, category filters, deep links to any answer, helpful votes and automatic FAQPage JSON-LD for Google.',
+        'keywords' => 'faq javascript, searchable faq, faq accordion, faq schema json-ld, help center page, faq search',
+        'runs' => 'details and summary with JSON-LD',
+        'what' => [
+            'A help center with ten questions in four topics. Type in the search box and matching questions appear with highlights. If only a few match, their answers open automatically.',
+            'Every answer has its own link, a Was this helpful vote and a way to contact support. The page also builds FAQPage schema markup you can copy into your site.',
+        ],
+        'when' => [
+            'Help and support pages',
+            'Product and pricing FAQs',
+            'Course and event information',
+            'Internal knowledge bases',
+        ],
+        'features' => [
+            'Instant search with highlighted words',
+            'Topic filters',
+            'Deep links that open the right answer',
+            'Helpful votes saved in the browser',
+            'FAQPage JSON-LD generated for SEO',
+        ],
+        'steps' => [
+            [
+                'Native accordions',
+                'Each question is a details element, so it opens and closes with no JavaScript and works with a keyboard and screen readers.',
+            ],
+            [
+                'Search every word',
+                'The search keeps questions where every typed word appears in the question or answer, highlights the matches and opens the results when only a few are left.',
+            ],
+            [
+                'Schema for search engines',
+                'The page builds FAQPage JSON-LD from the same list, so Google can show your questions directly in search results.',
+            ],
+        ],
+        'code' => 'const words = query.toLowerCase().split(/\\s+/).filter(Boolean);
+const results = faqs.filter((f) =>
+  words.every((w) => (f.q + " " + f.a).toLowerCase().includes(w)));
+
+const schema = {
+  "@context": "https://schema.org", "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a } }))
+};',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Why use details and summary?',
+                'They are built into HTML, accessible by default and still work if JavaScript fails to load.',
+            ],
+            [
+                'Does the FAQ schema really help?',
+                'It helps search engines understand your page. Google now shows FAQ rich results mainly for well known sites, but the markup is still worth adding.',
+            ],
+            [
+                'What should I do with the votes?',
+                'Send them to your analytics. Answers with many No votes are the ones to rewrite first.',
+            ],
+        ],
+    ],
+    [
+        'num' => 90,
+        'cat' => '11-content-data',
+        'slug' => '090-before-after-slider',
+        'name' => 'Before and After Slider',
+        'example' => 'a draggable slider that compares two images, like before and after a photo edit',
+        'title' => 'Before and After Image Slider in JavaScript: Drag, Keyboard and Vertical Mode',
+        'desc' => 'Free before and after image comparison slider in plain JavaScript. Drag or use the keyboard, switch to vertical, add labels and compare several photos, built on an accessible range input.',
+        'keywords' => 'before after slider javascript, image comparison slider, compare two images, photo edit comparison, range slider image, vanilla js image compare',
+        'runs' => 'CSS clip-path and a range input',
+        'what' => [
+            'An image comparison slider. Drag the handle across the photo to reveal the before version on one side and the after version on the other.',
+            'You can switch to a vertical split, pick three different photos and choose the before effect. Under the hood it is a real range input, so the keyboard and screen readers work.',
+        ],
+        'when' => [
+            'Photo editing and retouching',
+            'Renovation and interior design',
+            'Cleaning and detailing services',
+            'Dental, beauty and fitness results',
+        ],
+        'features' => [
+            'Drag, click or use arrow keys',
+            'Horizontal or vertical split',
+            'Before and after labels',
+            'Several photos to choose from',
+            'Accessible range input with spoken values',
+        ],
+        'steps' => [
+            [
+                'Stack two images',
+                'The before and after images sit on top of each other. clip-path: inset() hides the left part of the after image up to the handle.',
+            ],
+            [
+                'A real range input underneath',
+                'An invisible range input covers the slider, so keyboard arrows, screen readers and touch all work without extra code.',
+            ],
+            [
+                'Drag anywhere',
+                'Pointer events move the handle to wherever you press or drag, horizontally or vertically.',
+            ],
+        ],
+        'code' => '<div class="compare" style="--p:50%">
+  <img src="before.jpg" alt="Before">
+  <img src="after.jpg" alt="After" class="after">
+  <input type="range" min="0" max="100" value="50" aria-label="Comparison position">
+</div>
+
+.after { clip-path: inset(0 0 0 var(--p)); }
+range.oninput = () => box.style.setProperty("--p", range.value + "%");',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Do I need two separate images?',
+                'For real before and after photos, yes. Take them from the same spot and crop them to the same size. The demo uses CSS filters to fake the before.',
+            ],
+            [
+                'Why use a hidden range input?',
+                'It gives keyboard control, touch support and screen reader announcements for free.',
+            ],
+            [
+                'Can I start at a different position?',
+                'Yes. Set the value on the range input and the --p variable, for example 30 for 30 percent.',
             ],
         ],
     ],

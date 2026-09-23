@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Threaded Comments Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Free threaded comment section in plain JavaScript. Nested replies, likes, edit and delete your own comments, sort by newest or top, collapse threads and friendly times like 2 hours ago.">
+<meta name="keywords" content="comment section javascript, threaded comments, nested replies, like button javascript, relative time format, blog comments">
+<meta property="og:title" content="Threaded Comments in Vanilla JavaScript: Nested Replies, Likes, Edit and Sort">
+<meta property="og:description" content="Free threaded comment section in plain JavaScript. Nested replies, likes, edit and delete your own comments, sort by newest or top, collapse threads and friendly times like 2 hours ago.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/087-threaded-comments/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/087-threaded-comments/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0F766E">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230F766E'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Threaded Comments", "description": "Free threaded comment section in plain JavaScript. Nested replies, likes, edit and delete your own comments, sort by newest or top, collapse threads and friendly times like 2 hours ago.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "comment section javascript, threaded comments, nested replies, like button javascript, relative time format, blog comments"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* mobile header fix */
+.how>*{min-width:0}.how pre{overflow-x:auto;max-width:100%}
+
+@media (max-width:560px){.topbar{flex-wrap:wrap;gap:8px}.topbar nav{display:flex;flex-wrap:wrap;gap:6px 12px}.topbar nav span{display:none}.topbar nav a{margin-left:0}}
+.strip dd{overflow-wrap:anywhere}
+
+:root{--accent:#0F766E}
+.cm{max-width:760px}.new{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;margin-bottom:14px}.new textarea,.rf2 textarea{width:100%;min-height:74px;font:16px var(--body);border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--sunk);color:var(--ink);resize:vertical}.new .r{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px;font-size:13px;color:var(--muted)}
+.hdr2{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}.hdr2 b{font-family:var(--display);font-size:18px}.cl2{list-style:none;padding:0;margin:0}.cl2 .cl2{margin-left:26px;border-left:2px solid var(--line);padding-left:14px}
+.c{padding:12px 0}.ch{display:flex;gap:10px;align-items:center}.ch img,.ch .av2{width:36px;height:36px;border-radius:50%;object-fit:cover}.av2{display:grid;place-items:center;background:var(--accent);color:#fff;font-weight:800}.ch b{font-size:15px}.ch .tm{font-size:13px;color:var(--muted)}.ch .you{font-size:11px;background:var(--accent);color:#fff;border-radius:10px;padding:1px 7px}
+.cb{margin:6px 0 6px 46px;font-size:16px;white-space:pre-wrap;word-break:break-word}.cb .at{color:var(--accent);font-weight:700}.ca{margin-left:40px;display:flex;gap:4px;flex-wrap:wrap}.ca button{border:0;background:transparent;color:var(--muted);font:600 14px var(--body);padding:4px 8px;border-radius:8px;cursor:pointer}.ca button:hover{background:var(--sunk);color:var(--ink)}.ca button[aria-pressed=true]{color:#DC2626}
+.rf2{margin:6px 0 6px 46px}.rf2 .r{display:flex;gap:6px;justify-content:flex-end;margin-top:6px}.gone{color:var(--muted);font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../">Vanilla JavaScript Projects</a>
+  <nav><span>Project 87 of 100</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 87, Content and data</p>
+    <h1>Threaded Comments</h1>
+    <p class="lede">A comment section people enjoy using. Reply to a reply, like the best answers, fix a typo in your own comment and collapse long threads.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="Comment bubbles with nested replies"><rect x="20" y="30" width="230" height="56" rx="14" fill="var(--panel)" stroke="var(--ink)" stroke-width="4"/><circle cx="46" cy="58" r="14" fill="var(--accent)"/><rect x="70" y="50" width="140" height="8" rx="4" fill="var(--line)"/><path d="M50 90v50h26" stroke="var(--line)" stroke-width="4" fill="none"/><rect x="80" y="112" width="220" height="56" rx="14" fill="var(--panel)" stroke="var(--ink)" stroke-width="4"/><circle cx="106" cy="140" r="14" fill="#F59E0B"/><rect x="130" y="132" width="130" height="8" rx="4" fill="var(--line)"/><path d="M110 172v40h26" stroke="var(--line)" stroke-width="4" fill="none"/><rect x="140" y="190" width="160" height="46" rx="14" fill="var(--accent)" opacity=".85"/></svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>Intl.RelativeTimeFormat</dd></div><div><dt>Save</dt><dd>localStorage</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <h2 id="w-title">Join the discussion</h2>
+  <p class="sub">Write a comment, reply to someone, like and sort. Your own comments can be edited or deleted. Everything is saved in your browser.</p>
+  <div class="cm"><form class="new" id="nf"><label for="nt" class="sr-only">Write a comment</label><textarea id="nt" maxlength="600" placeholder="Share your thoughts. Mention someone with @name." required></textarea><div class="r"><span id="nc">0 / 600</span><span><label for="nn" class="sr-only">Your name</label><input id="nn" class="field" placeholder="Your name" style="margin:0;display:inline-block;width:150px" required autocomplete="given-name"> <button class="btn primary" type="submit">Post</button></span></div></form>
+<div class="hdr2"><b id="cc"></b><label class="field" style="margin:0;flex-direction:row;align-items:center;gap:8px">Sort <select id="srt"><option value="top">Top</option><option value="new">Newest</option><option value="old">Oldest</option></select></label></div><ul class="cl2" id="list" aria-live="polite"></ul><button class="btn" type="button" id="rst" style="margin-top:10px">Reset demo comments</button></div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Comments are a tree</strong><span>Each comment has a list of replies, which have their own replies. One recursive function draws the whole tree, up to three levels deep.</span></li><li><strong>Friendly times</strong><span>Intl.RelativeTimeFormat turns timestamps into 5 hours ago or yesterday, in the visitor&#x27;s language.</span></li><li><strong>Keep threads readable</strong><span>Deleting a comment with replies leaves a placeholder so the conversation still makes sense. Long threads can be collapsed.</span></li></ol></div>
+  <pre><code><span class="k">function</span> render(comments, depth = 1) {
+  <span class="k">return</span> &quot;&lt;ul&gt;&quot; + comments.map((c) =&gt; `
+    &lt;li&gt;&lt;b&gt;${c.who}&lt;/b&gt; &lt;time&gt;${ago(c.time)}&lt;/time&gt;
+      &lt;p&gt;${escape(c.text)}&lt;/p&gt;
+      ${depth &lt; 3 ? `&lt;button data-reply=&quot;${c.id}&quot;&gt;Reply&lt;/button&gt;` : &quot;&quot;}
+      ${c.replies.length ? render(c.replies, depth + 1) : &quot;&quot;}
+    &lt;/li&gt;`).join(&quot;&quot;) + &quot;&lt;/ul&gt;&quot;;
+}
+<span class="k">const</span> rtf = <span class="k">new</span> Intl.RelativeTimeFormat(&quot;en&quot;, { numeric: &quot;auto&quot; });
+rtf.format(-1, &quot;day&quot;); <span class="c">// &quot;yesterday&quot;</span></code></pre>
+</section>
+</main>
+<footer class="foot"><span>Threaded Comments. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/11-content-data/087-threaded-comments">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+(() => {
+support(typeof Intl.RelativeTimeFormat === "function", "Relative time formatting supported");
+const KEY = "demo-comments", AV = { Amira: "1494790108377-be9c29b29330", Daniel: "1507003211169-0a1dd7228f2d", Priya: "1438761681033-6461ffad8d80", Tom: "1500648767791-00dcc994a43e", Grace: "1544005313-94ddf0286df2" };
+const H = 36e5, now = Date.now();
+const SEED = () => [{ id: 1, who: "Amira", t: now - 5 * H, text: "This guide finally made CSS grid click for me. The line naming tip is gold.", likes: 14, kids: [{ id: 2, who: "Daniel", t: now - 4 * H, text: "@Amira same! I rewrote my whole layout after reading it.", likes: 5, kids: [{ id: 3, who: "Priya", t: now - 3.5 * H, text: "Did you run into any issues with older phones?", likes: 1, kids: [] }] }] }, { id: 4, who: "Tom", t: now - 26 * H, text: "Would love a follow-up on subgrid.", likes: 9, kids: [] }, { id: 5, who: "Grace", t: now - 40 * 6e4, text: "Bookmarked. The examples are really clear.", likes: 2, kids: [] }];
+let D = store(KEY) || { list: SEED(), liked: [], mine: [], next: 100 }; let replyTo = null, editing = null;
+const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
+function ago(t) { const s = (t - Date.now()) / 1000, a = Math.abs(s); if (a < 60) return rtf.format(Math.round(s), "second"); if (a < 3600) return rtf.format(Math.round(s / 60), "minute"); if (a < 86400) return rtf.format(Math.round(s / 3600), "hour"); return rtf.format(Math.round(s / 86400), "day"); }
+const fmtText = (t) => esc(t).replace(/@(\w+)/g, '<span class="at">@$1</span>');
+const count = (L) => L.reduce((a, c) => a + 1 + count(c.kids), 0);
+function find(L, id, parent = null) { for (const c of L) { if (c.id === id) return [c, parent ? parent.kids : L]; const r = find(c.kids, id, c); if (r) return r; } return null; }
+const sorters = { top: (a, b) => b.likes - a.likes, new: (a, b) => b.t - a.t, old: (a, b) => a.t - b.t };
+function node(c, depth) { const mine = D.mine.includes(c.id), liked = D.liked.includes(c.id), kids = [...c.kids].sort(sorters[$("#srt").value === "top" ? "old" : $("#srt").value]);
+  const av = AV[c.who] ? `<img src="https://images.unsplash.com/photo-${AV[c.who]}?w=80&h=80&q=70&auto=format&fit=crop" alt="" width="36" height="36">` : `<span class="av2" aria-hidden="true">${esc(c.who[0] || "?")}</span>`;
+  const body = c.deleted ? '<span class="gone">This comment was deleted.</span>' : editing === c.id ? `<form class="rf2" data-edit="${c.id}" style="margin-left:0"><textarea maxlength="600" aria-label="Edit your comment">${esc(c.text)}</textarea><div class="r"><button class="btn" type="button" data-cancel>Cancel</button><button class="btn primary" type="submit">Save</button></div></form>` : fmtText(c.text) + (c.edited ? ' <span class="tm small muted">(edited)</span>' : "");
+  return `<li><div class="c" id="c${c.id}"><div class="ch">${av}<b>${esc(c.who)}</b>${mine ? '<span class="you">You</span>' : ""}<span class="tm">${ago(c.t)}</span></div><div class="cb">${body}</div>
+  ${c.deleted ? "" : `<div class="ca"><button type="button" data-like="${c.id}" aria-pressed="${liked}" aria-label="${liked ? "Unlike" : "Like"}, ${c.likes} likes">♥ ${c.likes}</button>${depth < 3 ? `<button type="button" data-reply="${c.id}">Reply</button>` : ""}${mine ? `<button type="button" data-ed="${c.id}">Edit</button><button type="button" data-del="${c.id}">Delete</button>` : ""}${c.kids.length ? `<button type="button" data-fold="${c.id}" aria-expanded="${!c.folded}">${c.folded ? `Show ${count(c.kids)} replies` : "Hide replies"}</button>` : ""}</div>`}
+  ${replyTo === c.id ? `<form class="rf2" data-rp="${c.id}"><textarea maxlength="600" aria-label="Reply to ${esc(c.who)}" required>@${esc(c.who)} </textarea><div class="r"><button class="btn" type="button" data-cancel>Cancel</button><button class="btn primary" type="submit">Reply</button></div></form>` : ""}</div>
+  ${c.kids.length && !c.folded ? `<ul class="cl2">${kids.map((k) => node(k, depth + 1)).join("")}</ul>` : ""}</li>`; }
+function draw() { store(KEY, D); const n = count(D.list); $("#cc").textContent = `${n} comment${n === 1 ? "" : "s"}`; $("#list").innerHTML = [...D.list].sort(sorters[$("#srt").value]).map((c) => node(c, 1)).join(""); const f = $("#list textarea"); if (f) { f.focus(); f.setSelectionRange(f.value.length, f.value.length); } }
+const name = () => $("#nn").value.trim() || store("demo-name") || "Guest";
+$("#nt").oninput = () => $("#nc").textContent = `${$("#nt").value.length} / 600`;
+$("#nf").onsubmit = (e) => { e.preventDefault(); const t = $("#nt").value.trim(); if (!t) return; store("demo-name", name()); const id = D.next++; D.list.push({ id, who: name(), t: Date.now(), text: t, likes: 0, kids: [] }); D.mine.push(id); $("#nt").value = ""; $("#nc").textContent = "0 / 600"; $("#srt").value = "new"; draw(); toast("Comment posted"); };
+$("#list").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b || b.type === "submit") return; const d = b.dataset;
+  if (d.like) { const [c] = find(D.list, +d.like), i = D.liked.indexOf(c.id); if (i >= 0) { D.liked.splice(i, 1); c.likes--; } else { D.liked.push(c.id); c.likes++; } }
+  if (d.reply) { replyTo = +d.reply; editing = null; } if (d.ed) { editing = +d.ed; replyTo = null; } if ("cancel" in d) { replyTo = editing = null; }
+  if (d.del && confirm("Delete this comment?")) { const [c, arr] = find(D.list, +d.del); if (c.kids.length) c.deleted = true; else arr.splice(arr.indexOf(c), 1); }
+  if (d.fold) { const [c] = find(D.list, +d.fold); c.folded = !c.folded; } draw(); });
+$("#list").addEventListener("submit", (e) => { e.preventDefault(); const f = e.target, t = f.querySelector("textarea").value.trim(); if (!t) return; if (f.dataset.rp) { const [c] = find(D.list, +f.dataset.rp), id = D.next++; c.kids.push({ id, who: name(), t: Date.now(), text: t, likes: 0, kids: [] }); c.folded = false; D.mine.push(id); replyTo = null; } if (f.dataset.edit) { const [c] = find(D.list, +f.dataset.edit); c.text = t; c.edited = true; editing = null; } draw(); });
+$("#srt").onchange = draw; $("#rst").onclick = () => { D = { list: SEED(), liked: [], mine: [], next: 100 }; draw(); };
+if (store("demo-name")) $("#nn").value = store("demo-name"); draw(); setInterval(() => { if (!document.activeElement.closest("form")) draw(); }, 60000);
+})();
+</script>
+</body>
+</html>

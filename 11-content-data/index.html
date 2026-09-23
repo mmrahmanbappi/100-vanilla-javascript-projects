@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free JavaScript Content and Data Projects: Data Table, SVG Charts, Blog, Comments</title>
+<meta name="description" content="10 free content and data projects in plain JavaScript with live demos: data table, SVG charts, Markdown blog, lazy images, timers, toasts, comments, translations, FAQ and more.">
+<meta name="keywords" content="javascript data table, svg charts javascript, markdown blog, lazy loading images, countdown timer, toast notifications, threaded comments, i18n javascript">
+<meta name="author" content="mmrahmanbappi">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vanilla JavaScript Projects">
+<meta property="og:title" content="Free JavaScript Content and Data Projects: Data Table, SVG Charts, Blog, Comments">
+<meta property="og:description" content="10 free content and data projects in plain JavaScript with live demos: data table, SVG charts, Markdown blog, lazy images, timers, toasts, comments, translations, FAQ and more.">
+<meta property="og:url" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/081-data-table/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free JavaScript Content and Data Projects: Data Table, SVG Charts, Blog, Comments">
+<meta name="twitter:description" content="10 free content and data projects in plain JavaScript with live demos: data table, SVG charts, Markdown blog, lazy images, timers, toasts, comments, translations, FAQ and more.">
+<meta name="twitter:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/081-data-table/preview.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317191f'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'%3EJS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#fbfbf8;--ink:#17191f;--muted:#5a5f6b;--line:#e4e3dc;--blue:#2445d6;--card:#fff}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Instrument Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:17px}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.bar{border-bottom:1px solid var(--line);background:#fff}
+.bar div{max-width:1120px;margin:0 auto;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.bar a.logo{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);text-decoration:none}
+.bar nav a{margin-left:18px;color:var(--ink);font-weight:600;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.crumbs{font-size:.9rem;color:var(--muted);padding:22px 0 0}
+.crumbs a{color:var(--muted)}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin:14px 0 14px;max-width:22ch}
+h2{font-size:1.6rem;margin:0 0 14px}
+h3{font-size:1.15rem}
+.lead{font-size:1.15rem;color:var(--muted);max-width:62ch}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:#fff}
+.btn.main{background:var(--ink);color:#fff}
+.shot{display:block;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 50px rgba(20,20,40,.12)}
+.shot img{display:block;width:100%;height:auto}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:50px;padding:60px 0}
+.cols p{margin-bottom:14px;max-width:65ch}
+ul.list{padding-left:20px}
+ul.list li{margin-bottom:6px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.code{position:relative;margin:0 0 60px}
+pre{background:#1d2030;color:#e8eaf3;border-radius:14px;padding:24px;overflow-x:auto;font-size:.9rem;line-height:1.6}
+.copy{position:absolute;top:12px;right:12px;font:inherit;font-size:.85rem;font-weight:700;border:0;border-radius:8px;padding:6px 12px;background:#fff;color:var(--ink);cursor:pointer}
+ol.steps{padding-left:22px;max-width:65ch;margin-bottom:60px}
+ol.steps li{margin-bottom:8px}
+details{border-top:1px solid var(--line);padding:16px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{font-weight:700;cursor:pointer;font-size:1.05rem}
+details p{margin-top:10px;color:var(--muted);max-width:70ch}
+.faq{margin-bottom:60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;margin:26px 0 60px}
+.tile{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tile img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+.tile div{padding:14px 16px}
+.tile small{color:var(--muted)}
+.tile:hover{border-color:var(--ink)}
+.cat{margin:50px 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.soon{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:20px 0 70px}
+.soon div{border:1px dashed #c9c7bd;border-radius:12px;padding:18px;color:var(--muted)}
+.soon b{color:var(--ink);display:block}
+.pager{display:flex;justify-content:space-between;gap:16px;margin:0 0 60px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;color:var(--muted);font-size:.95rem}
+@media(max-width:820px){.cols{grid-template-columns:1fr;gap:30px;padding:40px 0}.bar nav a:first-child{display:none}}
+.support{font-size:.95rem;color:var(--muted);margin-top:14px}
+.how{padding-left:22px;max-width:65ch;margin-bottom:40px}.how li{margin-bottom:10px}.how b{display:block}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","@id":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/","name":"Free JavaScript Content and Data Projects: Data Table, SVG Charts, Blog, Comments","description":"10 free content and data projects in plain JavaScript with live demos: data table, SVG charts, Markdown blog, lazy images, timers, toasts, comments, translations, FAQ and more.","isPartOf":{"@type":"WebSite","name":"Vanilla JavaScript Projects","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},"inLanguage":"en","mainEntity":{"@type":"ItemList","numberOfItems":10,"itemListElement":[{"@type":"ListItem","position":1,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/081-data-table/","name":"Data Table JavaScript Project"},{"@type":"ListItem","position":2,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/","name":"SVG Charts Kit JavaScript Project"},{"@type":"ListItem","position":3,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/083-markdown-blog-engine/","name":"Markdown Blog Engine JavaScript Project"},{"@type":"ListItem","position":4,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/084-blur-up-lazy-images/","name":"Blur-up Lazy Images JavaScript Project"},{"@type":"ListItem","position":5,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/085-countdown-timer-kit/","name":"Countdown Timer Kit JavaScript Project"},{"@type":"ListItem","position":6,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/086-toast-notification-center/","name":"Toast Notification Center JavaScript Project"},{"@type":"ListItem","position":7,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/087-threaded-comments/","name":"Threaded Comments JavaScript Project"},{"@type":"ListItem","position":8,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/088-language-switcher/","name":"Language Switcher JavaScript Project"},{"@type":"ListItem","position":9,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/089-searchable-faq/","name":"Searchable FAQ JavaScript Project"},{"@type":"ListItem","position":10,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/090-before-after-slider/","name":"Before and After Slider JavaScript Project"}]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},{"@type":"ListItem","position":2,"name":"Content and Data","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/"}]}]}</script>
+</head>
+<body>
+<header class="bar"><div><a class="logo" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Vanilla JavaScript Projects</a><nav><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/#categories">Categories</a><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">GitHub</a></nav></div></header>
+<main class="wrap">
+<p class="crumbs"><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Home</a> / Content and Data</p>
+<h1>Content and Data JavaScript Projects</h1>
+<p class="lead">Most websites are really about showing content well. These ten projects cover tables you can sort and export, charts without a library, a tiny Markdown blog, fast loading images, timers, notifications, comment threads, multiple languages, a searchable FAQ and a before and after slider. Each one is a single HTML file with real content and photos, ready to copy into your own site.</p>
+<div class="grid"><a class="tile" href="081-data-table/"><img src="081-data-table/preview.png" alt="Data Table JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>081. Data Table</h3><small>A sortable, searchable table with filters, pages, row selection and CSV export</small></div></a><a class="tile" href="082-svg-charts-kit/"><img src="082-svg-charts-kit/preview.png" alt="SVG Charts Kit JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>082. SVG Charts Kit</h3><small>Line, bar and donut charts drawn with plain SVG, with tooltips and a data table</small></div></a><a class="tile" href="083-markdown-blog-engine/"><img src="083-markdown-blog-engine/preview.png" alt="Markdown Blog Engine JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>083. Markdown Blog Engine</h3><small>A tiny blog that reads Markdown posts, with tags, search and reading time</small></div></a><a class="tile" href="084-blur-up-lazy-images/"><img src="084-blur-up-lazy-images/preview.png" alt="Blur-up Lazy Images JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>084. Blur-up Lazy Images</h3><small>A photo grid that shows tiny blurred placeholders and loads full images when they scroll into view</small></div></a><a class="tile" href="085-countdown-timer-kit/"><img src="085-countdown-timer-kit/preview.png" alt="Countdown Timer Kit JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>085. Countdown Timer Kit</h3><small>An event countdown, a sale timer, a kitchen timer with sound and a stopwatch with laps</small></div></a><a class="tile" href="086-toast-notification-center/"><img src="086-toast-notification-center/preview.png" alt="Toast Notification Center JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>086. Toast Notification Center</h3><small>Toast messages with types, positions, undo actions and a notification history</small></div></a><a class="tile" href="087-threaded-comments/"><img src="087-threaded-comments/preview.png" alt="Threaded Comments JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>087. Threaded Comments</h3><small>A comment section with nested replies, likes, editing, sorting and relative times</small></div></a><a class="tile" href="088-language-switcher/"><img src="088-language-switcher/preview.png" alt="Language Switcher JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>088. Language Switcher</h3><small>A page that switches between five languages, including right to left Arabic</small></div></a><a class="tile" href="089-searchable-faq/"><img src="089-searchable-faq/preview.png" alt="Searchable FAQ JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>089. Searchable FAQ</h3><small>An FAQ with instant search, categories, deep links, votes and automatic schema markup</small></div></a><a class="tile" href="090-before-after-slider/"><img src="090-before-after-slider/preview.png" alt="Before and After Slider JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>090. Before and After Slider</h3><small>A draggable slider that compares two images, like before and after a photo edit</small></div></a></div>
+</main>
+<footer>Free under the MIT license. Made by <a href="https://github.com/mmrahmanbappi">mmrahmanbappi</a>. <a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">Star the repo on GitHub</a> to help more people find these projects.</footer>
+<script>document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.nextElementSibling.innerText).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy code',1500)})})</script>
+</body>
+</html>
