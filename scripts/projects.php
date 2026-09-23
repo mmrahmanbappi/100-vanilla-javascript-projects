@@ -6,8 +6,8 @@ $SITE = [
     'name' => 'Vanilla JavaScript Projects',
     'base' => 'https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/',
     'repo' => 'https://github.com/mmrahmanbappi/100-vanilla-javascript-projects',
-    'author' => 'mmrahmanbappi',
-    'author_url' => 'https://github.com/mmrahmanbappi',
+    'author' => 'MM Rahman Bappi',
+    'author_url' => 'https://mmrahmanbappi.github.io/',
     'published' => '2026-09-23',
 ];
 
