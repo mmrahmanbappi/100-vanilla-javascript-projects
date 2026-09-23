@@ -9,8 +9,8 @@
 <meta property="og:title" content="Compress and Decompress Files with Gzip in the Browser Using CompressionStream (Vanilla JS)">
 <meta property="og:description" content="Gzip or deflate any file, or a block of text, right in the browser with the native CompressionStream API, then unzip .gz files back. Streams large files with a progress bar and shows a size chart. No libraries. Free source.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/045-file-compressor/preview.png">
-<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/045-file-compressor/demo.html">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/06-hardware-and-performance/045-file-compressor/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/06-hardware-and-performance/045-file-compressor/demo.html">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#E8590C">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23E8590C'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
@@ -193,8 +193,8 @@ footer.foot a{color:var(--muted)}
       <textarea id="txt" aria-label="Text to compress"></textarea>
       <div class="row" style="margin-top:8px"><button class="btn primary" id="gotxt" type="button">Compress text</button><button class="btn" id="rep" type="button">Fill with repeated text</button></div>
     </div>
-    <div><h2>Result</h2><div class="ratio" id="ratio">–</div><p class="sub" id="rdesc">Sizes appear here.</p>
-      <div class="bars"><div class="row2"><b>Before</b><div class="t"><span id="b1" style="background:var(--muted);width:0"></span></div><span id="s1">–</span></div><div class="row2"><b>After</b><div class="t"><span id="b2" style="background:var(--accent);width:0"></span></div><span id="s2">–</span></div></div>
+    <div><h2>Result</h2><div class="ratio" id="ratio">-</div><p class="sub" id="rdesc">Sizes appear here.</p>
+      <div class="bars"><div class="row2"><b>Before</b><div class="t"><span id="b1" style="background:var(--muted);width:0"></span></div><span id="s1">-</span></div><div class="row2"><b>After</b><div class="t"><span id="b2" style="background:var(--accent);width:0"></span></div><span id="s2">-</span></div></div>
       <p class="small muted" style="margin-top:14px">Photos, videos and zip files are already compressed, so gzip saves little on them. Text, CSV, JSON and code shrink a lot.</p>
       <div id="dl"></div></div>
   </div>
@@ -214,7 +214,7 @@ footer.foot a{color:var(--muted)}
 <span class="c">// Unpack: file.stream().pipeThrough(<span class="k">new</span> DecompressionStream(&quot;gzip&quot;))</span></code></pre>
 </section>
 </main>
-<footer class="foot"><span>Browser File Compressor. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/06-hardware-and-performance/045-file-compressor">Source on GitHub</a></footer>
+<footer class="foot"><span>Browser File Compressor. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/100-vanilla-javascript-projects/tree/main/06-hardware-and-performance/045-file-compressor">Source on GitHub</a></footer>
 </div>
 <script>
 // Shared helpers (same in every Browser AI Lab project)

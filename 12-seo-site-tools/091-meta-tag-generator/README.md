@@ -2,8 +2,8 @@
 
 ![Meta Tag Generator JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/091-meta-tag-generator/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/091-meta-tag-generator/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/091-meta-tag-generator/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/091-meta-tag-generator/
 
 Free meta tag generator in plain JavaScript. Write your title and description with live length checks, see a search result and social card preview, and copy the finished meta tags.
 

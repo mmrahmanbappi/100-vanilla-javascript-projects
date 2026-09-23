@@ -4,8 +4,8 @@
 
 $SITE = [
     'name' => 'Vanilla JavaScript Projects',
-    'base' => 'https://mmrahmanbappi.github.io/vanilla-javascript-projects/',
-    'repo' => 'https://github.com/mmrahmanbappi/vanilla-javascript-projects',
+    'base' => 'https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/',
+    'repo' => 'https://github.com/mmrahmanbappi/100-vanilla-javascript-projects',
     'author' => 'mmrahmanbappi',
     'author_url' => 'https://github.com/mmrahmanbappi',
     'published' => '2026-09-23',
@@ -703,7 +703,7 @@ const score = a.reduce((sum, x, i) => sum + x * b[i], 0); // about 0.4',
         'runs' => 'Browser speech service',
         'what' => [
             'This demo is a smart home dashboard you control by talking. Say turn on the kitchen light, make it cooler, or switch off everything, and the dashboard updates and answers you out loud.',
-            'It uses the Web Speech API, which has two parts. SpeechRecognition turns your voice into text, and speechSynthesis reads replies back. A small set of rules matches phrases to actions, so it understands natural wording, not just fixed commands.',
+            'It uses the Web Speech API, which has two parts. SpeechRecognition turns your voice into text, and speechSynthesis reads replies back. A small set of rules matches phrases to actions, so it understands natural wording as well as fixed commands.',
         ],
         'when' => [
             'Hands free controls for kiosks and dashboards',
@@ -3315,7 +3315,7 @@ scheduler.postTask(() => showMenu(), { priority: "user-blocking" });  // runs fi
         'when' => [
             'Reading API responses',
             'Fixing broken config files',
-            'Exploring big data exports',
+            'Browsing big data exports',
             'A private tool that works offline',
         ],
         'features' => [
@@ -3373,11 +3373,11 @@ const worker = new Worker(URL.createObjectURL(new Blob([`onmessage = (e) => post
         'name' => 'Regex Tester',
         'example' => 'test regular expressions with live highlights and groups',
         'title' => 'Regex Tester in JavaScript with Live Highlight, Groups and Cheat Sheet',
-        'desc' => 'Free regex tester in plain JavaScript. See matches highlighted live, groups in a table, flags as toggles, a replace preview, a plain English explanation and common patterns.',
+        'desc' => 'Free regex tester in plain JavaScript. See matches highlighted live, groups in a table, flags as toggles, a replace preview, a simple explanation of each part and common patterns.',
         'keywords' => 'regex tester, regular expression tester javascript, regex online, named capture groups, regex cheat sheet',
         'runs' => 'JavaScript RegExp',
         'what' => [
-            'Type a pattern and every match lights up in your text. Capture groups and named groups fill a table, the replace box shows the result, and a plain English list explains what each part of the pattern means.',
+            'Type a pattern and every match lights up in your text. Capture groups and named groups fill a table, the replace box shows the result, and a short list explains what each part of the pattern means.',
             'Matching runs in a Web Worker with a one second limit, so a runaway pattern stops instead of freezing the page. There is a cheat sheet and ten ready patterns for emails, URLs, dates, phones and more.',
         ],
         'when' => [
@@ -4583,7 +4583,7 @@ input.setAttribute("aria-activedescendant", "option-" + active);',
         'keywords' => 'password strength meter javascript, password checker, password generator, password validation, crack time estimate, show hide password',
         'runs' => 'crypto.getRandomValues',
         'what' => [
-            'A password field with a four part strength meter, a live checklist and a plain English tip about what would make it stronger.',
+            'A password field with a four part strength meter, a live checklist and a short tip about what would make it stronger.',
             'It spots common passwords even with swapped letters like p@ssw0rd, estimates how long an offline attack would take and can suggest a random password or a four word passphrase.',
         ],
         'when' => [
@@ -6653,7 +6653,7 @@ const robots = `User-agent: *\\nDisallow: /admin\\n\\nSitemap: ${base.origin}/si
         'runs' => 'getComputedStyle and WCAG contrast maths',
         'what' => [
             'An accessibility checker that scans a sample café page, or HTML you paste in, for common problems: missing alt text and language, skipped headings, fields without labels, empty buttons, vague links and low contrast.',
-            'Each issue gets a severity, a plain English fix and a button that highlights the element in the page. A simple score shows how much work is left.',
+            'Each issue gets a severity, a short fix and a button that highlights the element in the page. A simple score shows how much work is left.',
         ],
         'when' => [
             'Checking a page before launch',
@@ -6743,7 +6743,7 @@ doc.querySelectorAll("img:not([alt])").forEach((img) => report("Missing alt", im
                 'Real people need several seconds to type a name, email and message. Forms sent faster than four seconds are suspicious.',
             ],
             [
-                'Score, do not just block',
+                'Score first, then decide',
                 'Each failed check adds points. High scores are blocked, middle scores are sent but marked for review, so real people are rarely lost.',
             ],
         ],
@@ -6770,7 +6770,7 @@ form.onsubmit = (e) => {
                 'No. It is hidden with aria-hidden and taken out of the tab order, so assistive technology ignores it.',
             ],
             [
-                'Why not just use a captcha?',
+                'Why not use a captcha?',
                 'Captchas annoy real people and lower form completion. Try these quiet checks first and add a captcha only if spam continues.',
             ],
         ],

@@ -2,8 +2,8 @@
 
 ![Signature Pad JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/069-signature-pad/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/069-signature-pad/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/069-signature-pad/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/069-signature-pad/
 
 Free signature pad in plain JavaScript. Sign with a finger, pen or mouse, smooth lines that respond to speed, undo, clear, trimmed PNG download and sharp on high resolution screens.
 

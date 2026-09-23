@@ -2,8 +2,8 @@
 
 ![Smart Writing Assistant JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/005-smart-writing-assistant/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/005-smart-writing-assistant/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/005-smart-writing-assistant/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/005-smart-writing-assistant/
 
 Free AI writing assistant in plain JavaScript. Draft text, rewrite it more formal or casual, and get a live readability check for long sentences and passive voice.
 

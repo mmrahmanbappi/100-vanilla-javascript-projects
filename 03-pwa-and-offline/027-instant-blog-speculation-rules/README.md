@@ -2,8 +2,8 @@
 
 ![Instant-loading Blog JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/03-pwa-and-offline/027-instant-blog-speculation-rules/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/03-pwa-and-offline/027-instant-blog-speculation-rules/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/03-pwa-and-offline/027-instant-blog-speculation-rules/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/03-pwa-and-offline/027-instant-blog-speculation-rules/
 
 Free instant-loading blog in plain JavaScript. The Speculation Rules API prerenders posts while you hover, so they open almost instantly. Timing shows the difference.
 

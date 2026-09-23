@@ -2,8 +2,8 @@
 
 ![Language Switcher JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/088-language-switcher/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/088-language-switcher/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/088-language-switcher/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/088-language-switcher/
 
 Free language switcher in plain JavaScript. Translations from JSON, right to left layout for Arabic, plural rules, dates, numbers and prices formatted for each language, and a remembered choice.
 

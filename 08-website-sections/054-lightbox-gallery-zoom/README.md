@@ -2,8 +2,8 @@
 
 ![Lightbox Gallery with Zoom JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/054-lightbox-gallery-zoom/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/054-lightbox-gallery-zoom/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/054-lightbox-gallery-zoom/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/054-lightbox-gallery-zoom/
 
 Free lightbox gallery in plain JavaScript. Click a photo to open a full screen viewer with zoom, pan, arrow keys, swipe, captions and a counter. Built on the native dialog element.
 

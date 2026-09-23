@@ -2,8 +2,8 @@
 
 ![UI Component Library JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/011-ui-component-library/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/011-ui-component-library/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/011-ui-component-library/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/011-ui-component-library/
 
 Free UI component library in plain JavaScript. Six Web Components with Shadow DOM: button, toggle, tabs, rating, progress ring and accordion. Works with any framework.
 

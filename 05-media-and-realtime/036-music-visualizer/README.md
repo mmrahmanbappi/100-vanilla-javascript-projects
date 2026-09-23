@@ -2,8 +2,8 @@
 
 ![Music Visualizer JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/036-music-visualizer/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/036-music-visualizer/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/036-music-visualizer/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/036-music-visualizer/
 
 Free music visualizer in plain JavaScript. Bars, waveform and a glowing ring react to a built in synth loop, your own songs or your microphone, using Web Audio.
 

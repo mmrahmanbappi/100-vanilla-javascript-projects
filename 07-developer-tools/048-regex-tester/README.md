@@ -2,14 +2,14 @@
 
 ![Regex Tester JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/048-regex-tester/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/048-regex-tester/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/07-developer-tools/048-regex-tester/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/07-developer-tools/048-regex-tester/
 
-Free regex tester in plain JavaScript. See matches highlighted live, groups in a table, flags as toggles, a replace preview, a plain English explanation and common patterns.
+Free regex tester in plain JavaScript. See matches highlighted live, groups in a table, flags as toggles, a replace preview, a simple explanation of each part and common patterns.
 
 ## What is the Regex Tester?
 
-Type a pattern and every match lights up in your text. Capture groups and named groups fill a table, the replace box shows the result, and a plain English list explains what each part of the pattern means.
+Type a pattern and every match lights up in your text. Capture groups and named groups fill a table, the replace box shows the result, and a short list explains what each part of the pattern means.
 
 Matching runs in a Web Worker with a one second limit, so a runaway pattern stops instead of freezing the page. There is a cheat sheet and ten ready patterns for emails, URLs, dates, phones and more.
 

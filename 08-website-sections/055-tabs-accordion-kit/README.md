@@ -2,8 +2,8 @@
 
 ![Tabs and Accordion Kit JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/055-tabs-accordion-kit/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/055-tabs-accordion-kit/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/055-tabs-accordion-kit/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/055-tabs-accordion-kit/
 
 Free accessible tabs and accordion in plain JavaScript. Correct ARIA roles, arrow key navigation, one or many panels open, smooth height animation and deep links.
 

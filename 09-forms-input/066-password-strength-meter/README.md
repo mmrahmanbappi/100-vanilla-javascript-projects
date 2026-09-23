@@ -2,14 +2,14 @@
 
 ![Password Strength Meter JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/066-password-strength-meter/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/066-password-strength-meter/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/066-password-strength-meter/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/066-password-strength-meter/
 
 Free password strength meter in plain JavaScript. Live score, checklist, common password check, estimated crack time, show and hide button and a secure password generator.
 
 ## What is the Password Strength Meter?
 
-A password field with a four part strength meter, a live checklist and a plain English tip about what would make it stronger.
+A password field with a four part strength meter, a live checklist and a short tip about what would make it stronger.
 
 It spots common passwords even with swapped letters like p@ssw0rd, estimates how long an offline attack would take and can suggest a random password or a four word passphrase.
 

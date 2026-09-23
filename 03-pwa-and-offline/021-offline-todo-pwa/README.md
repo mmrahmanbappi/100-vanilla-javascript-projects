@@ -2,8 +2,8 @@
 
 ![Offline-first Todo PWA JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/03-pwa-and-offline/021-offline-todo-pwa/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/03-pwa-and-offline/021-offline-todo-pwa/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/03-pwa-and-offline/021-offline-todo-pwa/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/03-pwa-and-offline/021-offline-todo-pwa/
 
 Free offline todo PWA in plain JavaScript. A service worker caches the app so it works with no internet, tasks are saved in IndexedDB, and you can install it.
 

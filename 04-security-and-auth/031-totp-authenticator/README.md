@@ -2,8 +2,8 @@
 
 ![TOTP 2FA Authenticator JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/04-security-and-auth/031-totp-authenticator/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/04-security-and-auth/031-totp-authenticator/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/04-security-and-auth/031-totp-authenticator/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/04-security-and-auth/031-totp-authenticator/
 
 Free TOTP authenticator in plain JavaScript. Make six digit 2FA codes with HMAC-SHA1, add accounts from a secret or otpauth link, make QR codes and verify codes.
 

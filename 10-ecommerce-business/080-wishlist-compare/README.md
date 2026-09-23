@@ -2,8 +2,8 @@
 
 ![Wishlist and Compare JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/080-wishlist-compare/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/080-wishlist-compare/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/080-wishlist-compare/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/080-wishlist-compare/
 
 Free wishlist and product compare in plain JavaScript. Save favourites with a heart, keep them after reload, share the list as a link, and compare up to three products with differences highlighted.
 

@@ -9,8 +9,8 @@
 <meta property="og:title" content="WebAssembly Image Filters: Hand-written WAT vs JavaScript Speed Test (Vanilla JS)">
 <meta property="og:description" content="Apply grayscale, sepia, invert and brightness filters to photos with a tiny hand-written WebAssembly module, then race it against the same code in plain JavaScript. Includes the readable .wat source. Free source.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/preview.png">
-<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/demo.html">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/06-hardware-and-performance/043-wasm-image-filters/demo.html">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#654FF0">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23654FF0'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
@@ -194,8 +194,8 @@ pre.wat{max-height:220px;font-size:12px}
     </div>
     <div><h2>Speed race</h2><p class="sub" id="px"></p>
       <button class="btn primary" id="bench" type="button">Run 20 times each</button>
-      <div class="race"><b>WASM</b><div class="b"><span id="bw" style="background:var(--accent);width:0"></span></div><span id="tw">–</span></div>
-      <div class="race"><b>JavaScript</b><div class="b"><span id="bj" style="background:#F59F00;width:0"></span></div><span id="tj">–</span></div>
+      <div class="race"><b>WASM</b><div class="b"><span id="bw" style="background:var(--accent);width:0"></span></div><span id="tw">-</span></div>
+      <div class="race"><b>JavaScript</b><div class="b"><span id="bj" style="background:#F59F00;width:0"></span></div><span id="tj">-</span></div>
       <div class="win" id="win"></div>
       <p class="small muted">Modern JavaScript engines are fast for simple loops, so the gap is often small. WASM shines with steady timing and heavier math.</p>
       <details><summary class="small"><b>View filters.wat</b></summary><pre class="wat" id="wat"></pre></details>
@@ -218,7 +218,7 @@ img.data.set(<span class="k">new</span> Uint8Array(memory.buffer, 0, img.data.le
 ctx.putImageData(img, 0, 0);</code></pre>
 </section>
 </main>
-<footer class="foot"><span>WebAssembly Image Filters. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/06-hardware-and-performance/043-wasm-image-filters">Source on GitHub</a></footer>
+<footer class="foot"><span>WebAssembly Image Filters. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/100-vanilla-javascript-projects/tree/main/06-hardware-and-performance/043-wasm-image-filters">Source on GitHub</a></footer>
 </div>
 <script>
 // Shared helpers (same in every Browser AI Lab project)

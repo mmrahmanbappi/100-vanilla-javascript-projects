@@ -2,8 +2,8 @@
 
 ![Favicon Generator JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/094-favicon-generator/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/094-favicon-generator/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/094-favicon-generator/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/094-favicon-generator/
 
 Free favicon generator in plain JavaScript. Make an icon from a letter or upload an image, preview it in a browser tab, download 16 to 512 pixel PNGs, and copy the HTML and manifest.
 

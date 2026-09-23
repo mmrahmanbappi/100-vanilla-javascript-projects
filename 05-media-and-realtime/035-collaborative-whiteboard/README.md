@@ -2,8 +2,8 @@
 
 ![Collaborative Whiteboard JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/035-collaborative-whiteboard/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/035-collaborative-whiteboard/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/035-collaborative-whiteboard/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/035-collaborative-whiteboard/
 
 Free real time whiteboard in plain JavaScript. Pen, shapes, eraser, undo and live cursors, synced between tabs instantly or across devices with a tiny WebSocket server.
 

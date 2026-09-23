@@ -2,8 +2,8 @@
 
 ![Touch Image Slider JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/053-touch-image-slider/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/053-touch-image-slider/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/053-touch-image-slider/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/053-touch-image-slider/
 
 Free image slider in plain JavaScript. Swipe on touch screens, drag with a mouse, autoplay that pauses on hover, dots, arrows and keyboard control. No library needed.
 

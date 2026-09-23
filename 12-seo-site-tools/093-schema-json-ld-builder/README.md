@@ -2,8 +2,8 @@
 
 ![Schema JSON-LD Builder JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/093-schema-json-ld-builder/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/093-schema-json-ld-builder/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/093-schema-json-ld-builder/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/093-schema-json-ld-builder/
 
 Free JSON-LD schema builder in plain JavaScript. Pick a type, fill in a simple form and get valid structured data with required field checks, ready to paste into your page.
 

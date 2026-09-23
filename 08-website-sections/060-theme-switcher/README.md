@@ -2,8 +2,8 @@
 
 ![Theme Switcher JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/060-theme-switcher/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/060-theme-switcher/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/060-theme-switcher/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/060-theme-switcher/
 
 Free theme switcher in plain JavaScript. Light, dark and system modes, an accent colour picker, saved choice, live system change and a tiny script that stops the white flash.
 

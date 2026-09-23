@@ -2,8 +2,8 @@
 
 ![Product Variant Picker JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/072-product-variant-picker/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/072-product-variant-picker/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/072-product-variant-picker/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/072-product-variant-picker/
 
 Free product variant picker in plain JavaScript. Choose colour and size, see the product image, price and stock change, sold out sizes greyed out, and a shareable URL for each variant.
 

@@ -9,8 +9,8 @@
 <meta property="og:title" content="JavaScript Regex Tester with Live Highlighting, Groups, Replace Preview and Cheat Sheet">
 <meta property="og:description" content="Write a regular expression and see every match highlighted live, with capture groups and named groups in a table, flags as toggles, a replace preview, a plain-English explanation, a cheat sheet and ready-made patterns. Free source.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/048-regex-tester/preview.png">
-<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/048-regex-tester/demo.html">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/07-developer-tools/048-regex-tester/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/07-developer-tools/048-regex-tester/demo.html">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#C2255C">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23C2255C'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
@@ -223,7 +223,7 @@ footer.foot a{color:var(--muted)}
 <span class="k">const</span> t = setTimeout(() =&gt; { w.terminate(); showError(&quot;Too slow, stopped&quot;); }, 1000);</code></pre>
 </section>
 </main>
-<footer class="foot"><span>Regex Tester. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/07-developer-tools/048-regex-tester">Source on GitHub</a></footer>
+<footer class="foot"><span>Regex Tester. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/100-vanilla-javascript-projects/tree/main/07-developer-tools/048-regex-tester">Source on GitHub</a></footer>
 </div>
 <script>
 // Shared helpers (same in every Browser AI Lab project)
@@ -303,7 +303,7 @@ function run() {
     const ms = flags.has("g") ? data.out : data.out.slice(0, 1); $("#msg").className = "msg"; $("#msg").textContent = `${ms.length} match${ms.length === 1 ? "" : "es"}${data.out.length > 5000 ? " (showing the first 5000)" : ""}`;
     let html = "", last = 0; ms.forEach((m, k) => { if (!m.s.length) return; html += esc(t.slice(last, m.i)) + `<mark class="${k % 2 ? "alt" : ""}">${esc(m.s)}</mark>`; last = m.i + m.s.length; }); $("#back").innerHTML = html + esc(t.slice(last)) + "\n";
     const gn = ms[0]?.n ? Object.keys(ms[0].n) : [];
-    $("#mt").innerHTML = ms.length ? `<tr><th>#</th><th>Match</th><th>At</th>${ms[0].g.map((_, i) => `<th>$${i + 1}${gn[i] ? " " + esc(gn[i]) : ""}</th>`).join("")}</tr>` + ms.slice(0, 200).map((m, i) => `<tr><td>${i + 1}</td><td>${esc(m.s)}</td><td>${m.i}</td>${m.g.map((g, j) => `<td>${g == null ? '<span class="muted">none</span>' : esc(g)}${m.x?.[j] ? `<br><span class="muted">${m.x[j].join("–")}</span>` : ""}</td>`).join("")}</tr>`).join("") : "<tr><td class='muted'>No matches</td></tr>";
+    $("#mt").innerHTML = ms.length ? `<tr><th>#</th><th>Match</th><th>At</th>${ms[0].g.map((_, i) => `<th>$${i + 1}${gn[i] ? " " + esc(gn[i]) : ""}</th>`).join("")}</tr>` + ms.slice(0, 200).map((m, i) => `<tr><td>${i + 1}</td><td>${esc(m.s)}</td><td>${m.i}</td>${m.g.map((g, j) => `<td>${g == null ? '<span class="muted">none</span>' : esc(g)}${m.x?.[j] ? `<br><span class="muted">${m.x[j].join("-")}</span>` : ""}</td>`).join("")}</tr>`).join("") : "<tr><td class='muted'>No matches</td></tr>";
     try { $("#repout").textContent = t.replace(new RegExp(p, f), $("#rep").value); } catch {} };
   worker.postMessage({ p, f, t });
 }

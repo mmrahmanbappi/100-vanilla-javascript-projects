@@ -2,8 +2,8 @@
 
 ![WebGPU Particle Playground JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/037-webgpu-particles/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/037-webgpu-particles/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/037-webgpu-particles/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/037-webgpu-particles/
 
 Free WebGPU particle simulation in plain JavaScript. Move up to 1,000,000 particles with a compute shader and your mouse, with gravity and color controls and a fallback.
 

@@ -2,8 +2,8 @@
 
 ![Multi-currency Prices JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/075-multi-currency-prices/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/075-multi-currency-prices/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/075-multi-currency-prices/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/075-multi-currency-prices/
 
 Free multi-currency price switcher in plain JavaScript. Detect the visitor's currency, convert prices, round to neat price points, format for each country and remember the choice.
 

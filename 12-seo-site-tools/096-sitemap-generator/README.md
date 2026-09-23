@@ -2,8 +2,8 @@
 
 ![Sitemap Generator JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/096-sitemap-generator/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/096-sitemap-generator/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/096-sitemap-generator/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/096-sitemap-generator/
 
 Free sitemap generator in plain JavaScript. Paste your page paths or full URLs, clean and sort them, set last modified dates and priorities, and download sitemap.xml and robots.txt.
 

@@ -2,8 +2,8 @@
 
 ![Booking Slot Calendar JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/077-booking-slot-calendar/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/077-booking-slot-calendar/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/077-booking-slot-calendar/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/077-booking-slot-calendar/
 
 Free booking slot calendar in plain JavaScript. Pick a service, day and free time slot, see times in your own time zone, fill in your details and download a calendar file.
 

@@ -2,8 +2,8 @@
 
 ![Mini Postman API Client JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/049-mini-postman/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/07-developer-tools/049-mini-postman/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/07-developer-tools/049-mini-postman/
 
 Free API client in plain JavaScript. Send GET, POST, PUT, PATCH and DELETE with params, headers and body, see status, time and pretty JSON, save collections and copy cURL.
 

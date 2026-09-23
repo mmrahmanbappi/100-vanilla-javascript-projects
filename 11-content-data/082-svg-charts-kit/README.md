@@ -2,8 +2,8 @@
 
 ![SVG Charts Kit JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/082-svg-charts-kit/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/082-svg-charts-kit/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/082-svg-charts-kit/
 
 Free SVG charts in plain JavaScript. Line, bar and donut charts that scale to any width, with tooltips, keyboard focus, series toggles, animation and an accessible data table.
 

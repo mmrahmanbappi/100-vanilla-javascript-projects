@@ -2,8 +2,8 @@
 
 ![Before and After Slider JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/090-before-after-slider/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/090-before-after-slider/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/090-before-after-slider/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/090-before-after-slider/
 
 Free before and after image comparison slider in plain JavaScript. Drag or use the keyboard, switch to vertical, add labels and compare several photos, built on an accessible range input.
 

@@ -2,8 +2,8 @@
 
 ![Mini Rich Text Editor JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/070-mini-rich-text-editor/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/070-mini-rich-text-editor/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/070-mini-rich-text-editor/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/070-mini-rich-text-editor/
 
 Free mini rich text editor in plain JavaScript. Bold, italic, headings, lists, quotes and links, keyboard shortcuts, clean paste, word count, autosave and HTML or Markdown export.
 

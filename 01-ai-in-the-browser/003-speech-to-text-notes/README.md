@@ -2,8 +2,8 @@
 
 ![Speech to Text Notes JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/003-speech-to-text-notes/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/003-speech-to-text-notes/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/003-speech-to-text-notes/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/003-speech-to-text-notes/
 
 Free speech to text notes app in plain JavaScript. Record your voice or upload audio and OpenAI Whisper turns it into text, right in the browser. No server, no API key.
 

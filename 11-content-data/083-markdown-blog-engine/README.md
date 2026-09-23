@@ -2,8 +2,8 @@
 
 ![Markdown Blog Engine JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/083-markdown-blog-engine/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/083-markdown-blog-engine/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/083-markdown-blog-engine/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/083-markdown-blog-engine/
 
 Free Markdown blog engine in plain JavaScript. Write posts in Markdown with front matter, get a post list with tags, search, reading time and pretty post pages with hash routing.
 

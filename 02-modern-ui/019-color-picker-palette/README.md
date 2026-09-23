@@ -2,8 +2,8 @@
 
 ![Color Picker and Palette Tool JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/019-color-picker-palette/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/019-color-picker-palette/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/019-color-picker-palette/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/019-color-picker-palette/
 
 Free color tool in plain JavaScript. Pick any color on screen with the EyeDropper API, get a palette from a photo, make shades and check WCAG contrast.
 

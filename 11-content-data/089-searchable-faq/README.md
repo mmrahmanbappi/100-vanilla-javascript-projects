@@ -2,8 +2,8 @@
 
 ![Searchable FAQ JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/089-searchable-faq/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/089-searchable-faq/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/089-searchable-faq/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/089-searchable-faq/
 
 Free searchable FAQ in plain JavaScript. Instant search with highlights, category filters, deep links to any answer, helpful votes and automatic FAQPage JSON-LD for Google.
 

@@ -2,8 +2,8 @@
 
 ![Responsive Dashboard Widgets JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/017-responsive-dashboard-widgets/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/017-responsive-dashboard-widgets/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/017-responsive-dashboard-widgets/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/017-responsive-dashboard-widgets/
 
 Free responsive dashboard in HTML, CSS and JavaScript. Resize any widget and it switches layout with container queries, while ResizeObserver redraws the charts.
 

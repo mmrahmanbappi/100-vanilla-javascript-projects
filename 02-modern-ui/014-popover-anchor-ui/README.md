@@ -2,8 +2,8 @@
 
 ![Popovers Without Libraries JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/014-popover-anchor-ui/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/014-popover-anchor-ui/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/014-popover-anchor-ui/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/014-popover-anchor-ui/
 
 Free popover examples in plain HTML, CSS and JavaScript. Dropdown menu, tooltips, toasts and a side sheet using the Popover API and CSS anchor positioning.
 

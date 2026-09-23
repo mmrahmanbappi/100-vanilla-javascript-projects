@@ -9,8 +9,8 @@
 <meta property="og:title" content="Spam Protection for Contact Forms in JavaScript: Honeypot, Timing and Content Checks">
 <meta property="og:description" content="Free spam-proof contact form in plain JavaScript. A hidden honeypot field, a minimum fill time, link and keyword checks and a friendly rate limit, all without a captcha.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/098-spam-proof-contact-form/preview.png">
-<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/098-spam-proof-contact-form/demo.html">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/098-spam-proof-contact-form/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/098-spam-proof-contact-form/demo.html">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0F766E">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230F766E'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
@@ -185,7 +185,7 @@ footer.foot a{color:var(--muted)}
 <div class="checks" aria-live="polite"><h3>Spam checks</h3><ul class="ck2" id="ck"></ul><div>Spam score <b id="sc">0</b> of 100</div><div class="meter2"><i id="mt" style="width:0"></i></div><p class="verdict" id="vd">Waiting for a message</p></div></div>
 </section>
 <section class="how" aria-labelledby="how-title">
-  <div><h2 id="how-title">How it works</h2><ol><li><strong>A trap only bots see</strong><span>The website field is moved far off screen and hidden from screen readers. People never fill it in, but many bots fill every field.</span></li><li><strong>Humans are not instant</strong><span>Real people need several seconds to type a name, email and message. Forms sent faster than four seconds are suspicious.</span></li><li><strong>Score, do not just block</strong><span>Each failed check adds points. High scores are blocked, middle scores are sent but marked for review, so real people are rarely lost.</span></li></ol></div>
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>A trap only bots see</strong><span>The website field is moved far off screen and hidden from screen readers. People never fill it in, but many bots fill every field.</span></li><li><strong>Humans are not instant</strong><span>Real people need several seconds to type a name, email and message. Forms sent faster than four seconds are suspicious.</span></li><li><strong>Score first, then decide</strong><span>Each failed check adds points. High scores are blocked, middle scores are sent but marked for review, so real people are rarely lost.</span></li></ol></div>
   <pre><code>&lt;div style=&quot;position:absolute;left:-10000px&quot; aria-hidden=&quot;<span class="k">true</span>&quot;&gt;
   &lt;input name=&quot;website&quot; tabindex=&quot;-1&quot; autocomplete=&quot;off&quot;&gt;
 &lt;/div&gt;
@@ -200,7 +200,7 @@ form.onsubmit = (e) =&gt; {
 };</code></pre>
 </section>
 </main>
-<footer class="foot"><span>Spam-proof Contact Form. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/12-seo-site-tools/098-spam-proof-contact-form">Source on GitHub</a></footer>
+<footer class="foot"><span>Spam-proof Contact Form. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/100-vanilla-javascript-projects/tree/main/12-seo-site-tools/098-spam-proof-contact-form">Source on GitHub</a></footer>
 </div>
 <script>
 // Shared helpers (same in every Browser AI Lab project)

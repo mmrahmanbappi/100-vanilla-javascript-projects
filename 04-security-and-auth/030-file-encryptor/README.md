@@ -2,8 +2,8 @@
 
 ![Secure File Encryptor JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/04-security-and-auth/030-file-encryptor/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/04-security-and-auth/030-file-encryptor/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/04-security-and-auth/030-file-encryptor/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/04-security-and-auth/030-file-encryptor/
 
 Free file encryptor in plain JavaScript. Lock any file with a password using AES-GCM 256 and PBKDF2, and unlock it later. No upload, the file never leaves your computer.
 

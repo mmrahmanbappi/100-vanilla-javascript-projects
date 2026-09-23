@@ -2,8 +2,8 @@
 
 ![Phone Input with Country Codes JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/067-phone-input-country-codes/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/067-phone-input-country-codes/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/067-phone-input-country-codes/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/067-phone-input-country-codes/
 
 Free international phone number input in plain JavaScript. Searchable country list with dial codes, formatting as you type, length checks and E.164 output for your server.
 

@@ -2,8 +2,8 @@
 
 ![Accessible Modal and Form Kit JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/020-accessible-dialog-forms/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/020-accessible-dialog-forms/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/020-accessible-dialog-forms/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/020-accessible-dialog-forms/
 
 Free accessible modal and form kit in plain JavaScript. Native dialog with focus handling, live error messages and custom validation with the Constraint Validation API.
 

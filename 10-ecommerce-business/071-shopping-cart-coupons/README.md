@@ -2,8 +2,8 @@
 
 ![Shopping Cart with Coupons JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/071-shopping-cart-coupons/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/071-shopping-cart-coupons/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/071-shopping-cart-coupons/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/071-shopping-cart-coupons/
 
 Free shopping cart in plain JavaScript. Add products, change quantities in a cart drawer, apply coupon codes, see free shipping progress, tax and totals, and keep the cart after reload.
 

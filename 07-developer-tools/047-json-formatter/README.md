@@ -2,8 +2,8 @@
 
 ![JSON Formatter and Validator JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/047-json-formatter/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/047-json-formatter/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/07-developer-tools/047-json-formatter/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/07-developer-tools/047-json-formatter/
 
 Free JSON formatter in plain JavaScript. Format, minify, sort keys and validate JSON with the exact error line, browse a collapsible tree and search. Large files use a worker.
 

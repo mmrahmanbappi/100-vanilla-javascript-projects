@@ -2,8 +2,8 @@
 
 ![Live Translator JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/006-live-translator/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/006-live-translator/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/006-live-translator/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/006-live-translator/
 
 Free live translator in plain JavaScript. Translate as you type in 15 languages with language detection and read aloud, using Chrome on-device AI with an online fallback.
 

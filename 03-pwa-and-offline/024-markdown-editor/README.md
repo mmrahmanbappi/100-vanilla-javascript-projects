@@ -2,8 +2,8 @@
 
 ![Local Markdown Editor JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/03-pwa-and-offline/024-markdown-editor/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/03-pwa-and-offline/024-markdown-editor/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/03-pwa-and-offline/024-markdown-editor/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/03-pwa-and-offline/024-markdown-editor/
 
 Free Markdown editor in plain JavaScript. Open and save real .md files with the File System Access API, see a live preview, and keep drafts. Includes a small parser.
 

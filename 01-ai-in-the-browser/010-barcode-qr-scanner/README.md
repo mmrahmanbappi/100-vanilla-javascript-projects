@@ -2,8 +2,8 @@
 
 ![QR and Barcode Scanner JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/010-barcode-qr-scanner/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/010-barcode-qr-scanner/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/010-barcode-qr-scanner/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/010-barcode-qr-scanner/
 
 Free QR code and barcode scanner in plain JavaScript. Scan with your camera or a photo, read QR, EAN, UPC and more, and make your own QR codes. Works on phones.
 

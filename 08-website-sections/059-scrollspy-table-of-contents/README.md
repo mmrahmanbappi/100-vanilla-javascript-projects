@@ -2,8 +2,8 @@
 
 ![Scrollspy Table of Contents JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/059-scrollspy-table-of-contents/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/059-scrollspy-table-of-contents/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/059-scrollspy-table-of-contents/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/059-scrollspy-table-of-contents/
 
 Free scrollspy table of contents in plain JavaScript. Builds the TOC from your headings, highlights the section you are reading, shows progress and scrolls smoothly.
 

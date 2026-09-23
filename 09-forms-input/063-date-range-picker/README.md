@@ -2,8 +2,8 @@
 
 ![Date Range Picker JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/063-date-range-picker/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/063-date-range-picker/
 
 Free date range picker in plain JavaScript. Two month calendar, blocked dates, minimum nights, hover preview, quick presets and keyboard navigation. No library.
 

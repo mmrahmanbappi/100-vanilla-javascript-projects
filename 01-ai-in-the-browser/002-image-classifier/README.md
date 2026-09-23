@@ -2,8 +2,8 @@
 
 ![Image Classifier JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/002-image-classifier/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/002-image-classifier/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/002-image-classifier/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/002-image-classifier/
 
 Free image classifier in plain JavaScript. Drop a photo and a Vision Transformer model names what is in it, with confidence bars. Runs in the browser with Transformers.js.
 

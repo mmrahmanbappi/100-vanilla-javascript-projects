@@ -2,8 +2,8 @@
 
 ![Arduino Serial Monitor JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/042-serial-monitor/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/042-serial-monitor/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/06-hardware-and-performance/042-serial-monitor/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/06-hardware-and-performance/042-serial-monitor/
 
 Free serial monitor and plotter in plain JavaScript. Talk to an Arduino, ESP32 or Pico over USB with the Web Serial API, send commands and plot numbers live.
 

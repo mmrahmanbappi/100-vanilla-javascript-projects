@@ -2,8 +2,8 @@
 
 ![Online Code Playground JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/040-code-playground/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/040-code-playground/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/040-code-playground/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/040-code-playground/
 
 Free online code playground in plain JavaScript. HTML, CSS and JS editors, a live sandboxed preview, a working console, templates and share links stored in the URL.
 

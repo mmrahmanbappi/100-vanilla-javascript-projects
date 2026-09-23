@@ -2,8 +2,8 @@
 
 ![Local AI Chatbot JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/001-local-ai-chatbot/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/001-local-ai-chatbot/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/001-local-ai-chatbot/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/001-local-ai-chatbot/
 
 Free local AI chatbot in plain JavaScript. It runs Llama and Qwen models on your own graphics card with WebGPU and WebLLM, with streaming replies and no API key.
 

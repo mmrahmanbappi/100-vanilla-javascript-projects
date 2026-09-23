@@ -2,8 +2,8 @@
 
 ![Live Chat App JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/039-live-chat/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/039-live-chat/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/039-live-chat/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/039-live-chat/
 
 Free real time chat in plain JavaScript. Rooms, nicknames, typing indicators and reactions, working between tabs with no server or across devices with a WebSocket server.
 

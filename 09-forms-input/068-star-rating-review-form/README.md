@@ -2,8 +2,8 @@
 
 ![Star Rating and Review Form JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/068-star-rating-review-form/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/068-star-rating-review-form/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/068-star-rating-review-form/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/068-star-rating-review-form/
 
 Free star rating and review form in plain JavaScript. Half star ratings with radio buttons, hover preview, review text with a counter, photo previews and a live rating summary.
 

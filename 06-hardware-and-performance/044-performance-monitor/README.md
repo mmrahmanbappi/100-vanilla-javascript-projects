@@ -2,8 +2,8 @@
 
 ![Performance Monitor Widget JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/044-performance-monitor/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/044-performance-monitor/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/06-hardware-and-performance/044-performance-monitor/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/06-hardware-and-performance/044-performance-monitor/
 
 Free performance monitor in plain JavaScript. Measure LCP, CLS, INP, FCP, TTFB, long tasks and FPS live with PerformanceObserver, and trigger issues to learn.
 

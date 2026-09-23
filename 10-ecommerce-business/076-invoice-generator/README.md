@@ -2,8 +2,8 @@
 
 ![Invoice Generator JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/076-invoice-generator/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/076-invoice-generator/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/076-invoice-generator/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/076-invoice-generator/
 
 Free invoice generator in plain JavaScript. Edit your details, add line items, set tax and discount, pick a currency and due date, and print a clean PDF. Saved in your browser.
 

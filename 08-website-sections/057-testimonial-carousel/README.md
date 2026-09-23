@@ -2,8 +2,8 @@
 
 ![Testimonial Carousel JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/057-testimonial-carousel/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/057-testimonial-carousel/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/057-testimonial-carousel/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/057-testimonial-carousel/
 
 Free testimonial carousel in plain JavaScript. Shows one, two or three review cards depending on space, with star ratings, autoplay progress, pause on hover and dots.
 

@@ -2,8 +2,8 @@
 
 ![Page SEO Audit JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/100-page-seo-audit/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/100-page-seo-audit/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/100-page-seo-audit/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/100-page-seo-audit/
 
 Free on-page SEO audit in plain JavaScript. Paste a page's HTML to check the title, description, headings, image alt text, links, canonical, Open Graph, schema and more, with a score and fixes.
 

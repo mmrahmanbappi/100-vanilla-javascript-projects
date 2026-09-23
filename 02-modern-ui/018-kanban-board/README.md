@@ -2,8 +2,8 @@
 
 ![Kanban Board JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/018-kanban-board/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/018-kanban-board/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/018-kanban-board/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/018-kanban-board/
 
 Free kanban board in plain JavaScript. Drag cards between columns, add labels and due dates, search, and save automatically with localStorage. Keyboard friendly.
 

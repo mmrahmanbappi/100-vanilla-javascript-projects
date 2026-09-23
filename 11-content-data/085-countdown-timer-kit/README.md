@@ -2,8 +2,8 @@
 
 ![Countdown Timer Kit JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/085-countdown-timer-kit/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/085-countdown-timer-kit/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/085-countdown-timer-kit/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/085-countdown-timer-kit/
 
 Free countdown timer kit in plain JavaScript. Event countdown to any date and time zone, a daily sale timer, a kitchen timer with an alarm sound and a stopwatch with laps. Accurate even in background tabs.
 

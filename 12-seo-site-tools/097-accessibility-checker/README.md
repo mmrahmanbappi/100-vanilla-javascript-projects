@@ -2,8 +2,8 @@
 
 ![Accessibility Checker JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/097-accessibility-checker/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/097-accessibility-checker/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/097-accessibility-checker/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/097-accessibility-checker/
 
 Free accessibility checker in plain JavaScript. Scan a sample page or paste your HTML to find missing alt text, low colour contrast, skipped headings, unlabeled fields and vague links.
 
@@ -11,7 +11,7 @@ Free accessibility checker in plain JavaScript. Scan a sample page or paste your
 
 An accessibility checker that scans a sample café page, or HTML you paste in, for common problems: missing alt text and language, skipped headings, fields without labels, empty buttons, vague links and low contrast.
 
-Each issue gets a severity, a plain English fix and a button that highlights the element in the page. A simple score shows how much work is left.
+Each issue gets a severity, a short fix and a button that highlights the element in the page. A simple score shows how much work is left.
 
 ## What it does
 

@@ -2,8 +2,8 @@
 
 ![Signals State Library JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/015-signals-state-library/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/015-signals-state-library/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/015-signals-state-library/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/015-signals-state-library/
 
 Free signals library in plain JavaScript. Build signal, computed and effect in about 40 lines, the idea behind Solid, Vue and Angular, with a live shopping cart demo.
 

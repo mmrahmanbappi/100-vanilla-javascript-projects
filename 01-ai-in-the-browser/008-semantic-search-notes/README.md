@@ -2,8 +2,8 @@
 
 ![Semantic Search for Notes JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/008-semantic-search-notes/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/008-semantic-search-notes/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/008-semantic-search-notes/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/008-semantic-search-notes/
 
 Free semantic search project in plain JavaScript. Search notes by meaning using text embeddings and cosine similarity, with notes saved in IndexedDB. No server.
 

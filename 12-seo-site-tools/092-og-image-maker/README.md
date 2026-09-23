@@ -2,8 +2,8 @@
 
 ![OG Image Maker JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/092-og-image-maker/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/092-og-image-maker/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/092-og-image-maker/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/092-og-image-maker/
 
 Free Open Graph image maker in plain JavaScript. Pick a layout, type a title, choose colours or a photo background, and download a 1200 by 630 PNG ready for social sharing.
 

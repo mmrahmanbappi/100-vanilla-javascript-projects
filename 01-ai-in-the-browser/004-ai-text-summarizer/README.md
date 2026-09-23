@@ -2,8 +2,8 @@
 
 ![AI Text Summarizer JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/004-ai-text-summarizer/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/004-ai-text-summarizer/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/004-ai-text-summarizer/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/004-ai-text-summarizer/
 
 Free AI text summarizer in plain JavaScript. Paste any article and get key points, a TL;DR or a headline using Chrome built-in AI, with a smart fallback for other browsers.
 

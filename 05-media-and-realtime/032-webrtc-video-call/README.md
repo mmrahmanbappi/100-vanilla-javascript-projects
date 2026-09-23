@@ -2,8 +2,8 @@
 
 ![Video Call App JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/032-webrtc-video-call/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/032-webrtc-video-call/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/032-webrtc-video-call/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/032-webrtc-video-call/
 
 Free WebRTC video call in plain JavaScript. Camera, mute, screen share and live stats. Connect two tabs automatically or two devices by copying a code.
 

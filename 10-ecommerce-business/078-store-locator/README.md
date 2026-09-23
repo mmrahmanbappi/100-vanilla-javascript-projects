@@ -2,8 +2,8 @@
 
 ![Store Locator JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/078-store-locator/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/078-store-locator/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/078-store-locator/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/078-store-locator/
 
 Free store locator in plain JavaScript. Use your location or pick an area, sort stores by distance with the haversine formula, see which are open now and view them on a simple map.
 

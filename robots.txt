@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mmrahmanbappi.github.io/vanilla-javascript-projects/sitemap.xml
+Sitemap: https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/sitemap.xml

@@ -2,8 +2,8 @@
 
 ![Spam-proof Contact Form JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/098-spam-proof-contact-form/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/098-spam-proof-contact-form/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/098-spam-proof-contact-form/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/098-spam-proof-contact-form/
 
 Free spam-proof contact form in plain JavaScript. A hidden honeypot field, a minimum fill time, link and keyword checks and a friendly rate limit, all without a captcha.
 
@@ -25,7 +25,7 @@ A panel shows each check passing or failing and adds up a spam score. Try sendin
 
 1. **A trap only bots see.** The website field is moved far off screen and hidden from screen readers. People never fill it in, but many bots fill every field.
 2. **Humans are not instant.** Real people need several seconds to type a name, email and message. Forms sent faster than four seconds are suspicious.
-3. **Score, do not just block.** Each failed check adds points. High scores are blocked, middle scores are sent but marked for review, so real people are rarely lost.
+3. **Score first, then decide.** Each failed check adds points. High scores are blocked, middle scores are sent but marked for review, so real people are rarely lost.
 
 ## The key JavaScript
 
@@ -64,7 +64,7 @@ It stops most simple bots. Repeat the same checks on your server, because bots c
 
 No. It is hidden with aria-hidden and taken out of the tab order, so assistive technology ignores it.
 
-**Why not just use a captcha?**
+**Why not use a captcha?**
 
 Captchas annoy real people and lower form completion. Try these quiet checks first and add a captcha only if spam continues.
 

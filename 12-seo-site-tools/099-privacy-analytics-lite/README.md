@@ -2,8 +2,8 @@
 
 ![Privacy Analytics Lite JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/099-privacy-analytics-lite/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/099-privacy-analytics-lite/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/099-privacy-analytics-lite/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/099-privacy-analytics-lite/
 
 Free privacy friendly analytics in plain JavaScript. Count page views without cookies or personal data, respect Do Not Track and Global Privacy Control, and see pages, sources and devices on a small dashboard.
 

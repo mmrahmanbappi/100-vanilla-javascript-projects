@@ -2,8 +2,8 @@
 
 ![Threaded Comments JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/087-threaded-comments/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/087-threaded-comments/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/087-threaded-comments/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/087-threaded-comments/
 
 Free threaded comment section in plain JavaScript. Nested replies, likes, edit and delete your own comments, sort by newest or top, collapse threads and friendly times like 2 hours ago.
 

@@ -2,8 +2,8 @@
 
 ![Client-side Router JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/013-client-side-router/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/013-client-side-router/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/013-client-side-router/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/013-client-side-router/
 
 Free client-side router in plain JavaScript using the Navigation API, with route parameters, a 404 page, loading states and a History API fallback.
 

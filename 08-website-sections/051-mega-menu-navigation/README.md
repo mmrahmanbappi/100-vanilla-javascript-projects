@@ -2,8 +2,8 @@
 
 ![Mega Menu Navigation JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/051-mega-menu-navigation/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/051-mega-menu-navigation/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/051-mega-menu-navigation/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/051-mega-menu-navigation/
 
 Free mega menu in plain JavaScript. Multi-column dropdowns, keyboard arrows and Escape, hover intent, and a slide-in mobile drawer. One HTML file, no library.
 

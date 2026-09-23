@@ -2,8 +2,8 @@
 
 ![Checkout Form JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/074-checkout-form/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/074-checkout-form/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/074-checkout-form/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/074-checkout-form/
 
 Free checkout form in plain JavaScript. Contact and address with autofill, delivery options that change the total, card number formatting with a Luhn check, expiry and CVC checks and an order summary.
 

@@ -9,8 +9,8 @@
 <meta property="og:title" content="Peer-to-Peer Video Call App with WebRTC and No Signaling Server (Vanilla JS)">
 <meta property="og:description" content="A real peer-to-peer video call with WebRTC: camera, mute, camera off, screen sharing and live connection stats. Connect two tabs automatically, or two devices by copying a short code. No signaling server needed. Free source.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/032-webrtc-video-call/preview.png">
-<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/05-media-and-realtime/032-webrtc-video-call/demo.html">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/032-webrtc-video-call/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/05-media-and-realtime/032-webrtc-video-call/demo.html">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0B7285">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230B7285'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
@@ -191,7 +191,7 @@ footer.foot a{color:var(--muted)}
   <p class="sub"><span class="pill" id="status" data-state="idle">Camera off</span></p>
   <div class="vids"><div class="vid me" id="meBox"><span>Your camera</span></div><div class="vid" id="themBox"><span>Waiting for the other side</span></div></div>
   <div class="ctl"><button class="btn primary" id="cam" type="button">Turn on camera</button><button class="btn" id="mute" type="button" disabled>Mute</button><button class="btn" id="vidoff" type="button" disabled>Camera off</button><button class="btn" id="share" type="button" disabled>Share screen</button><button class="btn" id="hang" type="button" disabled>Hang up</button></div>
-  <div class="stats" id="stats"><span><b>0</b>kbps</span><span><b>–</b>resolution</span><span><b>–</b>fps</span><span><b>–</b>round trip</span></div>
+  <div class="stats" id="stats"><span><b>0</b>kbps</span><span><b>-</b>resolution</span><span><b>-</b>fps</span><span><b>-</b>round trip</span></div>
   <h3 style="font:700 17px var(--display);margin:22px 0 8px">Connect</h3>
   <div class="tabsw" role="group" aria-label="Connection mode"><button class="btn" data-m="tabs" aria-pressed="true" type="button">Two tabs on this device</button><button class="btn" data-m="codes" aria-pressed="false" type="button">Two devices with codes</button></div>
   <div id="m-tabs"><p class="small">Turn on the camera here, then <a href="#" id="newtab">open this page in a second tab</a> and turn on the camera there. Click Call in either tab.</p><button class="btn primary" id="callTabs" type="button" disabled>Call the other tab</button></div>
@@ -217,7 +217,7 @@ send(pc.localDescription);                 <span class="c">// any channel: tabs,
 send(pc.localDescription);</code></pre>
 </section>
 </main>
-<footer class="foot"><span>Video Call App. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/05-media-and-realtime/032-webrtc-video-call">Source on GitHub</a></footer>
+<footer class="foot"><span>Video Call App. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/100-vanilla-javascript-projects/tree/main/05-media-and-realtime/032-webrtc-video-call">Source on GitHub</a></footer>
 </div>
 <script>
 // Shared helpers (same in every Browser AI Lab project)
@@ -314,7 +314,7 @@ $("#share").onclick = async () => {
 };
 function hang(tell = true) { if (tell) ch.postMessage({ t: "bye" }); pc?.close(); pc = null; clearInterval(statTimer); $("#themBox").innerHTML = "<span>Call ended</span>"; setStatus(st, "idle", "Call ended"); }
 $("#hang").onclick = () => hang(true);
-function stats() { clearInterval(statTimer); statTimer = setInterval(async () => { if (!pc) return; let bytes = 0, res = "–", fps = "–", rtt = "–";
+function stats() { clearInterval(statTimer); statTimer = setInterval(async () => { if (!pc) return; let bytes = 0, res = "-", fps = "-", rtt = "-";
   (await pc.getStats()).forEach((r) => { if (r.type === "inbound-rtp" && r.kind === "video") { bytes = r.bytesReceived; if (r.frameWidth) res = `${r.frameWidth}×${r.frameHeight}`; if (r.framesPerSecond) fps = Math.round(r.framesPerSecond); } if (r.type === "candidate-pair" && r.state === "succeeded" && r.currentRoundTripTime != null) rtt = Math.round(r.currentRoundTripTime * 1000) + " ms"; });
   const now = performance.now(), kbps = lastT ? Math.round(((bytes - lastBytes) * 8) / (now - lastT)) : 0; lastBytes = bytes; lastT = now;
   $("#stats").innerHTML = `<span><b>${Math.max(0, kbps)}</b>kbps</span><span><b>${res}</b>resolution</span><span><b>${fps}</b>fps</span><span><b>${rtt}</b>round trip</span>`; }, 1000); }

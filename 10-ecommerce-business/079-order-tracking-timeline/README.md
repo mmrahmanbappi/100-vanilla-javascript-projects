@@ -2,8 +2,8 @@
 
 ![Order Tracking Timeline JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/
 
 Free order tracking timeline in plain JavaScript. Look up an order number, see each step with times, a delivery countdown, simulated live updates and optional browser notifications.
 

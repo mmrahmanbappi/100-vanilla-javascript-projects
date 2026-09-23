@@ -2,8 +2,8 @@
 
 ![Background Remover JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/007-background-remover/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/01-ai-in-the-browser/007-background-remover/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/007-background-remover/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/01-ai-in-the-browser/007-background-remover/
 
 Free AI background remover in plain JavaScript. Drop a photo and get a clean cutout, then add a new color, blur or transparent background. Runs in the browser, no upload.
 

@@ -2,8 +2,8 @@
 
 ![Client-side Password Manager JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/04-security-and-auth/029-password-manager/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/04-security-and-auth/029-password-manager/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/04-security-and-auth/029-password-manager/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/04-security-and-auth/029-password-manager/
 
 Free password manager in plain JavaScript. An encrypted vault with AES-GCM and PBKDF2, a password generator, strength meter, auto lock and encrypted export.
 

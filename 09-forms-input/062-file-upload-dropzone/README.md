@@ -2,8 +2,8 @@
 
 ![File Upload Dropzone JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/062-file-upload-dropzone/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/062-file-upload-dropzone/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/062-file-upload-dropzone/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/09-forms-input/062-file-upload-dropzone/
 
 Free file upload dropzone in plain JavaScript. Drag files in or pick them, see image previews, reject wrong types and big files, watch progress bars and remove files.
 

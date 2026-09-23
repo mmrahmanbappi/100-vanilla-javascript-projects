@@ -2,8 +2,8 @@
 
 ![Passkey Login Demo JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/04-security-and-auth/028-passkey-login/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/04-security-and-auth/028-passkey-login/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/04-security-and-auth/028-passkey-login/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/04-security-and-auth/028-passkey-login/
 
 Free passkey login demo in plain JavaScript. Register and sign in with fingerprint, face or PIN using WebAuthn, and see the signature checked step by step.
 

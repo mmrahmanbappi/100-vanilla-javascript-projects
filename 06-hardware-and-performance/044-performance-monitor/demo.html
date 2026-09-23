@@ -9,8 +9,8 @@
 <meta property="og:title" content="Measure Core Web Vitals (LCP, CLS, INP) with PerformanceObserver: Live Monitor Widget">
 <meta property="og:description" content="A live performance panel for any page: Core Web Vitals LCP, CLS and INP, plus FCP, TTFB, long tasks, FPS and memory, all measured with PerformanceObserver. Buttons create layout shifts and slow tasks so you can watch the numbers react. Free source.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/044-performance-monitor/preview.png">
-<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/044-performance-monitor/demo.html">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/06-hardware-and-performance/044-performance-monitor/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/06-hardware-and-performance/044-performance-monitor/demo.html">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#2F9E44">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232F9E44'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
@@ -194,8 +194,8 @@ footer.foot a{color:var(--muted)}
 <section class="workspace" aria-labelledby="w-title">
   <h2 id="w-title">Core Web Vitals for this page</h2>
   <p class="sub">INP needs you to interact, so click the buttons below.</p>
-  <div class="vitals"><div class="vital" id="v-lcp"><div class="k">LCP, loading</div><div class="v">–</div><div class="r">Waiting</div></div><div class="vital" id="v-cls"><div class="k">CLS, visual stability</div><div class="v">0</div><div class="r">Waiting</div></div><div class="vital" id="v-inp"><div class="k">INP, responsiveness</div><div class="v">–</div><div class="r">Click something</div></div></div>
-  <div class="small3"><div><b id="fcp">–</b>First paint (FCP)</div><div><b id="ttfb">–</b>Server response (TTFB)</div><div><b id="fps">–</b>Frames per second</div><div><b id="mem">–</b>JS memory</div></div>
+  <div class="vitals"><div class="vital" id="v-lcp"><div class="k">LCP, loading</div><div class="v">-</div><div class="r">Waiting</div></div><div class="vital" id="v-cls"><div class="k">CLS, visual stability</div><div class="v">0</div><div class="r">Waiting</div></div><div class="vital" id="v-inp"><div class="k">INP, responsiveness</div><div class="v">-</div><div class="r">Click something</div></div></div>
+  <div class="small3"><div><b id="fcp">-</b>First paint (FCP)</div><div><b id="ttfb">-</b>Server response (TTFB)</div><div><b id="fps">-</b>Frames per second</div><div><b id="mem">-</b>JS memory</div></div>
   <div class="acts3"><button class="btn" id="shift" type="button">Cause a layout shift</button><button class="btn" id="slow" type="button">Run a 300 ms task</button><button class="btn" id="slowclick" type="button">Slow click handler (INP)</button><button class="btn" id="fast" type="button">Fast click handler</button></div>
   <div id="shiftbox"><p style="padding:10px;margin:0">This box appeared without reserved space, which moves the content below it.</p></div>
   <div class="grid2"><div><h3 style="font:700 16px var(--display);margin:6px 0">Frame rate</h3><div class="fps"><canvas id="fpsc"></canvas></div></div>
@@ -220,7 +220,7 @@ footer.foot a{color:var(--muted)}
 }).observe({ type: &quot;event&quot;, durationThreshold: 16, buffered: true });</code></pre>
 </section>
 </main>
-<footer class="foot"><span>Performance Monitor Widget. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/06-hardware-and-performance/044-performance-monitor">Source on GitHub</a></footer>
+<footer class="foot"><span>Performance Monitor Widget. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/100-vanilla-javascript-projects/tree/main/06-hardware-and-performance/044-performance-monitor">Source on GitHub</a></footer>
 </div>
 <script>
 // Shared helpers (same in every Browser AI Lab project)
@@ -275,7 +275,7 @@ function dropzone(el, input, onFile) {
 <script>
 const T = { lcp: [2500, 4000], cls: [0.1, 0.25], inp: [200, 500] }, val = { lcp: null, cls: 0, inp: null };
 const sup = PerformanceObserver.supportedEntryTypes || []; support(sup.includes("largest-contentful-paint") ? true : null, sup.includes("layout-shift") ? "All vitals" : "Some metrics");
-const fmt = (k, v) => (v == null ? "–" : k === "cls" ? v.toFixed(3) : v >= 1000 ? (v / 1000).toFixed(2) + " s" : Math.round(v) + " ms");
+const fmt = (k, v) => (v == null ? "-" : k === "cls" ? v.toFixed(3) : v >= 1000 ? (v / 1000).toFixed(2) + " s" : Math.round(v) + " ms");
 function show(k) { const v = val[k], el = $("#v-" + k); if (v == null) return; const [g, p] = T[k], cls = v <= g ? "good" : v <= p ? "ni" : "poor"; el.className = "vital " + cls; $(".v", el).textContent = fmt(k, v); $(".r", el).textContent = { good: "Good", ni: "Needs improvement", poor: "Poor" }[cls]; mini(); }
 const obs = (type, fn, extra = {}) => { if (!sup.includes(type)) return false; new PerformanceObserver((l) => fn(l.getEntries())).observe({ type, buffered: true, ...extra }); return true; };
 obs("largest-contentful-paint", (es) => { val.lcp = es.at(-1).startTime; show("lcp"); }) || ($("#v-lcp .r").textContent = "Not supported here");
@@ -295,7 +295,7 @@ const fpsHist = []; let frames = 0, t0 = performance.now();
 function drawFps() { const c = $("#fpsc"), r = c.getBoundingClientRect(), d = devicePixelRatio; c.width = r.width * d; c.height = r.height * d; const g = c.getContext("2d"); g.scale(d, d);
   const W = r.width, H = r.height; g.strokeStyle = "rgba(128,140,160,.3)"; g.beginPath(); g.moveTo(0, H - (60 / 70) * H); g.lineTo(W, H - (60 / 70) * H); g.stroke();
   const bw = W / 120; fpsHist.forEach((f, i) => { g.fillStyle = f >= 50 ? "#2F9E44" : f >= 30 ? "#F59F00" : "#E03131"; const h = (Math.min(70, f) / 70) * H; g.fillRect(i * bw, H - h, bw - 1, h); }); }
-function mini() { $("#mini").innerHTML = `LCP <b>${fmt("lcp", val.lcp)}</b> · CLS <b>${fmt("cls", val.cls)}</b> · INP <b>${fmt("inp", val.inp)}</b> · <b>${fpsHist.at(-1) || "–"}</b> fps`; }
+function mini() { $("#mini").innerHTML = `LCP <b>${fmt("lcp", val.lcp)}</b> · CLS <b>${fmt("cls", val.cls)}</b> · INP <b>${fmt("inp", val.inp)}</b> · <b>${fpsHist.at(-1) || "-"}</b> fps`; }
 </script>
 </body>
 </html>

@@ -2,8 +2,8 @@
 
 ![Pricing Table with Toggle JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/056-pricing-table-toggle/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/056-pricing-table-toggle/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/056-pricing-table-toggle/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/08-website-sections/056-pricing-table-toggle/
 
 Free pricing table in plain JavaScript. Switch monthly and yearly billing, change currency, pick team size with a slider and compare features. One HTML file.
 

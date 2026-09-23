@@ -2,8 +2,8 @@
 
 ![Toast Notification Center JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/086-toast-notification-center/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/086-toast-notification-center/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/086-toast-notification-center/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/086-toast-notification-center/
 
 Free toast notification system in plain JavaScript. Success, error, warning and info toasts, six positions, progress bars that pause on hover, undo buttons, a stack limit and a history panel.
 

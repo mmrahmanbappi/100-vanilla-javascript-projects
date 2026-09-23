@@ -2,8 +2,8 @@
 
 ![Product Filter and Sort JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/073-product-filter-sort/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/073-product-filter-sort/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/073-product-filter-sort/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/10-ecommerce-business/073-product-filter-sort/
 
 Free product filter and sort in plain JavaScript. Filter by category, price, colour, rating and stock, sort by price or rating, see active filter chips and share the URL.
 

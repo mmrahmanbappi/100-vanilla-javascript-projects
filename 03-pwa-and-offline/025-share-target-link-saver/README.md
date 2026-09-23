@@ -2,8 +2,8 @@
 
 ![Share Target Link Saver JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/03-pwa-and-offline/025-share-target-link-saver/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/03-pwa-and-offline/025-share-target-link-saver/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/03-pwa-and-offline/025-share-target-link-saver/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/03-pwa-and-offline/025-share-target-link-saver/
 
 Free link saver PWA in plain JavaScript. Install it and it appears in your phone's share menu, saving any link you share. Share links back out with the Web Share API.
 

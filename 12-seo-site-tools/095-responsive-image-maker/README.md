@@ -2,8 +2,8 @@
 
 ![Responsive Image Maker JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/095-responsive-image-maker/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/095-responsive-image-maker/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/095-responsive-image-maker/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/12-seo-site-tools/095-responsive-image-maker/
 
 Free responsive image maker in plain JavaScript. Drop in one photo, get it resized to several widths as WebP or JPEG, compare file sizes and copy ready srcset and picture code.
 

@@ -2,8 +2,8 @@
 
 ![Browser File Compressor JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/045-file-compressor/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/06-hardware-and-performance/045-file-compressor/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/06-hardware-and-performance/045-file-compressor/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/06-hardware-and-performance/045-file-compressor/
 
 Free file compressor in plain JavaScript. Gzip or deflate any file and unpack .gz files with the native CompressionStream API, with streaming progress and size charts.
 

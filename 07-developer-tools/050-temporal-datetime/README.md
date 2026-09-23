@@ -2,8 +2,8 @@
 
 ![Temporal Date and Time Toolkit JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/050-temporal-datetime/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/07-developer-tools/050-temporal-datetime/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/07-developer-tools/050-temporal-datetime/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/07-developer-tools/050-temporal-datetime/
 
 Free date and time toolkit in plain JavaScript with the Temporal API. Convert time zones, count days between dates, add durations, decode Unix timestamps and see a world clock.
 

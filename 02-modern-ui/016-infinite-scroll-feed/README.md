@@ -2,8 +2,8 @@
 
 ![Infinite Scroll Feed JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/016-infinite-scroll-feed/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/02-modern-ui/016-infinite-scroll-feed/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/016-infinite-scroll-feed/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/02-modern-ui/016-infinite-scroll-feed/
 
 Free infinite scroll feed in plain JavaScript. Load posts as you scroll, lazy load images and track seen posts with Intersection Observer. Skeleton loaders included.
 

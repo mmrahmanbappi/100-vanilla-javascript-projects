@@ -2,8 +2,8 @@
 
 ![Data Table JavaScript project preview](preview.png)
 
-**Live demo:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/081-data-table/demo.html
-**Details and code:** https://mmrahmanbappi.github.io/vanilla-javascript-projects/11-content-data/081-data-table/
+**Live demo:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/081-data-table/demo.html
+**Details and code:** https://mmrahmanbappi.github.io/100-vanilla-javascript-projects/11-content-data/081-data-table/
 
 Free data table in plain JavaScript. Click headers to sort, search every column, filter by department, choose page size, select rows and export the results to a CSV file.
 
