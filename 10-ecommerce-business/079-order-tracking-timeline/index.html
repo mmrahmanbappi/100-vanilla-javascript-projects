@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order Tracking Page in JavaScript: Status Timeline, Delivery Countdown and Live Updates</title>
+<meta name="description" content="Free order tracking timeline in plain JavaScript. Look up an order number, see each step with times, a delivery countdown, simulated live updates and optional browser notifications.">
+<meta name="keywords" content="order tracking javascript, delivery status timeline, track order page, shipping progress, order status page, notification api">
+<meta name="author" content="mmrahmanbappi">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vanilla JavaScript Projects">
+<meta property="og:title" content="Order Tracking Page in JavaScript: Status Timeline, Delivery Countdown and Live Updates">
+<meta property="og:description" content="Free order tracking timeline in plain JavaScript. Look up an order number, see each step with times, a delivery countdown, simulated live updates and optional browser notifications.">
+<meta property="og:url" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Order Tracking Page in JavaScript: Status Timeline, Delivery Countdown and Live Updates">
+<meta name="twitter:description" content="Free order tracking timeline in plain JavaScript. Look up an order number, see each step with times, a delivery countdown, simulated live updates and optional browser notifications.">
+<meta name="twitter:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/preview.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317191f'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'%3EJS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#fbfbf8;--ink:#17191f;--muted:#5a5f6b;--line:#e4e3dc;--blue:#2445d6;--card:#fff}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Instrument Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:17px}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.bar{border-bottom:1px solid var(--line);background:#fff}
+.bar div{max-width:1120px;margin:0 auto;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.bar a.logo{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);text-decoration:none}
+.bar nav a{margin-left:18px;color:var(--ink);font-weight:600;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.crumbs{font-size:.9rem;color:var(--muted);padding:22px 0 0}
+.crumbs a{color:var(--muted)}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin:14px 0 14px;max-width:22ch}
+h2{font-size:1.6rem;margin:0 0 14px}
+h3{font-size:1.15rem}
+.lead{font-size:1.15rem;color:var(--muted);max-width:62ch}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:#fff}
+.btn.main{background:var(--ink);color:#fff}
+.shot{display:block;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 50px rgba(20,20,40,.12)}
+.shot img{display:block;width:100%;height:auto}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:50px;padding:60px 0}
+.cols p{margin-bottom:14px;max-width:65ch}
+ul.list{padding-left:20px}
+ul.list li{margin-bottom:6px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.code{position:relative;margin:0 0 60px}
+pre{background:#1d2030;color:#e8eaf3;border-radius:14px;padding:24px;overflow-x:auto;font-size:.9rem;line-height:1.6}
+.copy{position:absolute;top:12px;right:12px;font:inherit;font-size:.85rem;font-weight:700;border:0;border-radius:8px;padding:6px 12px;background:#fff;color:var(--ink);cursor:pointer}
+ol.steps{padding-left:22px;max-width:65ch;margin-bottom:60px}
+ol.steps li{margin-bottom:8px}
+details{border-top:1px solid var(--line);padding:16px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{font-weight:700;cursor:pointer;font-size:1.05rem}
+details p{margin-top:10px;color:var(--muted);max-width:70ch}
+.faq{margin-bottom:60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;margin:26px 0 60px}
+.tile{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tile img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+.tile div{padding:14px 16px}
+.tile small{color:var(--muted)}
+.tile:hover{border-color:var(--ink)}
+.cat{margin:50px 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.soon{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:20px 0 70px}
+.soon div{border:1px dashed #c9c7bd;border-radius:12px;padding:18px;color:var(--muted)}
+.soon b{color:var(--ink);display:block}
+.pager{display:flex;justify-content:space-between;gap:16px;margin:0 0 60px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;color:var(--muted);font-size:.95rem}
+@media(max-width:820px){.cols{grid-template-columns:1fr;gap:30px;padding:40px 0}.bar nav a:first-child{display:none}}
+.support{font-size:.95rem;color:var(--muted);margin-top:14px}
+.how{padding-left:22px;max-width:65ch;margin-bottom:40px}.how li{margin-bottom:10px}.how b{display:block}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/","name":"Order Tracking Page in JavaScript: Status Timeline, Delivery Countdown and Live Updates","description":"Free order tracking timeline in plain JavaScript. Look up an order number, see each step with times, a delivery countdown, simulated live updates and optional browser notifications.","isPartOf":{"@type":"WebSite","name":"Vanilla JavaScript Projects","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/preview.png","width":1280,"height":800},"datePublished":"2026-09-23","dateModified":"2026-09-23","inLanguage":"en"},{"@type":"SoftwareSourceCode","name":"Order Tracking Timeline in Vanilla JavaScript","description":"Free order tracking timeline in plain JavaScript. Look up an order number, see each step with times, a delivery countdown, simulated live updates and optional browser notifications.","image":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/preview.png","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/","codeRepository":"https://github.com/mmrahmanbappi/vanilla-javascript-projects","programmingLanguage":["JavaScript","HTML","CSS"],"runtimePlatform":"Web browser","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"keywords":"order tracking javascript, delivery status timeline, track order page, shipping progress, order status page, notification api","author":{"@type":"Person","name":"mmrahmanbappi","url":"https://github.com/mmrahmanbappi"}},{"@type":"SoftwareApplication","name":"Order Tracking Timeline","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/demo.html","applicationCategory":"DeveloperApplication","operatingSystem":"Any modern web browser","image":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/preview.png","description":"Free order tracking timeline in plain JavaScript. Look up an order number, see each step with times, a delivery countdown, simulated live updates and optional browser notifications.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},{"@type":"ListItem","position":2,"name":"E-commerce and Business","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/"},{"@type":"ListItem","position":3,"name":"Order Tracking Timeline","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I connect this to real orders?","acceptedAnswer":{"@type":"Answer","text":"Replace the ORD object with a fetch to your order API, and call it on a timer or when the page becomes visible again."}},{"@type":"Question","name":"Should I use polling or push?","acceptedAnswer":{"@type":"Answer","text":"Polling every minute is simple and fine for most shops. Push notifications need a service worker and a server."}},{"@type":"Question","name":"Why ask for postcode too?","acceptedAnswer":{"@type":"Answer","text":"So people cannot look up other customers' orders just by guessing numbers."}}]}]}</script>
+</head>
+<body>
+<header class="bar"><div><a class="logo" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Vanilla JavaScript Projects</a><nav><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/#categories">Categories</a><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">GitHub</a></nav></div></header>
+<main class="wrap">
+<p class="crumbs"><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Home</a> / <a href="../">E-commerce and Business</a> / Order Tracking Timeline</p>
+<h1>Order Tracking Timeline in JavaScript, Free with Live Demo</h1>
+<p class="lead">Free order tracking timeline in plain JavaScript. Look up an order number, see each step with times, a delivery countdown, simulated live updates and optional browser notifications.</p>
+<div class="actions"><a class="btn main" href="demo.html">Open live demo</a><a class="btn" href="demo.html" download="order-tracking-timeline.html">Download HTML file</a><a class="btn" href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/10-ecommerce-business/079-order-tracking-timeline">View code on GitHub</a></div>
+<a class="shot" href="demo.html"><img src="preview.png" alt="Order Tracking Timeline JavaScript project: an order status page with a step timeline, delivery estimate and live updates" width="1280" height="800"></a>
+<p class="support">Runs on: Notification API and timers. Works in all modern browsers. Notifications need permission and a secure page.</p>
+<section class="cols"><div><h2>What is the Order Tracking Timeline?</h2><p>An order tracking page. Enter an order number to see a five step timeline, from placed to delivered, with times, a progress bar and the expected delivery day.</p><p>Live updates move the order along step by step, as if new data came from your server, and can send a browser notification when the status changes.</p></div>
+<div class="box"><h3>Good for</h3><ul class="list"><li>Online shop order status pages</li><li>Food and grocery delivery</li><li>Repair and service jobs</li><li>Print and made to order products</li></ul></div></section>
+<section><h2>What this project does</h2><ul class="list" style="margin-bottom:40px"><li>Order lookup with helpful not found message</li><li>Five step timeline with times</li><li>Progress bar and delivery countdown</li><li>Simulated live updates</li><li>Optional browser notifications</li></ul></section>
+<section><h2>How it works</h2><ol class="how"><li><b>Steps and times</b>Each order has a current step. Earlier steps are done and get a time, the current step pulses, and later steps wait.</li><li><b>Estimate and countdown</b>The delivery estimate turns into a friendly countdown that refreshes every 30 seconds.</li><li><b>Live updates and alerts</b>A timer stands in for polling your server. When the status changes, a toast appears and, if allowed, a browser notification.</li></ol></section>
+<section><h2>The key JavaScript</h2><p style="margin-bottom:14px">This is the heart of the project. The full file has the rest, including the screen layout and error handling.</p>
+<div class="code"><button class="copy" type="button">Copy code</button><pre><code>async function poll(orderId) {
+  const res = await fetch(`/api/orders/${orderId}`);
+  const { step } = await res.json();
+  if (step !== lastStep) {
+    lastStep = step;
+    render(step);
+    if (Notification.permission === &quot;granted&quot;)
+      new Notification(&quot;Order update&quot;, { body: steps[step - 1].title });
+  }
+}
+setInterval(() =&gt; poll(&quot;10482&quot;), 60000);</code></pre></div></section>
+<section><h2>How to use it</h2><ol class="steps"><li>Click Download HTML file above.</li><li>Open the file in a code editor, like VS Code.</li><li>Run it from a local server with <code>npx serve .</code> so the camera, microphone and AI features are allowed.</li><li>Change the text and colors, then upload it to GitHub Pages, Netlify or your own site. It is one file with no build step.</li></ol></section>
+<section class="faq"><h2>Questions people ask</h2><details><summary>How do I connect this to real orders?</summary><p>Replace the ORD object with a fetch to your order API, and call it on a timer or when the page becomes visible again.</p></details><details><summary>Should I use polling or push?</summary><p>Polling every minute is simple and fine for most shops. Push notifications need a service worker and a server.</p></details><details><summary>Why ask for postcode too?</summary><p>So people cannot look up other customers&#039; orders just by guessing numbers.</p></details></section>
+<nav class="pager" aria-label="More projects"><a href="../078-store-locator/">Previous: Store Locator</a><a href="../080-wishlist-compare/">Next: Wishlist and Compare</a></nav>
+<section><h2>More E-commerce and Business projects</h2><div class="grid"><a class="tile" href="../071-shopping-cart-coupons/"><img src="../071-shopping-cart-coupons/preview.png" alt="Shopping Cart with Coupons JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>071. Shopping Cart with Coupons</h3><small>A cart drawer with quantities, coupon codes, free shipping progress and saved items</small></div></a><a class="tile" href="../072-product-variant-picker/"><img src="../072-product-variant-picker/preview.png" alt="Product Variant Picker JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>072. Product Variant Picker</h3><small>A product page where colour and size change the picture, price and stock</small></div></a><a class="tile" href="../073-product-filter-sort/"><img src="../073-product-filter-sort/preview.png" alt="Product Filter and Sort JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>073. Product Filter and Sort</h3><small>A product listing with category, price, colour and rating filters saved in the URL</small></div></a><a class="tile" href="../074-checkout-form/"><img src="../074-checkout-form/preview.png" alt="Checkout Form JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>074. Checkout Form</h3><small>A one page checkout with address, delivery options, card checks and an order summary</small></div></a><a class="tile" href="../075-multi-currency-prices/"><img src="../075-multi-currency-prices/preview.png" alt="Multi-currency Prices JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>075. Multi-currency Prices</h3><small>Prices that switch to the visitor&#039;s currency with local formatting and neat rounding</small></div></a><a class="tile" href="../076-invoice-generator/"><img src="../076-invoice-generator/preview.png" alt="Invoice Generator JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>076. Invoice Generator</h3><small>An editable invoice that does the maths and prints to a clean PDF</small></div></a></div></section>
+</main>
+<footer>Free under the MIT license. Made by <a href="https://github.com/mmrahmanbappi">mmrahmanbappi</a>. <a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">Star the repo on GitHub</a> to help more people find these projects.</footer>
+<script>document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.nextElementSibling.innerText).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy code',1500)})})</script>
+</body>
+</html>

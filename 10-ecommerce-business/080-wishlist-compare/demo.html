@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wishlist and Compare Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Free wishlist and product compare in plain JavaScript. Save favourites with a heart, keep them after reload, share the list as a link, and compare up to three products with differences highlighted.">
+<meta name="keywords" content="wishlist javascript, product compare table, save favorites localstorage, compare products, share wishlist link, ecommerce wishlist">
+<meta property="og:title" content="Wishlist and Product Compare in JavaScript: Saved Hearts, Share Link and Comparison Table">
+<meta property="og:description" content="Free wishlist and product compare in plain JavaScript. Save favourites with a heart, keep them after reload, share the list as a link, and compare up to three products with differences highlighted.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/080-wishlist-compare/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/080-wishlist-compare/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#BE185D">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23BE185D'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Wishlist and Compare", "description": "Free wishlist and product compare in plain JavaScript. Save favourites with a heart, keep them after reload, share the list as a link, and compare up to three products with differences highlighted.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "wishlist javascript, product compare table, save favorites localstorage, compare products, share wishlist link, ecommerce wishlist"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* mobile header fix */
+.how>*{min-width:0}.how pre{overflow-x:auto;max-width:100%}
+
+@media (max-width:560px){.topbar{flex-wrap:wrap;gap:8px}.topbar nav{display:flex;flex-wrap:wrap;gap:6px 12px}.topbar nav span{display:none}.topbar nav a{margin-left:0}}
+.strip dd{overflow-wrap:anywhere}
+
+:root{--accent:#BE185D}
+.wtop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}.wg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.wc{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;position:relative}.wc img{width:100%;aspect-ratio:4/3;object-fit:cover}.wc .b{padding:12px 14px}.wc .b b{display:block}.wc .b label{display:flex;gap:8px;align-items:center;font-size:14px;margin-top:8px}
+.heart{position:absolute;top:10px;right:10px;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.95);cursor:pointer;display:grid;place-items:center}.heart path{fill:none;stroke:#111;stroke-width:2}.heart[aria-pressed=true] path{fill:var(--accent);stroke:var(--accent)}.heart.pop{animation:pop .3s}@keyframes pop{50%{transform:scale(1.25)}}
+dialog.wd{border:0;border-radius:var(--r-lg);padding:0;width:min(860px,calc(100% - 24px));background:var(--panel);color:var(--ink)}dialog.wd::backdrop{background:rgba(0,0,0,.45)}.wd header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}.wd header b{font:800 20px var(--display)}.wd .bd2{padding:16px 18px;overflow:auto;max-height:70vh}
+.wl{list-style:none;padding:0;margin:0;display:grid;gap:8px}.wl li{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center}.wl img{width:56px;height:56px;border-radius:8px;object-fit:cover}
+.ct{width:100%;border-collapse:collapse;min-width:520px}.ct th,.ct td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.ct thead img{width:100%;max-width:160px;aspect-ratio:4/3;object-fit:cover;border-radius:10px}.ct tr.diff td{background:color-mix(in srgb,var(--accent) 8%,transparent)}.ct td.best{font-weight:800;color:var(--ok)}
+.share{display:flex;gap:8px;margin-top:14px}.share input{flex:1;min-width:0;font:13px var(--code)}.cbar{position:sticky;bottom:10px;margin-top:14px;background:var(--ink);color:var(--paper);border-radius:14px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+@media (max-width:720px){.wg{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../">Vanilla JavaScript Projects</a>
+  <nav><span>Project 80 of 100</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 80, E-commerce and business</p>
+    <h1>Wishlist and Compare</h1>
+    <p class="lede">Two features that turn browsing into buying. Heart what you like for later, and put up to three products side by side to spot the differences.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A heart above a three column comparison table"><path d="M160 110c-40-30-60-50-60-72a30 30 0 0 1 60-8a30 30 0 0 1 60 8c0 22-20 42-60 72z" fill="var(--accent)"/><rect x="30" y="130" width="260" height="100" rx="12" fill="var(--panel)" stroke="var(--ink)" stroke-width="4"/><path d="M116 130v100M204 130v100M30 163h260M30 196h260" stroke="var(--line)" stroke-width="3"/><rect x="120" y="167" width="80" height="25" rx="4" fill="var(--accent)" opacity=".25"/></svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>localStorage</dd></div><div><dt>Sharing</dt><dd>URL parameters</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <h2 id="w-title">Save and compare</h2>
+  <p class="sub">Heart a few products, tick Compare on two or three, then open the comparison. Copy the share link and open it in another tab.</p>
+  <div class="wtop"><span class="small muted" id="info" aria-live="polite"></span><button class="btn" id="ow" type="button">Wishlist (<span id="wn">0</span>)</button></div><div class="wg" id="wg"></div><div class="cbar" id="cbar" hidden><span id="cn2"></span><button class="btn primary" id="oc" type="button">Compare now</button></div>
+<dialog class="wd" id="dw" aria-labelledby="dwt"><header><b id="dwt">Your wishlist</b><button class="btn" type="button" data-close>Close</button></header><div class="bd2"><ul class="wl" id="wl"></ul><div class="share"><label class="sr-only" for="sh">Share link</label><input id="sh" class="field" readonly style="margin:0"><button class="btn" id="cps" type="button">Copy link</button></div></div></dialog>
+<dialog class="wd" id="dc" aria-labelledby="dct"><header><b id="dct">Compare</b><button class="btn" type="button" data-close>Close</button></header><div class="bd2"><table class="ct" id="ct"></table><p class="small muted" style="margin-top:10px">Rows that differ are highlighted. The best value in each row is in green.</p></div></dialog>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>A set of saved ids</strong><span>The wishlist is a Set of product ids saved to localStorage, so hearts stay filled after a reload or a new visit.</span></li><li><strong>Share as a link</strong><span>The share link adds ?w=0,2,5 to the page address. Opening it merges those products into the other person&#x27;s wishlist.</span></li><li><strong>Compare what differs</strong><span>For up to three products, each row checks if the values differ and highlights the row, and marks the best value, like the lowest price.</span></li></ol></div>
+  <pre><code><span class="k">const</span> wish = <span class="k">new</span> Set(JSON.parse(localStorage.getItem(&quot;wish&quot;) || &quot;[]&quot;));
+heart.onclick = () =&gt; {
+  wish.has(id) ? wish.delete(id) : wish.add(id);
+  localStorage.setItem(&quot;wish&quot;, JSON.stringify([...wish]));
+};
+shareInput.value = location.origin + location.pathname + &quot;?w=&quot; + [...wish].join(&quot;,&quot;);
+
+<span class="k">const</span> values = picked.map((p) =&gt; p.price);
+<span class="k">const</span> differs = <span class="k">new</span> Set(values).size &gt; 1;
+<span class="k">const</span> best = Math.min(...values);</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Wishlist and Compare. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/10-ecommerce-business/080-wishlist-compare">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+(() => {
+support(true, "localStorage available");
+const img = (id, w = 500) => `https://images.unsplash.com/photo-${id}?w=${w}&q=70&auto=format&fit=crop`;
+const P = [{ n: "Oak lounge chair", i: "1586023492125-27b2c045efd7", price: 249, w: 72, h: 80, mat: "Solid oak, wool", rt: 4.7, del: 5, war: 5 }, { n: "Linen sofa", i: "1560448204-e02f11c3d0e2", price: 1190, w: 210, h: 84, mat: "Linen, beech", rt: 4.5, del: 14, war: 10 }, { n: "Reading nook set", i: "1502672260266-1c1ef2d93688", price: 389, w: 80, h: 90, mat: "Walnut, cotton", rt: 4.8, del: 7, war: 5 }, { n: "Tufted bed frame", i: "1505693416388-ac5ce068fe85", price: 820, w: 160, h: 120, mat: "Velvet, pine", rt: 4.3, del: 10, war: 10 }, { n: "Walnut coffee table", i: "1618221195710-dd6b41faaea6", price: 310, w: 110, h: 42, mat: "Walnut", rt: 4.6, del: 5, war: 5 }, { n: "Rattan side table", i: "1616486338812-3dadae4b4ace", price: 145, w: 45, h: 55, mat: "Rattan, oak", rt: 4.4, del: 3, war: 2 }];
+const shared = new URLSearchParams(location.search).get("w"); let wish = new Set(store("wish") || []), cmp = new Set();
+if (shared) { const ids = shared.split(",").map(Number).filter((n) => P[n]); if (ids.length) { ids.forEach((n) => wish.add(n)); history.replaceState(null, "", location.pathname); setTimeout(() => toast(`Added ${ids.length} shared items to your wishlist`), 300); } }
+const heart = '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-8-5.2-8-11.2A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 2.8C20 15.8 12 21 12 21z"/></svg>';
+function draw() { store("wish", [...wish]); $("#wn").textContent = wish.size; $("#info").textContent = `${wish.size} saved, ${cmp.size} of 3 picked to compare`;
+  $("#wg").innerHTML = P.map((p, i) => `<article class="wc"><img src="${img(p.i)}" alt="${p.n}" width="500" height="375" loading="lazy"><button class="heart" type="button" data-h="${i}" aria-pressed="${wish.has(i)}" aria-label="${wish.has(i) ? "Remove from" : "Save to"} wishlist: ${p.n}">${heart}</button><div class="b"><b>${p.n}</b>$${p.price}<label><input type="checkbox" data-c="${i}" ${cmp.has(i) ? "checked" : ""} ${!cmp.has(i) && cmp.size >= 3 ? "disabled" : ""}> Compare</label></div></article>`).join("");
+  $("#cbar").hidden = cmp.size < 2; $("#cn2").textContent = `${cmp.size} products picked`; }
+$("#wg").onclick = (e) => { const h = e.target.closest("[data-h]"); if (!h) return; const i = +h.dataset.h; wish.has(i) ? wish.delete(i) : wish.add(i); draw(); const nb = $(`[data-h="${i}"]`); nb.classList.add("pop"); nb.focus(); };
+$("#wg").onchange = (e) => { const c = e.target.closest("[data-c]"); if (!c) return; const i = +c.dataset.c; c.checked ? cmp.add(i) : cmp.delete(i); draw(); };
+function openWish() { const L = [...wish]; $("#wl").innerHTML = L.length ? L.map((i) => `<li><img src="${img(P[i].i, 120)}" alt=""><span><b>${P[i].n}</b><br>$${P[i].price}</span><button class="btn" type="button" data-rm="${i}">Remove</button></li>`).join("") : "<li class='muted'>Nothing saved yet. Tap a heart.</li>"; $("#sh").value = L.length ? location.origin + location.pathname + "?w=" + L.join(",") : ""; $("#dw").showModal(); }
+$("#ow").onclick = openWish; $("#wl").onclick = (e) => { const b = e.target.closest("[data-rm]"); if (b) { wish.delete(+b.dataset.rm); draw(); openWish(); } };
+$("#cps").onclick = () => $("#sh").value ? copyText($("#sh").value) : toast("Save something first");
+$("#oc").onclick = () => { const L = [...cmp].map((i) => P[i]); const rows = [["Price", "price", (v) => "$" + v, "min"], ["Width", "w", (v) => v + " cm"], ["Height", "h", (v) => v + " cm"], ["Materials", "mat", (v) => v], ["Rating", "rt", (v) => v + " of 5", "max"], ["Delivery", "del", (v) => v + " days", "min"], ["Warranty", "war", (v) => v + " years", "max"]];
+  $("#ct").innerHTML = `<thead><tr><th scope="col"><span class="sr-only">Feature</span></th>${L.map((p) => `<th scope="col"><img src="${img(p.i, 300)}" alt=""><br>${p.n}</th>`).join("")}</tr></thead><tbody>${rows.map(([lab, k, f, best]) => { const vals = L.map((p) => p[k]), diff = new Set(vals).size > 1, b = best ? (best === "min" ? Math.min(...vals) : Math.max(...vals)) : null; return `<tr class="${diff ? "diff" : ""}"><th scope="row">${lab}</th>${L.map((p) => `<td class="${best && diff && p[k] === b ? "best" : ""}">${f(p[k])}</td>`).join("")}</tr>`; }).join("")}</tbody>`; $("#dc").showModal(); };
+$$("[data-close]").forEach((b) => b.onclick = () => b.closest("dialog").close());
+draw();
+})();
+</script>
+</body>
+</html>

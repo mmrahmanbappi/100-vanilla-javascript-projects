@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Order Tracking Timeline Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Free order tracking timeline in plain JavaScript. Look up an order number, see each step with times, a delivery countdown, simulated live updates and optional browser notifications.">
+<meta name="keywords" content="order tracking javascript, delivery status timeline, track order page, shipping progress, order status page, notification api">
+<meta property="og:title" content="Order Tracking Page in JavaScript: Status Timeline, Delivery Countdown and Live Updates">
+<meta property="og:description" content="Free order tracking timeline in plain JavaScript. Look up an order number, see each step with times, a delivery countdown, simulated live updates and optional browser notifications.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/10-ecommerce-business/079-order-tracking-timeline/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2563EB">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563EB'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Order Tracking Timeline", "description": "Free order tracking timeline in plain JavaScript. Look up an order number, see each step with times, a delivery countdown, simulated live updates and optional browser notifications.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "order tracking javascript, delivery status timeline, track order page, shipping progress, order status page, notification api"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* mobile header fix */
+.how>*{min-width:0}.how pre{overflow-x:auto;max-width:100%}
+
+@media (max-width:560px){.topbar{flex-wrap:wrap;gap:8px}.topbar nav{display:flex;flex-wrap:wrap;gap:6px 12px}.topbar nav span{display:none}.topbar nav a{margin-left:0}}
+.strip dd{overflow-wrap:anywhere}
+
+:root{--accent:#2563EB}
+.tk{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:end}.tk .field{margin:0}.tk input{font-family:var(--code)}
+.ord{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px}.oh{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:flex-start}.oh h3{font:800 24px var(--display);margin:0}.eta{text-align:right}.eta b{display:block;font:800 26px var(--display);color:var(--accent)}
+.pbar2{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin:18px 0}.pbar2 i{display:block;height:100%;background:var(--accent);transition:width .6s}
+.tl2{list-style:none;padding:0;margin:0;position:relative}.tl2 li{display:grid;grid-template-columns:36px 1fr auto;gap:12px;padding:0 0 18px;position:relative}.tl2 li::before{content:"";position:absolute;left:17px;top:30px;bottom:0;width:2px;background:var(--line)}.tl2 li:last-child::before{display:none}.tl2 li.done::before{background:var(--accent)}
+.dot{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--sunk);border:2px solid var(--line);font-weight:800;font-size:14px;color:var(--muted);position:relative;z-index:1}.done .dot{background:var(--accent);border-color:var(--accent);color:#fff}.now .dot{background:var(--panel);border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 18%,transparent)}
+.tl2 b{display:block}.tl2 .d{color:var(--muted);font-size:14px}.tl2 .t{font-size:13px;color:var(--muted);white-space:nowrap}.items3{display:flex;gap:14px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:14px;margin-top:6px;font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../">Vanilla JavaScript Projects</a>
+  <nav><span>Project 79 of 100</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 79, E-commerce and business</p>
+    <h1>Order Tracking Timeline</h1>
+    <p class="lede">The page customers check again and again after buying. It shows where the order is, what happens next and when it should arrive.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A delivery van above a timeline with steps"><rect x="60" y="40" width="120" height="70" rx="10" fill="var(--accent)"/><path d="M180 60h40l30 30v20h-70z" fill="var(--accent)"/><rect x="194" y="68" width="26" height="20" rx="3" fill="var(--paper)"/><circle cx="100" cy="116" r="14" fill="var(--ink)"/><circle cx="220" cy="116" r="14" fill="var(--ink)"/><path d="M40 190h240" stroke="var(--line)" stroke-width="8" stroke-linecap="round"/><path d="M40 190h150" stroke="var(--accent)" stroke-width="8" stroke-linecap="round"/><g><circle cx="40" cy="190" r="12" fill="var(--accent)"/><circle cx="115" cy="190" r="12" fill="var(--accent)"/><circle cx="190" cy="190" r="12" fill="var(--accent)"/><circle cx="270" cy="190" r="12" fill="var(--panel)" stroke="var(--ink)" stroke-width="4"/></g></svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>Notification API</dd></div><div><dt>Updates</dt><dd>Simulated polling</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <h2 id="w-title">Track an order</h2>
+  <p class="sub">Try order 10482 (on its way), 10519 (delivered) or 10533 (just placed). Press Live updates to watch it move.</p>
+  <form class="tk" id="tf"><label class="field">Order number<input id="on" value="10482" inputmode="numeric" autocomplete="off"></label><label class="field">Email or postcode<input id="oe" value="BS1 4XX" autocomplete="postal-code"></label><button class="btn primary" type="submit">Track</button><button class="btn" type="button" id="live" aria-pressed="false">Live updates</button><button class="btn" type="button" id="noti">Notify me</button></form>
+<div class="ord" id="ord" aria-live="polite"></div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Steps and times</strong><span>Each order has a current step. Earlier steps are done and get a time, the current step pulses, and later steps wait.</span></li><li><strong>Estimate and countdown</strong><span>The delivery estimate turns into a friendly countdown that refreshes every 30 seconds.</span></li><li><strong>Live updates and alerts</strong><span>A timer stands in for polling your server. When the status changes, a toast appears and, if allowed, a browser notification.</span></li></ol></div>
+  <pre><code><span class="k">async</span> <span class="k">function</span> poll(orderId) {
+  <span class="k">const</span> res = <span class="k">await</span> fetch(`/api/orders/${orderId}`);
+  <span class="k">const</span> { step } = <span class="k">await</span> res.json();
+  <span class="k">if</span> (step !== lastStep) {
+    lastStep = step;
+    render(step);
+    <span class="k">if</span> (Notification.permission === &quot;granted&quot;)
+      <span class="k">new</span> Notification(&quot;Order update&quot;, { body: steps[step - 1].title });
+  }
+}
+setInterval(() =&gt; poll(&quot;10482&quot;), 60000);</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Order Tracking Timeline. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/10-ecommerce-business/079-order-tracking-timeline">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+(() => {
+support("Notification" in window, "Notification" in window ? "Notifications available" : "No notifications");
+const STEPS = [["Order placed", "We have your order and payment."], ["Packed", "Your items are packed at our Bristol warehouse."], ["Shipped", "Handed to the courier."], ["Out for delivery", "The driver has your parcel today."], ["Delivered", "Left with you or in a safe place."]];
+const ORD = { "10482": { st: 3, items: "Oak lounge chair, 2 rattan side tables", placed: -2.2 }, "10519": { st: 5, items: "Linen sofa", placed: -6 }, "10533": { st: 1, items: "Walnut coffee table", placed: -0.05 } };
+let cur = null, timer = null, notify = false;
+const at = (days) => new Date(Date.now() + days * 864e5);
+const fmt = (d) => d.toLocaleString(undefined, { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+function draw() { const o = ORD[cur]; if (!o) { $("#ord").innerHTML = `<p>We couldn't find order ${esc(cur)}. Check the number in your confirmation email.</p>`; return; }
+  const st = o.st, gaps = [0, 0.2, 0.9, 1.9, 2.3], times = gaps.map((g) => at(o.placed + g)), eta = at(o.placed + 2.4); const done = st >= 5;
+  $("#ord").innerHTML = `<div class="oh"><div><span class="small muted">Order ${cur}</span><h3>${done ? "Delivered" : STEPS[st - 1][0]}</h3></div><div class="eta"><span class="small muted">${done ? "Delivered on" : "Arriving"}</span><b>${done ? times[4].toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "short" }) : eta.toLocaleDateString(undefined, { weekday: "long" }) + ", 9am to 1pm"}</b>${done ? "" : `<span class="small muted" id="cd"></span>`}</div></div>
+  <div class="pbar2" aria-hidden="true"><i style="width:${(st - 1) / 4 * 100}%"></i></div><ol class="tl2">${STEPS.map((s, i) => { const c = i < st - 1 || done ? "done" : i === st - 1 ? "now" : ""; return `<li class="${c}"><span class="dot">${c === "done" ? "✓" : i + 1}</span><div><b>${s[0]}</b><span class="d">${s[1]}</span></div><span class="t">${i < st ? fmt(times[i]) : ""}</span></li>`; }).join("")}</ol>
+  <div class="items3"><span><b>Items:</b> ${o.items}</span><span><b>Courier ref:</b> NW${cur}88GB</span></div>`; cd(); }
+function cd() { const el = $("#cd"); if (!el) return; const o = ORD[cur], ms = at(o.placed + 2.4) - Date.now(); if (ms <= 0) { el.textContent = "any time now"; return; } const h = Math.floor(ms / 36e5), m = Math.floor(ms % 36e5 / 6e4); el.textContent = `in about ${h ? h + " h " : ""}${m} min`; }
+setInterval(cd, 30000);
+$("#tf").onsubmit = (e) => { e.preventDefault(); cur = $("#on").value.trim(); draw(); };
+$("#live").onclick = () => { const on = !timer; $("#live").setAttribute("aria-pressed", on); $("#live").textContent = on ? "Stop live updates" : "Live updates"; if (!on) { clearInterval(timer); timer = null; return; } timer = setInterval(() => { const o = ORD[cur]; if (!o || o.st >= 5) { clearInterval(timer); timer = null; $("#live").textContent = "Live updates"; return; } o.st++; draw(); const msg = `Order ${cur}: ${STEPS[o.st - 1][0]}`; toast(msg); if (notify && Notification.permission === "granted") new Notification("Order update", { body: msg }); }, 3500); };
+$("#noti").onclick = async () => { if (!("Notification" in window)) return toast("This browser has no notifications"); const p = await Notification.requestPermission(); notify = p === "granted"; toast(notify ? "We'll notify you about updates" : "Notifications are blocked"); };
+cur = "10482"; draw();
+})();
+</script>
+</body>
+</html>

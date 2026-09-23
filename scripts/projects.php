@@ -102,6 +102,16 @@ $CATEGORIES = [
         'keywords' => 'javascript form components, multi step form, file upload dropzone, date range picker, autocomplete search, otp input, signature pad',
         'intro' => 'Forms are where visitors become customers, and small details decide whether they finish. These ten projects cover the fields websites need most: step by step sign up, file uploads, date ranges, search suggestions, verification codes, phone numbers, reviews, signatures and a small text editor. Each is one HTML file, works with a keyboard and checks input before it reaches your server.',
     ],
+    [
+        'num' => 10,
+        'slug' => '10-ecommerce-business',
+        'name' => 'E-commerce and Business',
+        'ready' => true,
+        'title' => 'Free JavaScript E-commerce Components: Cart, Checkout, Filters, Invoice, Booking',
+        'desc' => '10 free e-commerce and business projects in plain JavaScript with live demos: shopping cart, variant picker, product filters, checkout, invoice generator, booking calendar and more.',
+        'keywords' => 'javascript shopping cart, ecommerce javascript components, product filter, checkout form, invoice generator, booking calendar, store locator',
+        'intro' => 'These are the building blocks of a small online business. A cart with coupons, product options, filters that live in the URL, a checkout with card checks, prices in local currencies, invoices, appointment booking, a store finder, order tracking and a wishlist. Each is one HTML file with real photos, and each shows the technique you need to connect it to your own backend.',
+    ],
 ];
 
 $PROJECTS = [
@@ -4876,6 +4886,672 @@ bar.style.width = (count / reviews.length) * 100 + "%";',
             [
                 'Where is the text saved?',
                 'In localStorage in your browser, half a second after you stop typing.',
+            ],
+        ],
+    ],
+    [
+        'num' => 71,
+        'cat' => '10-ecommerce-business',
+        'slug' => '071-shopping-cart-coupons',
+        'name' => 'Shopping Cart with Coupons',
+        'example' => 'a cart drawer with quantities, coupon codes, free shipping progress and saved items',
+        'title' => 'Shopping Cart in Vanilla JavaScript: Cart Drawer, Coupons, Shipping and Saved Cart',
+        'desc' => 'Free shopping cart in plain JavaScript. Add products, change quantities in a cart drawer, apply coupon codes, see free shipping progress, tax and totals, and keep the cart after reload.',
+        'keywords' => 'shopping cart javascript, add to cart, cart drawer, coupon code javascript, localstorage cart, ecommerce javascript',
+        'runs' => 'localStorage and Intl.NumberFormat',
+        'what' => [
+            'A small furniture shop with a slide-out cart. Add products, change quantities, remove items and see the subtotal, discount, shipping, tax and total update.',
+            'Try three coupon codes, one with a minimum order. A progress bar shows how much more you need for free shipping, and the cart is saved in the browser.',
+        ],
+        'when' => [
+            'Small online shops',
+            'Restaurant and takeaway ordering',
+            'Event and ticket sales',
+            'Any site selling a few products',
+        ],
+        'features' => [
+            'Cart drawer built on the dialog element',
+            'Quantity buttons and remove',
+            'Coupon codes with minimum order rules',
+            'Free shipping progress bar',
+            'Tax and totals, saved in localStorage',
+        ],
+        'steps' => [
+            [
+                'Cart is one small object',
+                'Items are stored as product id and quantity. Prices are always read from the product list, so they cannot be edited in the cart.',
+            ],
+            [
+                'Recalculate everything',
+                'Subtotal, discount, shipping, tax and total are worked out again on every change, in that order.',
+            ],
+            [
+                'Save after each change',
+                'The cart object is saved to localStorage, so it survives a reload or coming back tomorrow.',
+            ],
+        ],
+        'code' => 'const cart = JSON.parse(localStorage.getItem("cart") || "{}"); // { productId: qty }
+function totals() {
+  const sub = Object.entries(cart).reduce((a, [id, q]) => a + products[id].price * q, 0);
+  const discount = code === "SAVE10" ? sub * 0.1 : 0;
+  const shipping = sub >= 500 || code === "FREESHIP" ? 0 : 25;
+  const tax = (sub - discount) * 0.2;
+  return { sub, discount, shipping, tax, total: sub - discount + shipping + tax };
+}
+localStorage.setItem("cart", JSON.stringify(cart));',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Is a JavaScript cart safe?',
+                'For showing the cart, yes. Always calculate the final price again on your server before taking payment.',
+            ],
+            [
+                'How do I connect a payment provider?',
+                'Send the cart items to your server, create a checkout session with your provider and redirect to it.',
+            ],
+            [
+                'How long is the cart kept?',
+                'Until the visitor clears their browser data. You can add a date and empty old carts after a few weeks.',
+            ],
+        ],
+    ],
+    [
+        'num' => 72,
+        'cat' => '10-ecommerce-business',
+        'slug' => '072-product-variant-picker',
+        'name' => 'Product Variant Picker',
+        'example' => 'a product page where colour and size change the picture, price and stock',
+        'title' => 'Product Variant Selector in JavaScript: Colour and Size Swatches with Stock and Price',
+        'desc' => 'Free product variant picker in plain JavaScript. Choose colour and size, see the product image, price and stock change, sold out sizes greyed out, and a shareable URL for each variant.',
+        'keywords' => 'product variant selector javascript, color size picker, product options, size selector, out of stock variant, ecommerce product page',
+        'runs' => 'URLSearchParams and history.replaceState',
+        'what' => [
+            'A product page for a hoodie with five colours and six sizes. Picking a colour recolours the picture and shows which sizes are left.',
+            'Sizes that are sold out are crossed out, low stock gets a warning, bigger sizes cost a little more, and the address bar always holds your exact choice.',
+        ],
+        'when' => [
+            'Clothing and shoe shops',
+            'Furniture with fabric and finish options',
+            'Phone cases and accessories',
+            'Any product with options',
+        ],
+        'features' => [
+            'Colour swatches and size buttons built on radio inputs',
+            'Stock per colour and size, sold out disabled',
+            'Price changes by size, sale price by colour',
+            'Low stock warnings',
+            'Shareable URL for each variant',
+        ],
+        'steps' => [
+            [
+                'Stock per variant',
+                'Stock is kept per colour and per size. Changing colour redraws the sizes and disables any that are sold out.',
+            ],
+            [
+                'One picture, many colours',
+                'The hoodie is an inline SVG, so changing colour just updates one fill. With photos, swap the image source instead.',
+            ],
+            [
+                'Shareable URL',
+                'URLSearchParams writes the colour and size into the address bar with replaceState, and reads them back when the page opens.',
+            ],
+        ],
+        'code' => 'const params = new URLSearchParams(location.search);
+let color = params.get("color") || "plum", size = params.get("size") || "";
+
+function update() {
+  sizes.forEach((s, i) => inputs[i].disabled = stock[color][i] === 0);
+  hoodie.setAttribute("fill", colors[color]);
+  history.replaceState(null, "", "?" + new URLSearchParams({ color, size }));
+}',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Why radio inputs for swatches?',
+                'They give keyboard support and one choice at a time for free, and screen readers announce the colour name.',
+            ],
+            [
+                'How do I use real photos?',
+                'Keep an image list per colour and change the img src when the colour changes.',
+            ],
+            [
+                'Why put the choice in the URL?',
+                'Customers can share or bookmark the exact product, and your ads can link straight to it.',
+            ],
+        ],
+    ],
+    [
+        'num' => 73,
+        'cat' => '10-ecommerce-business',
+        'slug' => '073-product-filter-sort',
+        'name' => 'Product Filter and Sort',
+        'example' => 'a product listing with category, price, colour and rating filters saved in the URL',
+        'title' => 'Product Filter in Vanilla JavaScript: Faceted Search, Sort and Filters Saved in the URL',
+        'desc' => 'Free product filter and sort in plain JavaScript. Filter by category, price, colour, rating and stock, sort by price or rating, see active filter chips and share the URL.',
+        'keywords' => 'product filter javascript, faceted search, sort products javascript, filter sidebar, url search params filter, ecommerce filtering',
+        'runs' => 'URLSearchParams and the History API',
+        'what' => [
+            'A ceramics shop listing with a filter sidebar: categories with counts, a price range, colour swatches, minimum rating and in stock only, plus five ways to sort.',
+            'Active filters appear as chips you can remove one by one. Everything is written to the URL, so a filtered view can be bookmarked or shared.',
+        ],
+        'when' => [
+            'Online shop category pages',
+            'Property and car listings',
+            'Job boards and directories',
+            'Course and event catalogues',
+        ],
+        'features' => [
+            'Category, price, colour, rating and stock filters',
+            'Five sort orders',
+            'Result count and removable filter chips',
+            'Filters saved in the URL and restored on load',
+            'Works with back and forward buttons',
+        ],
+        'steps' => [
+            [
+                'Filter, then sort',
+                'Each product must pass every active filter. The survivors are sorted with one of five compare functions.',
+            ],
+            [
+                'The URL is the state',
+                'Every change writes the filters to the address bar with URLSearchParams. Opening that link restores the same view.',
+            ],
+            [
+                'Chips for active filters',
+                'Each active filter becomes a small button above the results, and clicking it removes just that filter.',
+            ],
+        ],
+        'code' => 'function run() {
+  const s = readFilters();
+  const list = products
+    .filter((p) => (!s.cats.length || s.cats.includes(p.cat)) && p.price <= s.max && p.rating >= s.rating)
+    .sort(sorters[s.sort]);
+  const q = new URLSearchParams();
+  s.cats.forEach((c) => q.append("cat", c));
+  if (s.max !== Infinity) q.set("max", s.max);
+  history.replaceState(null, "", "?" + q);
+  render(list);
+}',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Should filtering happen in the browser or on the server?',
+                'In the browser is great for up to a few thousand products. For bigger catalogues, send the same URL parameters to your server.',
+            ],
+            [
+                'Why store filters in the URL?',
+                'Shared links and the back button then show the same results, and search engines can index popular filter pages.',
+            ],
+            [
+                'How do the category counts work?',
+                'They count products per category from the list. You can update them to reflect the other active filters.',
+            ],
+        ],
+    ],
+    [
+        'num' => 74,
+        'cat' => '10-ecommerce-business',
+        'slug' => '074-checkout-form',
+        'name' => 'Checkout Form',
+        'example' => 'a one page checkout with address, delivery options, card checks and an order summary',
+        'title' => 'Checkout Form in JavaScript: Card Formatting, Luhn Check, Delivery Options and Summary',
+        'desc' => 'Free checkout form in plain JavaScript. Contact and address with autofill, delivery options that change the total, card number formatting with a Luhn check, expiry and CVC checks and an order summary.',
+        'keywords' => 'checkout form javascript, credit card validation, luhn algorithm, card number formatting, checkout page, payment form',
+        'runs' => 'Autofill tokens and the Luhn check',
+        'what' => [
+            'A one page checkout with contact details, delivery address, three delivery options and a card payment section, next to an order summary with photos.',
+            'Delivery choice updates the total, the card number is formatted and checked with the Luhn algorithm, and expiry and security code are checked before the order is placed.',
+        ],
+        'when' => [
+            'Small shop checkouts',
+            'Donation and booking payments',
+            'Subscription sign ups',
+            'Learning how card checks work',
+        ],
+        'features' => [
+            'Correct autocomplete tokens for fast autofill',
+            'Delivery options that change the total',
+            'Card number formatting and Luhn check',
+            'Expiry and security code checks',
+            'Sticky order summary with VAT',
+        ],
+        'steps' => [
+            [
+                'Let the browser fill it in',
+                'Every field has the right autocomplete token, like given-name, postal-code and cc-number, so one tap can fill the whole form.',
+            ],
+            [
+                'Format as they type',
+                'Card numbers get a space every four digits and expiry dates get a slash, which makes mistakes easy to spot.',
+            ],
+            [
+                'Check with Luhn',
+                'The Luhn algorithm catches most typos in card numbers before the form is sent. Expiry must be in the future.',
+            ],
+        ],
+        'code' => 'function luhn(num) {
+  let sum = 0, alt = false;
+  for (let i = num.length - 1; i >= 0; i--) {
+    let d = +num[i];
+    if (alt) { d *= 2; if (d > 9) d -= 9; }
+    sum += d; alt = !alt;
+  }
+  return sum % 10 === 0;
+}
+luhn("4242424242424242"); // true
+// <input autocomplete="cc-number" inputmode="numeric">',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Can I take real card payments with this form?',
+                'No. Real card details should be typed into your payment provider\'s secure fields, never sent to your own server.',
+            ],
+            [
+                'What is the Luhn check?',
+                'A simple checksum built into card numbers. It catches most single digit typos and swapped digits.',
+            ],
+            [
+                'Why do autocomplete tokens matter?',
+                'They let browsers and password managers fill the form in one step, which makes more people finish checkout.',
+            ],
+        ],
+    ],
+    [
+        'num' => 75,
+        'cat' => '10-ecommerce-business',
+        'slug' => '075-multi-currency-prices',
+        'name' => 'Multi-currency Prices',
+        'example' => 'prices that switch to the visitor\'s currency with local formatting and neat rounding',
+        'title' => 'Multi-currency Prices in JavaScript: Currency Switcher with Local Formatting and Rounding',
+        'desc' => 'Free multi-currency price switcher in plain JavaScript. Detect the visitor\'s currency, convert prices, round to neat price points, format for each country and remember the choice.',
+        'keywords' => 'currency converter javascript, multi currency prices, currency switcher, intl numberformat currency, price localization, ecommerce currency',
+        'runs' => 'Intl.NumberFormat and Intl.Locale',
+        'what' => [
+            'A product grid that shows prices in nine currencies. The page guesses your currency from the browser language and remembers what you pick.',
+            'Prices can be rounded to neat price points, and a table shows the same product formatted in every currency, so you can see how local formats differ.',
+        ],
+        'when' => [
+            'Shops selling to several countries',
+            'Hotels and tour operators',
+            'Software and course pricing pages',
+            'Travel price comparisons',
+        ],
+        'features' => [
+            'Nine currencies with local number formats',
+            'Currency guess from the browser language',
+            'Tidy price rounding',
+            'Choice saved for next time',
+            'Comparison table of all formats',
+        ],
+        'steps' => [
+            [
+                'Guess the currency',
+                'Intl.Locale turns the browser language into a region, like en-GB into GB, and a small table maps that to a currency.',
+            ],
+            [
+                'Convert, then tidy',
+                'The dollar price is multiplied by the rate, then rounded up to a neat price point so a chair costs 229 euros, not 229.08.',
+            ],
+            [
+                'Format the local way',
+                'Intl.NumberFormat adds the right symbol, separators and decimals. Yen has no decimals and rupees group digits in lakhs.',
+            ],
+        ],
+        'code' => 'const region = new Intl.Locale(navigator.language).maximize().region; // "GB"
+const currency = { GB: "GBP", DE: "EUR", IN: "INR", BD: "BDT" }[region] || "USD";
+
+const local = price * rates[currency];
+new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" })
+  .format(124500);                     // "₹1,24,500.00"',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Where should real exchange rates come from?',
+                'From your payment provider or a rates API, cached on your server once a day. Charge in the currency you show.',
+            ],
+            [
+                'Why round prices?',
+                'Converted prices like 229.08 look odd. Rounding to a tidy price point looks deliberate and builds trust.',
+            ],
+            [
+                'Is guessing from the language reliable?',
+                'It is a good first guess. Always let people change the currency themselves.',
+            ],
+        ],
+    ],
+    [
+        'num' => 76,
+        'cat' => '10-ecommerce-business',
+        'slug' => '076-invoice-generator',
+        'name' => 'Invoice Generator',
+        'example' => 'an editable invoice that does the maths and prints to a clean PDF',
+        'title' => 'Invoice Generator in Vanilla JavaScript: Editable Line Items, Tax, Discount and Print to PDF',
+        'desc' => 'Free invoice generator in plain JavaScript. Edit your details, add line items, set tax and discount, pick a currency and due date, and print a clean PDF. Saved in your browser.',
+        'keywords' => 'invoice generator javascript, invoice template html, print invoice pdf, line items calculator, freelance invoice, billing javascript',
+        'runs' => 'Print CSS and localStorage',
+        'what' => [
+            'An invoice you edit directly on the page: your details, the client, the project, line items with quantity and rate, discount, tax and notes.',
+            'Totals update as you type, dates fill in by themselves, the currency can be changed, and printing or saving as PDF gives a clean page without buttons.',
+        ],
+        'when' => [
+            'Freelancers and small studios',
+            'Quotes and estimates',
+            'Small shops without billing software',
+            'Internal recharge notes',
+        ],
+        'features' => [
+            'Editable text right on the invoice',
+            'Add and remove line items',
+            'Discount, tax and currency',
+            'Issue and due dates filled in',
+            'Print to PDF with clean print styles',
+        ],
+        'steps' => [
+            [
+                'Type on the page',
+                'Names, addresses and descriptions are contenteditable, so the invoice itself is the form. Numbers use small inputs.',
+            ],
+            [
+                'One calc function',
+                'Every change runs calc(): line amounts, subtotal, discount, tax and total, then saves everything to localStorage.',
+            ],
+            [
+                'Print CSS hides the rest',
+                'A print media query hides the whole page except the invoice, and removes buttons and input borders, so Save as PDF looks clean.',
+            ],
+        ],
+        'code' => 'function calc() {
+  const sub = rows.reduce((a, r) => a + r.qty * r.rate, 0);
+  const discount = sub * discountPct / 100;
+  const tax = (sub - discount) * taxPct / 100;
+  total.textContent = money(sub - discount + tax);
+  localStorage.setItem("invoice", JSON.stringify(data));
+}
+/* print only the invoice */
+@media print {
+  body * { visibility: hidden; }
+  .invoice, .invoice * { visibility: visible; }
+}',
+        'browsers' => 'Works in all modern browsers. Use the print dialog and choose Save as PDF.',
+        'faq' => [
+            [
+                'How do I make a PDF?',
+                'Click Print or save PDF and pick Save as PDF in the print dialog. The print styles hide everything except the invoice.',
+            ],
+            [
+                'Is my invoice saved?',
+                'Yes, in localStorage in your browser. It is still there next time you open the page on the same device.',
+            ],
+            [
+                'Can I add my logo?',
+                'Yes. Put an img tag in the header. It will print with the invoice.',
+            ],
+        ],
+    ],
+    [
+        'num' => 77,
+        'cat' => '10-ecommerce-business',
+        'slug' => '077-booking-slot-calendar',
+        'name' => 'Booking Slot Calendar',
+        'example' => 'an appointment picker with services, available time slots and a calendar file',
+        'title' => 'Appointment Booking Calendar in JavaScript: Time Slots, Services, Time Zones and ICS File',
+        'desc' => 'Free booking slot calendar in plain JavaScript. Pick a service, day and free time slot, see times in your own time zone, fill in your details and download a calendar file.',
+        'keywords' => 'booking calendar javascript, appointment scheduler, time slot picker, book appointment online, ics calendar file, time zone booking',
+        'runs' => 'Intl.DateTimeFormat and ICS files',
+        'what' => [
+            'A booking page with four services of different lengths, a strip of the next seven days and a grid of free times. Longer services show fewer slots.',
+            'Booked times, lunch and Sundays are unavailable, times appear in the visitor\'s own time zone, and after booking you can download a calendar file.',
+        ],
+        'when' => [
+            'Salons, barbers and spas',
+            'Clinics and therapists',
+            'Tutors and coaches',
+            'Consultations and demos',
+        ],
+        'features' => [
+            'Services with different durations',
+            'Seven day strip with closed days',
+            'Free slots that fit the full service',
+            'Times in the visitor\'s time zone',
+            'Downloadable ICS calendar file',
+        ],
+        'steps' => [
+            [
+                'Slots fit the service',
+                'For each day the script walks from opening to closing time and keeps a start time only if the whole service fits without touching a booked slot.',
+            ],
+            [
+                'Local times for everyone',
+                'Times are made with Date and shown with toLocaleTimeString, so each visitor sees them in their own time zone and format.',
+            ],
+            [
+                'A real calendar file',
+                'The confirmation builds an ICS file as a data link. Opening it adds the appointment to Google, Apple or Outlook calendars.',
+            ],
+        ],
+        'code' => 'for (let m = open; m + length <= close; m += 15) {
+  const clash = booked.some(([start, len]) => m < start + len && m + length > start);
+  if (!clash) slots.push(m);           // minutes after midnight
+}
+const ics = `BEGIN:VCALENDAR\\r\\nVERSION:2.0\\r\\nBEGIN:VEVENT\\r\\n` +
+  `DTSTART:${utc(start)}\\r\\nDTEND:${utc(end)}\\r\\nSUMMARY:Haircut\\r\\n` +
+  `END:VEVENT\\r\\nEND:VCALENDAR`;
+link.href = "data:text/calendar," + encodeURIComponent(ics);',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Where do booked times come from?',
+                'In the demo they are made up. In a real site, fetch booked slots for the chosen day from your server.',
+            ],
+            [
+                'How do I stop double bookings?',
+                'Check the slot again on the server when the booking is saved, and refuse it if someone else took it a moment earlier.',
+            ],
+            [
+                'Does the ICS file work with Google Calendar?',
+                'Yes. Opening the file on a phone or computer offers to add it to the default calendar app.',
+            ],
+        ],
+    ],
+    [
+        'num' => 78,
+        'cat' => '10-ecommerce-business',
+        'slug' => '078-store-locator',
+        'name' => 'Store Locator',
+        'example' => 'a list of shops sorted by distance from you, with open now status and a simple map',
+        'title' => 'Store Locator in Vanilla JavaScript: Nearest Store by Distance, Open Now and SVG Map',
+        'desc' => 'Free store locator in plain JavaScript. Use your location or pick an area, sort stores by distance with the haversine formula, see which are open now and view them on a simple map.',
+        'keywords' => 'store locator javascript, find nearest store, geolocation distance, haversine formula, open now hours, shop finder',
+        'runs' => 'Geolocation API and the haversine formula',
+        'what' => [
+            'A list of nine London stores with a simple map. Share your location or choose an area, and the stores are sorted by distance with the nearest one first.',
+            'Each store shows whether it is open right now based on weekday and weekend hours. Tick Open now only to hide the closed ones, and click a store to highlight it on the map.',
+        ],
+        'when' => [
+            'Shops and restaurant chains',
+            'Service centres and clinics',
+            'Stockists of your products',
+            'Pickup and drop off points',
+        ],
+        'features' => [
+            'Use my location with a fallback area list',
+            'Distance sorting with the haversine formula',
+            'Open now based on opening hours',
+            'Open now only filter',
+            'SVG map with no API key',
+        ],
+        'steps' => [
+            [
+                'Where are you?',
+                'The Geolocation API asks for permission and returns latitude and longitude. If people say no, they can pick an area instead.',
+            ],
+            [
+                'Real distance',
+                'The haversine formula works out the distance between two points on a sphere, which is accurate enough for finding a nearby shop.',
+            ],
+            [
+                'A map without a library',
+                'Store positions are scaled from latitude and longitude into an SVG box. Swap in a map library later if you need street detail.',
+            ],
+        ],
+        'code' => 'function haversine(lat1, lng1, lat2, lng2) {
+  const R = 6371, r = Math.PI / 180;                     // km
+  const a = Math.sin((lat2 - lat1) * r / 2) ** 2 +
+            Math.cos(lat1 * r) * Math.cos(lat2 * r) * Math.sin((lng2 - lng1) * r / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+navigator.geolocation.getCurrentPosition(({ coords }) => {
+  stores.sort((a, b) => haversine(coords.latitude, coords.longitude, a.lat, a.lng)
+                      - haversine(coords.latitude, coords.longitude, b.lat, b.lng));
+});',
+        'browsers' => 'Works in all modern browsers. Location needs HTTPS and the visitor\'s permission.',
+        'faq' => [
+            [
+                'Do I need a map API key?',
+                'Not for this version. The map is a simple SVG. Add a map library later if you need streets and zoom.',
+            ],
+            [
+                'Why is my location not used?',
+                'Geolocation needs a secure HTTPS page and permission. If it is blocked, the area list still works.',
+            ],
+            [
+                'How accurate is the distance?',
+                'It is a straight line distance, usually within a few percent. Walking or driving routes will be longer.',
+            ],
+        ],
+    ],
+    [
+        'num' => 79,
+        'cat' => '10-ecommerce-business',
+        'slug' => '079-order-tracking-timeline',
+        'name' => 'Order Tracking Timeline',
+        'example' => 'an order status page with a step timeline, delivery estimate and live updates',
+        'title' => 'Order Tracking Page in JavaScript: Status Timeline, Delivery Countdown and Live Updates',
+        'desc' => 'Free order tracking timeline in plain JavaScript. Look up an order number, see each step with times, a delivery countdown, simulated live updates and optional browser notifications.',
+        'keywords' => 'order tracking javascript, delivery status timeline, track order page, shipping progress, order status page, notification api',
+        'runs' => 'Notification API and timers',
+        'what' => [
+            'An order tracking page. Enter an order number to see a five step timeline, from placed to delivered, with times, a progress bar and the expected delivery day.',
+            'Live updates move the order along step by step, as if new data came from your server, and can send a browser notification when the status changes.',
+        ],
+        'when' => [
+            'Online shop order status pages',
+            'Food and grocery delivery',
+            'Repair and service jobs',
+            'Print and made to order products',
+        ],
+        'features' => [
+            'Order lookup with helpful not found message',
+            'Five step timeline with times',
+            'Progress bar and delivery countdown',
+            'Simulated live updates',
+            'Optional browser notifications',
+        ],
+        'steps' => [
+            [
+                'Steps and times',
+                'Each order has a current step. Earlier steps are done and get a time, the current step pulses, and later steps wait.',
+            ],
+            [
+                'Estimate and countdown',
+                'The delivery estimate turns into a friendly countdown that refreshes every 30 seconds.',
+            ],
+            [
+                'Live updates and alerts',
+                'A timer stands in for polling your server. When the status changes, a toast appears and, if allowed, a browser notification.',
+            ],
+        ],
+        'code' => 'async function poll(orderId) {
+  const res = await fetch(`/api/orders/${orderId}`);
+  const { step } = await res.json();
+  if (step !== lastStep) {
+    lastStep = step;
+    render(step);
+    if (Notification.permission === "granted")
+      new Notification("Order update", { body: steps[step - 1].title });
+  }
+}
+setInterval(() => poll("10482"), 60000);',
+        'browsers' => 'Works in all modern browsers. Notifications need permission and a secure page.',
+        'faq' => [
+            [
+                'How do I connect this to real orders?',
+                'Replace the ORD object with a fetch to your order API, and call it on a timer or when the page becomes visible again.',
+            ],
+            [
+                'Should I use polling or push?',
+                'Polling every minute is simple and fine for most shops. Push notifications need a service worker and a server.',
+            ],
+            [
+                'Why ask for postcode too?',
+                'So people cannot look up other customers\' orders just by guessing numbers.',
+            ],
+        ],
+    ],
+    [
+        'num' => 80,
+        'cat' => '10-ecommerce-business',
+        'slug' => '080-wishlist-compare',
+        'name' => 'Wishlist and Compare',
+        'example' => 'heart products to a saved wishlist and compare up to three side by side',
+        'title' => 'Wishlist and Product Compare in JavaScript: Saved Hearts, Share Link and Comparison Table',
+        'desc' => 'Free wishlist and product compare in plain JavaScript. Save favourites with a heart, keep them after reload, share the list as a link, and compare up to three products with differences highlighted.',
+        'keywords' => 'wishlist javascript, product compare table, save favorites localstorage, compare products, share wishlist link, ecommerce wishlist',
+        'runs' => 'localStorage and URL parameters',
+        'what' => [
+            'A product grid where every item has a heart for the wishlist and a Compare tick box. Saved items stay after a reload and can be shared as a link.',
+            'Pick two or three products and open a comparison table that highlights rows where they differ and shows the best price, rating, delivery time and warranty in green.',
+        ],
+        'when' => [
+            'Furniture and electronics shops',
+            'Comparing plans or courses',
+            'Property and car listings',
+            'Gift lists',
+        ],
+        'features' => [
+            'Heart button with a small pop animation',
+            'Wishlist saved in localStorage',
+            'Share link that adds items to someone else\'s list',
+            'Compare up to three products',
+            'Differences and best values highlighted',
+        ],
+        'steps' => [
+            [
+                'A set of saved ids',
+                'The wishlist is a Set of product ids saved to localStorage, so hearts stay filled after a reload or a new visit.',
+            ],
+            [
+                'Share as a link',
+                'The share link adds ?w=0,2,5 to the page address. Opening it merges those products into the other person\'s wishlist.',
+            ],
+            [
+                'Compare what differs',
+                'For up to three products, each row checks if the values differ and highlights the row, and marks the best value, like the lowest price.',
+            ],
+        ],
+        'code' => 'const wish = new Set(JSON.parse(localStorage.getItem("wish") || "[]"));
+heart.onclick = () => {
+  wish.has(id) ? wish.delete(id) : wish.add(id);
+  localStorage.setItem("wish", JSON.stringify([...wish]));
+};
+shareInput.value = location.origin + location.pathname + "?w=" + [...wish].join(",");
+
+const values = picked.map((p) => p.price);
+const differs = new Set(values).size > 1;
+const best = Math.min(...values);',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Should the wishlist be saved on the server?',
+                'For signed in customers, yes, so it follows them across devices. For guests, localStorage is simple and works well.',
+            ],
+            [
+                'Why only three to compare?',
+                'More than three columns gets hard to read, especially on phones.',
+            ],
+            [
+                'Is the share link private?',
+                'It only lists product numbers, nothing personal. Anyone with the link sees those products.',
             ],
         ],
     ],
