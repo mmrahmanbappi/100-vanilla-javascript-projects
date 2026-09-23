@@ -16,9 +16,10 @@ usleep(500000);
 foreach (glob("$root/*/*/demo.html") as $demo) {
     $rel = str_replace("$root/", '', $demo);
     $png = dirname($demo) . '/preview.png';
-    $cmd = sprintf('%s --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1280,800 --virtual-time-budget=5000 --screenshot=%s %s 2>/dev/null',
+    $t0 = microtime(true);
+    $cmd = sprintf('timeout 45 %s --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1280,800 --virtual-time-budget=5000 --screenshot=%s %s 2>/dev/null',
         escapeshellarg($chrome), escapeshellarg($png), escapeshellarg("http://127.0.0.1:$port/$rel"));
     exec($cmd, $o, $rc);
-    echo ($rc === 0 ? 'saved ' : 'FAILED ') . str_replace("$root/", '', $png) . "\n";
+    echo ($rc === 0 ? 'saved ' : 'FAILED (' . $rc . ') ') . str_replace("$root/", '', $png) . ' in ' . round(microtime(true) - $t0, 1) . "s\n";
 }
 proc_terminate($server);
