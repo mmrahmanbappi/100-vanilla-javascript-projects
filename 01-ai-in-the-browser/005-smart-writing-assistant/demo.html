@@ -160,13 +160,17 @@ footer.foot a{color:var(--muted)}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:8px}
 .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 
+
+/* mobile header fix */
+@media (max-width:560px){.topbar{flex-wrap:wrap;gap:8px}.topbar nav{display:flex;flex-wrap:wrap;gap:6px 12px}.topbar nav span{display:none}.topbar nav a{margin-left:0}}
+.strip dd{overflow-wrap:anywhere}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header class="topbar">
   <a class="brand" href="../../">Vanilla JavaScript Projects</a>
-  <nav><span>Project 05 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+  <nav><span>Project 05 of 100</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
 </header>
 <main>
 <section class="hero">

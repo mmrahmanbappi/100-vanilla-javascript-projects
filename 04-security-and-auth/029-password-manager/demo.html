@@ -157,13 +157,17 @@ footer.foot a{color:var(--muted)}
 .form3{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;margin-top:14px}
 @media (max-width:760px){.form3{grid-template-columns:1fr}}
 
+
+/* mobile header fix */
+@media (max-width:560px){.topbar{flex-wrap:wrap;gap:8px}.topbar nav{display:flex;flex-wrap:wrap;gap:6px 12px}.topbar nav span{display:none}.topbar nav a{margin-left:0}}
+.strip dd{overflow-wrap:anywhere}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header class="topbar">
   <a class="brand" href="../../">Vanilla JavaScript Projects</a>
-  <nav><span>Project 29 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+  <nav><span>Project 29 of 100</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
 </header>
 <main>
 <section class="hero">

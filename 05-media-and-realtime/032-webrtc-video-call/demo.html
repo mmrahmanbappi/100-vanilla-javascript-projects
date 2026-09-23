@@ -154,13 +154,17 @@ footer.foot a{color:var(--muted)}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-size:13px;color:var(--muted)}.stats b{display:block;font:700 18px var(--display);color:var(--ink)}
 @media (max-width:700px){.vids{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
 
+
+/* mobile header fix */
+@media (max-width:560px){.topbar{flex-wrap:wrap;gap:8px}.topbar nav{display:flex;flex-wrap:wrap;gap:6px 12px}.topbar nav span{display:none}.topbar nav a{margin-left:0}}
+.strip dd{overflow-wrap:anywhere}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header class="topbar">
   <a class="brand" href="../../">Vanilla JavaScript Projects</a>
-  <nav><span>Project 32 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+  <nav><span>Project 32 of 100</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
 </header>
 <main>
 <section class="hero">

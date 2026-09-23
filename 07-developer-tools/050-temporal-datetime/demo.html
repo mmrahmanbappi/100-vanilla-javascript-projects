@@ -156,13 +156,17 @@ footer.foot a{color:var(--muted)}
 .clock{border:1px solid var(--line);border-radius:var(--r-md);padding:14px;background:var(--sunk)}.clock.night{background:#1B2440;color:#E9EEF6;border-color:#1B2440}
 .clock b{display:block;font:800 30px var(--display);font-variant-numeric:tabular-nums}
 
+
+/* mobile header fix */
+@media (max-width:560px){.topbar{flex-wrap:wrap;gap:8px}.topbar nav{display:flex;flex-wrap:wrap;gap:6px 12px}.topbar nav span{display:none}.topbar nav a{margin-left:0}}
+.strip dd{overflow-wrap:anywhere}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header class="topbar">
   <a class="brand" href="../../">Vanilla JavaScript Projects</a>
-  <nav><span>Project 50 of 50</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+  <nav><span>Project 50 of 100</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
 </header>
 <main>
 <section class="hero">

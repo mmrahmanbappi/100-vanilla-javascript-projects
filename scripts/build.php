@@ -5,6 +5,7 @@
  * Run from the repo root:  php scripts/build.php
  */
 require __DIR__ . '/projects.php';
+$N = count($PROJECTS);
 
 $ROOT = dirname(__DIR__);
 $B = $SITE['base'];
@@ -273,7 +274,7 @@ function category_page($c) {
 function home() {
     global $SITE, $B, $CATEGORIES, $PROJECTS;
     $live = count($PROJECTS);
-    $title = '50 Free Vanilla JavaScript Projects with Live Demos and Source Code';
+    $title = "{$GLOBALS['N']} Free Vanilla JavaScript Projects with Live Demos and Source Code";
     $desc = "$live free vanilla JavaScript projects with live demos and source code: local AI chatbot, WebRTC video call, passkeys, PWA, WebGPU, JSON formatter and more.";
     $img = purl($PROJECTS[0]) . 'preview.png';
     $faq = [
@@ -300,7 +301,7 @@ function home() {
         }
     }
     $body = "<main class=\"wrap\">
-<h1 style=\"margin-top:50px\">50 free JavaScript projects you can open, learn from and use</h1>
+<h1 style=\"margin-top:50px\">{$GLOBALS['N']} free JavaScript projects you can open, learn from and use</h1>
 <p class=\"lead\">All $live projects are live, sorted into 7 categories. Every one is plain JavaScript in a single HTML file, built around a browser feature worth knowing in 2026: AI that runs on your own device, WebGPU, WebRTC, passkeys, offline apps and more. Open the demo, read the code, then make it yours.</p>
 <div class=\"actions\"><a class=\"btn main\" href=\"#categories\">Browse the projects</a><a class=\"btn\" href=\"{$SITE['repo']}\">Star on GitHub</a></div>
 <section id=\"categories\">$sections
@@ -316,7 +317,7 @@ function root_readme() {
     $rows = implode("\n", array_map(fn($p) => sprintf('| %03d | [%s](%s) | %s | [Demo](%sdemo.html) | <img src="%s/%s/preview.png" width="260" alt="%s preview"> |',
         $p['num'], $p['name'], purl($p), ucfirst($p['example']), purl($p), $p['cat'], $p['slug'], $p['name']), $PROJECTS));
     $cats = implode("\n", array_map(fn($c) => "- {$c['num']}. {$c['name']} (" . ($c['ready'] ? 'live' : 'coming soon') . ')', $CATEGORIES));
-    out('README.md', "# 50 Free Vanilla JavaScript Projects
+    out('README.md', "# {$GLOBALS['N']} Free Vanilla JavaScript Projects
 
 Real projects built with plain JavaScript and the newest browser features, each with a live demo and a single HTML file. No framework, no build step, free for commercial use.
 

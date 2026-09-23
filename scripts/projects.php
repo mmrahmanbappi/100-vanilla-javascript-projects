@@ -82,6 +82,16 @@ $CATEGORIES = [
         'keywords' => 'json formatter javascript, regex tester online, postman alternative javascript, temporal api, developer tools javascript, api client browser',
         'intro' => 'These are the small tools developers open every day, rebuilt as single HTML files you can keep, change and run offline. Format and check JSON, test regular expressions, send API requests and convert time zones. Each one is fast, private and shows useful techniques like Web Workers, streaming fetch and the new Temporal API.',
     ],
+    [
+        'num' => 8,
+        'slug' => '08-website-sections',
+        'name' => 'Website Sections',
+        'ready' => true,
+        'title' => 'Free JavaScript Website Sections: Mega Menu, Slider, Lightbox, Pricing Table',
+        'desc' => '10 free website sections in plain JavaScript with live demos: mega menu, sticky header, image slider, lightbox, tabs, pricing table, reviews, cookie banner and more.',
+        'keywords' => 'javascript website components, image slider javascript, mega menu, lightbox gallery, pricing table, cookie consent banner, vanilla js ui',
+        'intro' => 'These are the parts almost every website needs: a menu that works on phones, a photo slider, a lightbox, pricing, reviews and a cookie banner. Each one is a single HTML file with no library, so you can copy it into any site. They work with a mouse, a keyboard and a thumb, and they respect people who prefer less motion.',
+    ],
 ];
 
 $PROJECTS = [
@@ -3512,6 +3522,676 @@ Temporal.PlainDate.from("2026-01-31").add({ months: 1 }).toString(); // "2026-02
             [
                 'What is 31 January plus one month?',
                 'Temporal gives 28 February, or 29 in a leap year, instead of spilling into March.',
+            ],
+        ],
+    ],
+    [
+        'num' => 51,
+        'cat' => '08-website-sections',
+        'slug' => '051-mega-menu-navigation',
+        'name' => 'Mega Menu Navigation',
+        'example' => 'a big dropdown menu with columns, keyboard support and a mobile drawer',
+        'title' => 'Vanilla JavaScript Mega Menu: Accessible Dropdown Navigation with Mobile Drawer',
+        'desc' => 'Free mega menu in plain JavaScript. Multi-column dropdowns, keyboard arrows and Escape, hover intent, and a slide-in mobile drawer. One HTML file, no library.',
+        'keywords' => 'mega menu javascript, dropdown navigation, accessible menu, mobile menu drawer, vanilla js navbar, responsive navigation',
+        'runs' => 'DOM events',
+        'what' => [
+            'A full mega menu for a shop or content site. Each top item opens a wide panel with columns of links and a promo card with a photo.',
+            'It works with a mouse, a keyboard and on phones, where the menu turns into a slide-in drawer with folding sections.',
+        ],
+        'when' => [
+            'Online shops with many categories',
+            'News and magazine sites',
+            'Company sites with lots of pages',
+            'Any header that has outgrown a simple list',
+        ],
+        'features' => [
+            'Multi-column dropdown panels with a promo card',
+            'Hover intent timer so menus do not flicker',
+            'Keyboard support: arrows, Down to open, Escape to close',
+            'Mobile drawer with folding sections',
+            'Closes when you click outside',
+        ],
+        'steps' => [
+            [
+                'Buttons, not links',
+                'Each top item is a button with aria-expanded, so screen readers announce open and closed.',
+            ],
+            [
+                'Hover with a delay',
+                'A short timer stops menus flickering open when the mouse just passes over.',
+            ],
+            [
+                'One key map',
+                'Arrow keys move between items, Down opens a panel and Escape closes it and returns focus.',
+            ],
+        ],
+        'code' => 'btn.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowDown") { open(btn); panel.querySelector("a").focus(); }
+  if (e.key === "Escape") { close(); btn.focus(); }
+});
+item.addEventListener("pointerenter", () => {
+  clearTimeout(timer);
+  timer = setTimeout(() => open(btn), 120); // hover intent
+});',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Should menu items be links or buttons?',
+                'If the item opens a panel, use a button. Links should go to a page.',
+            ],
+            [
+                'How do I stop the menu closing too fast?',
+                'Add a short delay on pointer leave, around 250 ms, and cancel it when the pointer enters the panel.',
+            ],
+            [
+                'Is hover enough?',
+                'No. Touch and keyboard users need click and key support too, which this project includes.',
+            ],
+        ],
+    ],
+    [
+        'num' => 52,
+        'cat' => '08-website-sections',
+        'slug' => '052-sticky-header-scroll-progress',
+        'name' => 'Sticky Header and Scroll Progress',
+        'example' => 'a header that shrinks on scroll with a reading progress bar and back to top button',
+        'title' => 'Sticky Header on Scroll in JavaScript: Shrinking Navbar, Reading Progress Bar, Back to Top',
+        'desc' => 'Free sticky header in plain JavaScript. The header shrinks and hides on scroll down, shows on scroll up, with a reading progress bar and a back to top button.',
+        'keywords' => 'sticky header javascript, shrink navbar on scroll, reading progress bar, back to top button, hide header on scroll, vanilla js scroll',
+        'runs' => 'Scroll events and requestAnimationFrame',
+        'what' => [
+            'A sticky header that shrinks after you start scrolling, hides when you scroll down and slides back as soon as you scroll up.',
+            'It also shows a reading progress bar and a round back to top button that appears halfway down the page.',
+        ],
+        'when' => [
+            'Blogs and long articles',
+            'Documentation pages',
+            'Landing pages with a sticky call to action',
+            'Any site where the header takes too much space',
+        ],
+        'features' => [
+            'Shrinking header after 40 pixels',
+            'Hide on scroll down, show on scroll up',
+            'Reading progress bar',
+            'Back to top button that appears when needed',
+            'Passive listener with requestAnimationFrame for smooth scrolling',
+        ],
+        'steps' => [
+            [
+                'Read scroll once per frame',
+                'The scroll handler only asks for a frame. The real work runs in requestAnimationFrame, so scrolling stays smooth.',
+            ],
+            [
+                'Compare with last position',
+                'If the new position is lower than the last one, the reader is going down, so the header hides.',
+            ],
+            [
+                'Progress is a fraction',
+                'scrollTop divided by the scrollable height gives 0 to 1, which becomes the bar width.',
+            ],
+        ],
+        'code' => 'let last = 0, ticking = false;
+window.addEventListener("scroll", () => {
+  if (ticking) return; ticking = true;
+  requestAnimationFrame(() => {
+    const y = scrollY, max = document.documentElement.scrollHeight - innerHeight;
+    header.classList.toggle("small", y > 40);
+    header.classList.toggle("hide", y > 160 && y > last);
+    bar.style.width = (y / max) * 100 + "%";
+    last = y; ticking = false;
+  });
+}, { passive: true });',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Why not use position sticky alone?',
+                'Sticky keeps the header in place, but it cannot shrink or hide it. A little JavaScript adds that behaviour.',
+            ],
+            [
+                'Will this slow my page down?',
+                'No. The listener is passive and the work runs at most once per frame.',
+            ],
+            [
+                'Can I use it on the whole window?',
+                'Yes. Swap the frame element for window and scrollTop for scrollY, as shown in the code.',
+            ],
+        ],
+    ],
+    [
+        'num' => 53,
+        'cat' => '08-website-sections',
+        'slug' => '053-touch-image-slider',
+        'name' => 'Touch Image Slider',
+        'example' => 'a photo slider with swipe, autoplay, dots and keyboard control',
+        'title' => 'Vanilla JavaScript Image Slider with Swipe, Autoplay and Dots (No Library)',
+        'desc' => 'Free image slider in plain JavaScript. Swipe on touch screens, drag with a mouse, autoplay that pauses on hover, dots, arrows and keyboard control. No library needed.',
+        'keywords' => 'javascript image slider, carousel without library, swipe slider, touch carousel, autoplay slider, vanilla js carousel',
+        'runs' => 'Pointer events and CSS transforms',
+        'what' => [
+            'A photo slider with big images and captions. Swipe it on a phone, drag it with a mouse, or use arrows, dots and the keyboard.',
+            'Autoplay moves to the next photo on a timer, pauses when you hover or tab into it, and switches off for people who prefer less motion.',
+        ],
+        'when' => [
+            'Hero banners on home pages',
+            'Hotel, travel and property photos',
+            'Product galleries in shops',
+            'Portfolio projects',
+        ],
+        'features' => [
+            'Swipe and drag with pointer events',
+            'Arrows, dots and keyboard arrows',
+            'Autoplay with a progress line, paused on hover and focus',
+            'Loop on or off',
+            'Respects reduced motion settings',
+        ],
+        'steps' => [
+            [
+                'Move the whole track',
+                'All slides sit in one row. Showing slide n just means moving the row by n times 100 percent.',
+            ],
+            [
+                'Follow the finger',
+                'Pointer events work for touch, pen and mouse. While dragging, the track follows the finger with no transition.',
+            ],
+            [
+                'Decide on release',
+                'If the drag was more than 15 percent of the width, go to the next slide. Otherwise snap back.',
+            ],
+        ],
+        'code' => 'slider.addEventListener("pointerdown", (e) => { startX = e.clientX; track.classList.add("drag"); });
+slider.addEventListener("pointermove", (e) => {
+  if (startX == null) return;
+  dx = e.clientX - startX;
+  track.style.transform = `translateX(calc(${-index * 100}% + ${dx}px))`;
+});
+slider.addEventListener("pointerup", () => {
+  track.classList.remove("drag");
+  go(Math.abs(dx) > width * 0.15 ? index + (dx < 0 ? 1 : -1) : index);
+  startX = null;
+});',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Do I need a slider library?',
+                'Not for most sites. This whole slider is about 40 lines of JavaScript.',
+            ],
+            [
+                'Is autoplay bad for accessibility?',
+                'It can be. This slider pauses on hover and focus and turns autoplay off when the user asks for reduced motion.',
+            ],
+            [
+                'How do I add more slides?',
+                'Add another item to the list at the top of the script. Dots and counts update by themselves.',
+            ],
+        ],
+    ],
+    [
+        'num' => 54,
+        'cat' => '08-website-sections',
+        'slug' => '054-lightbox-gallery-zoom',
+        'name' => 'Lightbox Gallery with Zoom',
+        'example' => 'a photo grid that opens a full screen viewer with zoom and pan',
+        'title' => 'JavaScript Lightbox Gallery with Zoom and Pan: Native Dialog, Keyboard and Swipe',
+        'desc' => 'Free lightbox gallery in plain JavaScript. Click a photo to open a full screen viewer with zoom, pan, arrow keys, swipe, captions and a counter. Built on the native dialog element.',
+        'keywords' => 'javascript lightbox, image gallery zoom, photo viewer, dialog lightbox, pinch zoom gallery, vanilla js gallery',
+        'runs' => 'dialog element and pointer events',
+        'what' => [
+            'A photo grid where any image opens in a full screen viewer. You can zoom in up to five times, drag around the zoomed photo and move between photos.',
+            'It uses the built in dialog element, so keyboard focus, Escape to close and returning focus to the photo you clicked all work without extra code.',
+        ],
+        'when' => [
+            'Photography and portfolio sites',
+            'Property and hotel galleries',
+            'Product photos in shops',
+            'Event and wedding albums',
+        ],
+        'features' => [
+            'Masonry style grid with a large first photo',
+            'Native dialog viewer with focus handling',
+            'Zoom with buttons, mouse wheel, double click and keys',
+            'Drag to pan when zoomed, swipe to change photo',
+            'Captions, counter and preloading of the next photo',
+        ],
+        'steps' => [
+            [
+                'Use the native dialog',
+                'showModal() gives a real modal: focus is trapped, the page behind is inert and Escape closes it for free.',
+            ],
+            [
+                'Zoom with transform',
+                'Zoom and pan are one CSS transform, translate then scale, so it stays sharp and fast.',
+            ],
+            [
+                'Swipe when not zoomed',
+                'When the photo is at 100 percent a horizontal drag changes photo. When zoomed, dragging pans instead.',
+            ],
+        ],
+        'code' => 'grid.onclick = (e) => {
+  const btn = e.target.closest("button");
+  show(+btn.dataset.i);
+  dialog.showModal(); // focus trap + Escape for free
+};
+view.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  zoom = Math.min(5, Math.max(1, zoom * (e.deltaY < 0 ? 1.15 : 0.87)));
+  img.style.transform = `translate(${x}px,${y}px) scale(${zoom})`;
+}, { passive: false });',
+        'browsers' => 'Works in all modern browsers. The dialog element is supported in Chrome, Edge, Firefox and Safari 15.4+.',
+        'faq' => [
+            [
+                'Why use the dialog element?',
+                'It handles the hard parts of a modal for you: focus trapping, Escape to close and making the page behind inert.',
+            ],
+            [
+                'Does it load full size photos up front?',
+                'No. Thumbnails load in the grid, and the large version loads only when you open a photo. The next one is preloaded.',
+            ],
+            [
+                'Can I pinch to zoom on phones?',
+                'This version uses buttons and double tap to zoom on phones. You can add pinch by tracking two pointers.',
+            ],
+        ],
+    ],
+    [
+        'num' => 55,
+        'cat' => '08-website-sections',
+        'slug' => '055-tabs-accordion-kit',
+        'name' => 'Tabs and Accordion Kit',
+        'example' => 'accessible tabs and accordions with keyboard support and smooth height animation',
+        'title' => 'Accessible Tabs and Accordion in Vanilla JavaScript: ARIA, Keyboard and Animation',
+        'desc' => 'Free accessible tabs and accordion in plain JavaScript. Correct ARIA roles, arrow key navigation, one or many panels open, smooth height animation and deep links.',
+        'keywords' => 'accessible tabs javascript, accordion javascript, aria tabs, keyboard tabs, collapsible sections, vanilla js accordion',
+        'runs' => 'ARIA roles and the Web Animations API',
+        'what' => [
+            'A tabs component and an accordion that follow the official accessibility patterns. They work with a mouse, a keyboard and screen readers.',
+            'Tabs support arrow keys, Home and End, and remember the selected tab in the address bar. The accordion can allow one or many open items and animates smoothly.',
+        ],
+        'when' => [
+            'Product pages with specs and reviews',
+            'FAQ sections',
+            'Pricing and plan comparisons',
+            'Settings pages',
+        ],
+        'features' => [
+            'ARIA tabs with roving tabindex',
+            'Arrow keys, Home and End',
+            'Deep link to a tab with the URL hash',
+            'Accordion with one or many open mode',
+            'Smooth height animation that respects reduced motion',
+        ],
+        'steps' => [
+            [
+                'Roving tabindex',
+                'Only the selected tab is in the Tab order. Arrow keys move selection, so one Tab press takes you into the panel.',
+            ],
+            [
+                'Link tabs and panels',
+                'aria-controls and aria-labelledby connect each tab to its panel, so screen readers announce them together.',
+            ],
+            [
+                'Animate real height',
+                'The accordion measures scrollHeight and animates from 0 to that height with element.animate().',
+            ],
+        ],
+        'code' => 'tabs.forEach((tab, i) => tab.onkeydown = (e) => {
+  const next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+  if (next === undefined) return;
+  select(tabs[(next + tabs.length) % tabs.length]);
+});
+function select(tab) {
+  tabs.forEach((t) => {
+    const on = t === tab;
+    t.setAttribute("aria-selected", on);
+    t.tabIndex = on ? 0 : -1;
+    document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+  });
+  tab.focus();
+}',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Why not use details and summary for the accordion?',
+                'You can for simple cases. This version adds a one-at-a-time mode and smooth animation, which details cannot do on its own.',
+            ],
+            [
+                'Should tab panels be hidden or removed?',
+                'Hidden. The content stays in the page, which is better for search engines and for find in page.',
+            ],
+            [
+                'Do tabs change the URL?',
+                'Yes, the hash updates, so you can link straight to the Reviews tab.',
+            ],
+        ],
+    ],
+    [
+        'num' => 56,
+        'cat' => '08-website-sections',
+        'slug' => '056-pricing-table-toggle',
+        'name' => 'Pricing Table with Toggle',
+        'example' => 'a pricing table with a monthly and yearly switch, currencies and a seat slider',
+        'title' => 'Pricing Table in JavaScript: Monthly and Yearly Toggle, Currency Switch and Seat Slider',
+        'desc' => 'Free pricing table in plain JavaScript. Switch monthly and yearly billing, change currency, pick team size with a slider and compare features. One HTML file.',
+        'keywords' => 'pricing table javascript, monthly yearly toggle, pricing page template, saas pricing, currency switcher, pricing calculator',
+        'runs' => 'Intl.NumberFormat',
+        'what' => [
+            'A three column pricing table with a highlighted middle plan. Switch between monthly and yearly billing and the prices and totals update straight away.',
+            'Choose a currency and drag the team size slider to see the price per person and the total, formatted correctly for that currency.',
+        ],
+        'when' => [
+            'SaaS and app pricing pages',
+            'Agency and service packages',
+            'Membership sites',
+            'Online course plans',
+        ],
+        'features' => [
+            'Monthly and yearly switch with a savings badge',
+            'Currency switcher with proper number formatting',
+            'Team size slider with live totals',
+            'Highlighted most popular plan',
+            'Included and not included features',
+        ],
+        'steps' => [
+            [
+                'Keep prices in one place',
+                'Plans live in one small array with a base price in dollars. Everything on screen is worked out from it.',
+            ],
+            [
+                'Convert and discount',
+                'The price is multiplied by the exchange rate and by 0.8 for yearly billing, then by team size for the total.',
+            ],
+            [
+                'Format for the currency',
+                'Intl.NumberFormat shows the right symbol, separators and decimals for each currency.',
+            ],
+        ],
+        'code' => 'const fmt = (v, cur) => new Intl.NumberFormat(undefined, {
+  style: "currency", currency: cur
+}).format(v);
+
+const perSeat = plan.price * rates[cur] * (yearly ? 0.8 : 1);
+const total = perSeat * seats * (yearly ? 12 : 1);
+priceEl.textContent = fmt(perSeat, cur);   // $23.20
+totalEl.textContent = fmt(total, cur) + " billed yearly";',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Where do the exchange rates come from?',
+                'They are fixed numbers in the demo. In a real site, load them from your payment provider or an exchange rate API.',
+            ],
+            [
+                'How is the yearly discount worked out?',
+                'The monthly price is multiplied by 0.8, which is a 20 percent saving. Change the number to set your own discount.',
+            ],
+            [
+                'Does Intl.NumberFormat need a library?',
+                'No. It is built into every modern browser.',
+            ],
+        ],
+    ],
+    [
+        'num' => 57,
+        'cat' => '08-website-sections',
+        'slug' => '057-testimonial-carousel',
+        'name' => 'Testimonial Carousel',
+        'example' => 'a customer reviews slider that shows one, two or three cards depending on space',
+        'title' => 'Testimonial Slider in Vanilla JavaScript: Responsive Review Carousel with Star Ratings',
+        'desc' => 'Free testimonial carousel in plain JavaScript. Shows one, two or three review cards depending on space, with star ratings, autoplay progress, pause on hover and dots.',
+        'keywords' => 'testimonial slider javascript, review carousel, customer reviews section, responsive carousel, resizeobserver, star rating display',
+        'runs' => 'ResizeObserver and scroll snap',
+        'what' => [
+            'A customer review carousel with photos, names, star ratings and quotes. It shows three cards on wide screens, two on tablets and one on phones.',
+            'You can swipe, scroll, use the arrows or dots. Autoplay moves on every six seconds with a small progress ring, and stops when you interact.',
+        ],
+        'when' => [
+            'Home page social proof',
+            'Service and agency sites',
+            'Product landing pages',
+            'Course and coaching sites',
+        ],
+        'features' => [
+            '1, 2 or 3 cards based on available width',
+            'Native scroll snap for smooth swiping',
+            'Star ratings with screen reader labels',
+            'Autoplay progress ring with a Pause button',
+            'Dots that follow manual scrolling',
+        ],
+        'steps' => [
+            [
+                'Let CSS do the scrolling',
+                'The rail uses scroll snap, so swiping on a phone lands neatly on a card with no custom touch code.',
+            ],
+            [
+                'Measure the space',
+                'ResizeObserver watches the rail. Wide shows 3 cards, medium 2 and narrow 1, and the dots update to match.',
+            ],
+            [
+                'Autoplay with a ring',
+                'A progress ring shows time to the next page. It pauses on hover, focus, the Pause button and reduced motion.',
+            ],
+        ],
+        'code' => '.rail { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; }
+.card { flex: 0 0 var(--w); scroll-snap-align: start; }
+
+new ResizeObserver(() => {
+  const w = rail.clientWidth;
+  perView = w > 900 ? 3 : w > 560 ? 2 : 1;
+  rail.style.setProperty("--w", `calc((100% - ${(perView - 1) * 16}px) / ${perView})`);
+}).observe(rail);',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Why use ResizeObserver instead of media queries?',
+                'The carousel responds to its own width, so it works in a sidebar, a full-width band or a narrow column.',
+            ],
+            [
+                'Can I show real reviews?',
+                'Yes. Replace the array with reviews from your database or a review platform export.',
+            ],
+            [
+                'Is it accessible?',
+                'Stars have text labels, controls have names and autoplay pauses on focus and for reduced motion.',
+            ],
+        ],
+    ],
+    [
+        'num' => 58,
+        'cat' => '08-website-sections',
+        'slug' => '058-cookie-consent-banner',
+        'name' => 'Cookie Consent Banner',
+        'example' => 'a GDPR style cookie banner with categories, saved choices and blocked scripts',
+        'title' => 'Cookie Consent Banner in JavaScript: GDPR Categories, Saved Choices and Script Blocking',
+        'desc' => 'Free cookie consent banner in plain JavaScript. Accept, reject or choose categories, save the choice with a date and version, and only load analytics and ads after consent.',
+        'keywords' => 'cookie consent javascript, gdpr cookie banner, cookie popup, consent manager, block scripts until consent, cookie preferences',
+        'runs' => 'localStorage and dialog',
+        'what' => [
+            'A cookie banner with Accept all, Reject all and Choose buttons. The settings panel lets people switch analytics, marketing and preference cookies on or off.',
+            'The choice is saved with a date and version, and the demo shows which scripts are loaded or blocked so you can see consent working.',
+        ],
+        'when' => [
+            'Any site with analytics or ads',
+            'Shops using marketing pixels',
+            'Sites with visitors from the EU or UK',
+            'Client sites that need a simple consent tool',
+        ],
+        'features' => [
+            'Accept, reject and custom choice',
+            'Four categories with necessary always on',
+            'Saved choice with date and version',
+            'Scripts blocked until their category is allowed',
+            'Settings link to change your mind later',
+        ],
+        'steps' => [
+            [
+                'Nothing loads before consent',
+                'Analytics and ad scripts are only added to the page when their category is switched on.',
+            ],
+            [
+                'Save a version and date',
+                'The choice is stored with a version number. Change your cookie list, bump the version and everyone is asked again.',
+            ],
+            [
+                'Reject is one click',
+                'Reject all sits next to Accept all with the same size, which is what regulators expect.',
+            ],
+        ],
+        'code' => 'function loadIfAllowed(src, category) {
+  const c = JSON.parse(localStorage.getItem("consent-v1") || "null");
+  if (!c || !c.choices[category]) return;          // blocked until consent
+  const s = document.createElement("script");
+  s.src = src; s.async = true; document.head.append(s);
+}
+localStorage.setItem("consent-v1", JSON.stringify({
+  version: 2, date: new Date().toISOString(),
+  choices: { necessary: true, analytics: true, marketing: false }
+}));',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Is this enough for GDPR?',
+                'It covers the main technical parts: real choice, easy reject, no tracking before consent and a record of the choice. Check the wording with your own legal adviser.',
+            ],
+            [
+                'How do I block Google Analytics until consent?',
+                'Do not put the script tag in the HTML. Call a loader function like the one shown only when analytics is allowed.',
+            ],
+            [
+                'When should I ask again?',
+                'When you add new cookies, raise the version number. Many sites also ask again after 12 months.',
+            ],
+        ],
+    ],
+    [
+        'num' => 59,
+        'cat' => '08-website-sections',
+        'slug' => '059-scrollspy-table-of-contents',
+        'name' => 'Scrollspy Table of Contents',
+        'example' => 'an automatic table of contents that highlights the section you are reading',
+        'title' => 'Scrollspy Table of Contents in JavaScript: Auto TOC with IntersectionObserver',
+        'desc' => 'Free scrollspy table of contents in plain JavaScript. Builds the TOC from your headings, highlights the section you are reading, shows progress and scrolls smoothly.',
+        'keywords' => 'scrollspy javascript, table of contents generator, intersectionobserver toc, sticky sidebar navigation, docs sidebar, vanilla js scrollspy',
+        'runs' => 'IntersectionObserver',
+        'what' => [
+            'A table of contents that builds itself from the headings on the page and highlights the section you are reading as you scroll.',
+            'It includes nested items, a progress bar, smooth scrolling and focus handling, and it uses no scroll listener for the highlight.',
+        ],
+        'when' => [
+            'Documentation sites',
+            'Long blog posts and guides',
+            'Legal and policy pages',
+            'Course lessons',
+        ],
+        'features' => [
+            'Automatic TOC from h3 and h4 headings',
+            'Current section highlight with IntersectionObserver',
+            'Nested items for sub headings',
+            'Reading progress bar',
+            'Smooth scroll with keyboard focus',
+        ],
+        'steps' => [
+            [
+                'Build from headings',
+                'The script finds every h3 and h4, gives each a clean id and writes the list of links.',
+            ],
+            [
+                'Watch a reading zone',
+                'rootMargin shrinks the viewport to its top 30 percent. The heading that enters that zone is the current section.',
+            ],
+            [
+                'Scroll and focus',
+                'Clicking a link scrolls smoothly and moves keyboard focus to the heading, so screen readers follow too.',
+            ],
+        ],
+        'code' => 'const io = new IntersectionObserver((entries) => {
+  const visible = entries.filter((e) => e.isIntersecting);
+  if (visible[0]) highlight(visible[0].target.id);
+}, { rootMargin: "0px 0px -70% 0px" }); // top 30% of the screen
+
+document.querySelectorAll("h2, h3").forEach((h) => {
+  h.id ||= h.textContent.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  io.observe(h);
+});',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Why IntersectionObserver instead of a scroll listener?',
+                'The browser does the work and only tells you when something changes, which is cheaper and smoother.',
+            ],
+            [
+                'How do I change when a section counts as active?',
+                'Change the rootMargin. -70% at the bottom means the heading must reach the top 30 percent of the screen.',
+            ],
+            [
+                'Does it work on the whole page?',
+                'Yes. Remove the root option and it watches the browser window.',
+            ],
+        ],
+    ],
+    [
+        'num' => 60,
+        'cat' => '08-website-sections',
+        'slug' => '060-theme-switcher',
+        'name' => 'Theme Switcher',
+        'example' => 'a light, dark and system theme switch that remembers the choice with no flash',
+        'title' => 'Dark Mode Toggle in JavaScript: Light, Dark and System Theme with No Flash',
+        'desc' => 'Free theme switcher in plain JavaScript. Light, dark and system modes, an accent colour picker, saved choice, live system change and a tiny script that stops the white flash.',
+        'keywords' => 'dark mode toggle javascript, theme switcher, prefers-color-scheme, no flash dark mode, css variables theme, light dark system',
+        'runs' => 'CSS variables and matchMedia',
+        'what' => [
+            'A theme switcher with light, dark and system options plus an accent colour picker. The preview dashboard card changes instantly.',
+            'The choice is saved, system mode updates live when your computer switches, and a three line head script prevents the white flash on page load.',
+        ],
+        'when' => [
+            'Any website or web app with dark mode',
+            'Dashboards and admin panels',
+            'Blogs and documentation',
+            'Client sites with brand accent choices',
+        ],
+        'features' => [
+            'Light, dark and system modes',
+            'Live update when the system theme changes',
+            'Accent colour picker with CSS variables',
+            'Saved choice in localStorage',
+            'No flash script for the head',
+        ],
+        'steps' => [
+            [
+                'Colours are variables',
+                'Every colour is a CSS variable. Dark mode just swaps the values, so no element needs its own dark rule.',
+            ],
+            [
+                'Three choices, one rule',
+                'Light and dark are fixed. System follows prefers-color-scheme and updates live when the operating system changes.',
+            ],
+            [
+                'Decide before paint',
+                'A tiny script in the head sets the theme before the CSS loads, so there is no white flash on reload.',
+            ],
+        ],
+        'code' => 'const mq = matchMedia("(prefers-color-scheme: dark)");
+function apply(mode) {
+  const dark = mode === "dark" || (mode === "system" && mq.matches);
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  localStorage.setItem("theme", mode);
+}
+mq.addEventListener("change", () => apply(localStorage.getItem("theme") || "system"));
+
+/* CSS */
+:root { --bg: #fff; --ink: #111; }
+[data-theme="dark"] { --bg: #111; --ink: #eee; }',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Why offer a system option?',
+                'Many people set dark mode for their whole device. System respects that without making them choose again.',
+            ],
+            [
+                'What causes the white flash?',
+                'The page paints before your JavaScript runs. Setting the theme in a small script at the top of the head fixes it.',
+            ],
+            [
+                'Do I need two stylesheets?',
+                'No. Use CSS variables and change their values for the dark theme.',
             ],
         ],
     ],

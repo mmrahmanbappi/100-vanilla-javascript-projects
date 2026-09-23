@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tabs and Accordion Kit Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Free accessible tabs and accordion in plain JavaScript. Correct ARIA roles, arrow key navigation, one or many panels open, smooth height animation and deep links.">
+<meta name="keywords" content="accessible tabs javascript, accordion javascript, aria tabs, keyboard tabs, collapsible sections, vanilla js accordion">
+<meta property="og:title" content="Accessible Tabs and Accordion in Vanilla JavaScript: ARIA, Keyboard and Animation">
+<meta property="og:description" content="Free accessible tabs and accordion in plain JavaScript. Correct ARIA roles, arrow key navigation, one or many panels open, smooth height animation and deep links.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/055-tabs-accordion-kit/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/08-website-sections/055-tabs-accordion-kit/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#B45309">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23B45309'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Tabs and Accordion Kit", "description": "Free accessible tabs and accordion in plain JavaScript. Correct ARIA roles, arrow key navigation, one or many panels open, smooth height animation and deep links.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "accessible tabs javascript, accordion javascript, aria tabs, keyboard tabs, collapsible sections, vanilla js accordion"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+:root{--accent:#B45309}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:24px}.two>div{min-width:0}.card3{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px}
+.card3 h3{font:700 18px var(--display);margin:0 0 12px}[role=tablist]{display:flex;gap:4px;border-bottom:2px solid var(--line);flex-wrap:wrap}
+[role=tab]{font:600 15px var(--body);background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-2px;padding:10px 14px;cursor:pointer;color:var(--muted)}[role=tab][aria-selected=true]{color:var(--ink);border-color:var(--accent)}
+[role=tabpanel]{padding:16px 2px 4px}[role=tabpanel] img{border-radius:10px;width:100%;height:150px;object-fit:cover;margin-bottom:10px}
+.acc{border:1px solid var(--line);border-radius:12px;overflow:hidden}.acc h4{margin:0}.acc button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;background:var(--panel);border:0;border-top:1px solid var(--line);padding:14px 16px;font:600 16px var(--body);color:var(--ink);cursor:pointer}
+.acc h4:first-child button{border-top:0}.acc button::after{content:"+";font-size:22px;color:var(--accent);transition:transform .2s}.acc button[aria-expanded=true]::after{transform:rotate(45deg)}
+.acc .pn{overflow:hidden;background:var(--sunk)}.acc .pn p{margin:0;padding:14px 16px;color:var(--muted)}.mode{display:flex;gap:14px;margin:0 0 12px;font-size:15px}.mode label{display:flex;gap:6px;align-items:center}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+
+/* mobile header fix */
+@media (max-width:560px){.topbar{flex-wrap:wrap;gap:8px}.topbar nav{display:flex;flex-wrap:wrap;gap:6px 12px}.topbar nav span{display:none}.topbar nav a{margin-left:0}}
+.strip dd{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../">Vanilla JavaScript Projects</a>
+  <nav><span>Project 55 of 100</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 55, Website sections</p>
+    <h1>Tabs and Accordion Kit</h1>
+    <p class="lede">Two of the most used page parts on the web, built the right way: they work with a keyboard, screen readers understand them and they open smoothly.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="Tabs above a panel and folding accordion rows"><g><rect x="24" y="30" width="80" height="34" rx="8" fill="var(--accent)"/><rect x="110" y="30" width="80" height="34" rx="8" fill="var(--line)"/><rect x="196" y="30" width="80" height="34" rx="8" fill="var(--line)"/></g><rect x="24" y="64" width="272" height="70" rx="10" fill="var(--panel)" stroke="var(--ink)" stroke-width="4"/><g fill="var(--panel)" stroke="var(--ink)" stroke-width="4"><rect x="24" y="150" width="272" height="30" rx="8"/><rect x="24" y="188" width="272" height="44" rx="8"/></g><path d="M270 160l6 6 6-6" stroke="var(--ink)" stroke-width="4" fill="none"/><path d="M270 206l6-6 6 6" stroke="var(--accent)" stroke-width="4" fill="none"/></svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>ARIA tabs pattern</dd></div><div><dt>Animation</dt><dd>Web Animations API</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <h2 id="w-title">Tabs and accordion</h2>
+  <p class="sub">Click a tab or use the arrow keys, Home and End. Open accordion items and choose whether one or many can be open.</p>
+  <div class="two"><div class="card3"><h3>Tabs</h3><div role="tablist" aria-label="Plans" id="tl"><button role="tab" id="t1" aria-controls="p1" aria-selected="true" type="button">Overview</button><button role="tab" id="t2" aria-controls="p2" aria-selected="false" tabindex="-1" type="button">Specs</button><button role="tab" id="t3" aria-controls="p3" aria-selected="false" tabindex="-1" type="button">Reviews</button><button role="tab" id="t4" aria-controls="p4" aria-selected="false" tabindex="-1" type="button">Delivery</button></div>
+<div role="tabpanel" id="p1" aria-labelledby="t1" tabindex="0"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=70&auto=format&fit=crop" alt="Wooden desk chair in a bright room" width="600" height="300"><p>A solid oak desk chair with a woven seat. Made to order in 3 weeks.</p></div>
+<div role="tabpanel" id="p2" aria-labelledby="t2" tabindex="0" hidden><p>Height 82 cm, seat 46 cm. Weight 6.4 kg. Oiled oak with a paper cord seat.</p></div>
+<div role="tabpanel" id="p3" aria-labelledby="t3" tabindex="0" hidden><p>4.8 out of 5 from 212 reviews. "Comfortable for long days and it looks lovely."</p></div>
+<div role="tabpanel" id="p4" aria-labelledby="t4" tabindex="0" hidden><p>Free delivery in 5 to 7 working days. 30 day returns.</p></div></div>
+<div class="card3"><h3>Accordion</h3><div class="mode" role="radiogroup" aria-label="Accordion mode"><label><input type="radio" name="md" value="one" checked> One open at a time</label><label><input type="radio" name="md" value="many"> Many open</label></div><div class="acc" id="acc"></div></div></div><p class="small muted" id="log" aria-live="polite" style="margin-top:12px"></p>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Roving tabindex</strong><span>Only the selected tab is in the Tab order. Arrow keys move selection, so one Tab press takes you into the panel.</span></li><li><strong>Link tabs and panels</strong><span>aria-controls and aria-labelledby connect each tab to its panel, so screen readers announce them together.</span></li><li><strong>Animate real height</strong><span>The accordion measures scrollHeight and animates from 0 to that height with element.animate().</span></li></ol></div>
+  <pre><code>tabs.forEach((tab, i) =&gt; tab.onkeydown = (e) =&gt; {
+  <span class="k">const</span> next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+  <span class="k">if</span> (next === undefined) <span class="k">return</span>;
+  select(tabs[(next + tabs.length) % tabs.length]);
+});
+<span class="k">function</span> select(tab) {
+  tabs.forEach((t) =&gt; {
+    <span class="k">const</span> on = t === tab;
+    t.setAttribute(&quot;aria-selected&quot;, on);
+    t.tabIndex = on ? 0 : -1;
+    document.getElementById(t.getAttribute(&quot;aria-controls&quot;)).hidden = !on;
+  });
+  tab.focus();
+}</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Tabs and Accordion Kit. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/08-website-sections/055-tabs-accordion-kit">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+(() => {
+support(!!Element.prototype.animate, Element.prototype.animate ? "Web Animations supported" : "No animation");
+const tabs = $$("[role=tab]");
+function select(t, focus) { tabs.forEach((x) => { const on = x === t; x.setAttribute("aria-selected", on); x.tabIndex = on ? 0 : -1; $("#" + x.getAttribute("aria-controls")).hidden = !on; }); if (focus) t.focus(); history.replaceState(null, "", "#" + t.textContent.toLowerCase()); $("#log").textContent = "Tab: " + t.textContent; }
+tabs.forEach((t, i) => { t.onclick = () => select(t); t.onkeydown = (e) => { const m = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }; if (e.key in m) { e.preventDefault(); select(tabs[(m[e.key] + tabs.length) % tabs.length], true); } }; });
+const h = location.hash.slice(1); const byHash = tabs.find((t) => t.textContent.toLowerCase() === h); if (byHash) select(byHash);
+const Q = [["How long does delivery take?","Most orders arrive in 5 to 7 working days. You get a tracking link by email."],["Can I return it?","Yes, within 30 days, as long as it is unused. Returns are free in the UK."],["Is the wood sustainable?","All our oak comes from certified European forests that replant what they cut."],["Do you ship abroad?","We ship to the EU and the US. Costs are shown at checkout."]];
+$("#acc").innerHTML = Q.map((q, i) => `<h4><button type="button" aria-expanded="false" aria-controls="a${i}" id="ab${i}">${q[0]}</button></h4><div class="pn" id="a${i}" role="region" aria-labelledby="ab${i}" hidden><p>${q[1]}</p></div>`).join("");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function toggle(b, open) { const p = $("#" + b.getAttribute("aria-controls")); b.setAttribute("aria-expanded", open); if (open) { p.hidden = false; if (!reduce) p.animate([{ height: 0 }, { height: p.scrollHeight + "px" }], { duration: 220, easing: "ease-out" }); } else { if (reduce) { p.hidden = true; return; } const a = p.animate([{ height: p.scrollHeight + "px" }, { height: 0 }], { duration: 200, easing: "ease-in" }); a.onfinish = () => (p.hidden = true); } }
+$("#acc").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; const open = b.getAttribute("aria-expanded") !== "true"; if (open && document.querySelector("input[name=md]:checked").value === "one") $$("#acc button[aria-expanded=true]").forEach((x) => toggle(x, false)); toggle(b, open); $("#log").textContent = (open ? "Opened: " : "Closed: ") + b.textContent; };
+})();
+</script>
+</body>
+</html>
