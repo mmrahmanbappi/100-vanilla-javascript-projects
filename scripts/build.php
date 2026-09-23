@@ -205,6 +205,15 @@ function head($title, $desc, $url, $image, $keywords, $schema) {
 .how{padding-left:22px;max-width:65ch;margin-bottom:40px}.how li{margin-bottom:10px}.how b{display:block}
 </style>
 <script type=\"application/ld+json\">" . jsonld($schema) . "</script>
+<!-- Google tag (gtag.js) -->
+<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-D8QGLFQD12\"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-D8QGLFQD12');
+</script>
 </head>
 <body>
 <header class=\"bar\"><div><a class=\"logo\" href=\"$B\"><i aria-hidden=\"true\">JS</i>Vanilla JavaScript Projects</a><nav><a href=\"{$B}#categories\">Categories</a><a href=\"https://mmrahmanbappi.github.io/\">All projects</a><a class=\"gh\" href=\"{$SITE['repo']}\">GitHub</a></nav></div></header>
