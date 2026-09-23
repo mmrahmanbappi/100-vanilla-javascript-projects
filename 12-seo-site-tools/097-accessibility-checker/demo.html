@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Accessibility Checker Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Free accessibility checker in plain JavaScript. Scan a sample page or paste your HTML to find missing alt text, low colour contrast, skipped headings, unlabeled fields and vague links.">
+<meta name="keywords" content="accessibility checker, wcag checker, color contrast checker, alt text checker, a11y audit tool, accessibility testing javascript">
+<meta property="og:title" content="Accessibility Checker in JavaScript: Alt Text, Contrast, Headings, Labels and Link Text">
+<meta property="og:description" content="Free accessibility checker in plain JavaScript. Scan a sample page or paste your HTML to find missing alt text, low colour contrast, skipped headings, unlabeled fields and vague links.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/097-accessibility-checker/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/097-accessibility-checker/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#9333EA">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%239333EA'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Accessibility Checker", "description": "Free accessibility checker in plain JavaScript. Scan a sample page or paste your HTML to find missing alt text, low colour contrast, skipped headings, unlabeled fields and vague links.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "accessibility checker, wcag checker, color contrast checker, alt text checker, a11y audit tool, accessibility testing javascript"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* mobile header fix */
+.how>*{min-width:0}.how pre{overflow-x:auto;max-width:100%}
+
+@media (max-width:560px){.topbar{flex-wrap:wrap;gap:8px}.topbar nav{display:flex;flex-wrap:wrap;gap:6px 12px}.topbar nav span{display:none}.topbar nav a{margin-left:0}}
+.strip dd{overflow-wrap:anywhere}
+
+:root{--accent:#9333EA}
+.ac2{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:start}.ac2>*{min-width:0}.frame2{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;background:#fff}.frame2 iframe{width:100%;height:460px;border:0;display:block}
+.ctl2{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.paste{display:none;margin-bottom:10px}.paste.on{display:block}.paste textarea{width:100%;min-height:140px;font:13px var(--code)}
+.score{display:flex;gap:14px;align-items:center;margin-bottom:10px}.score b{font:800 40px var(--display)}.iss{list-style:none;padding:0;margin:0;display:grid;gap:8px;max-height:420px;overflow:auto}.iss button{width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:10px;padding:10px 12px;cursor:pointer;color:var(--ink);font:inherit}.iss b{display:block;font-size:15px}.iss span{font-size:14px;color:var(--muted)}.iss code{font-size:12px}
+@media (max-width:860px){.ac2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../">Vanilla JavaScript Projects</a>
+  <nav><span>Project 97 of 100</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 97, SEO and site tools</p>
+    <h1>Accessibility Checker</h1>
+    <p class="lede">Find the most common accessibility problems in seconds. Each issue is explained in plain words and highlighted on the page so you can fix it.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A person symbol next to a checklist"><circle cx="90" cy="70" r="22" fill="var(--accent)"/><path d="M50 110h80M90 110v50l-26 50M90 160l26 50" stroke="var(--accent)" stroke-width="14" stroke-linecap="round" fill="none"/><rect x="170" y="50" width="130" height="170" rx="14" fill="var(--panel)" stroke="var(--ink)" stroke-width="4"/><g stroke-width="5" fill="none" stroke-linecap="round"><path d="M186 84l8 8 14-16" stroke="#16A34A"/><path d="M186 124l20 20M206 124l-20 20" stroke="#DC2626"/><path d="M186 176l8 8 14-16" stroke="#16A34A"/></g><g fill="var(--line)"><rect x="220" y="80" width="64" height="8" rx="4"/><rect x="220" y="130" width="64" height="8" rx="4"/><rect x="220" y="172" width="64" height="8" rx="4"/></g></svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>getComputedStyle</dd></div><div><dt>Rules</dt><dd>WCAG 2.2 basics</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <h2 id="w-title">Check a page</h2>
+  <p class="sub">Run the check on the sample page, or paste your own HTML. Click an issue to highlight the element.</p>
+  <div class="ctl2"><button class="btn primary" id="run" type="button">Check the sample page</button><button class="btn" id="tgl" type="button" aria-expanded="false">Paste my own HTML</button></div><div class="paste" id="paste"><label class="sr-only" for="src">Your HTML</label><textarea id="src" placeholder="Paste a full HTML page or a section"></textarea><button class="btn" id="runp" type="button">Check my HTML</button></div>
+<div class="ac2"><div class="frame2"><iframe id="fr" title="Page being checked"></iframe></div><div aria-live="polite"><div class="score"><b id="sc">?</b><span id="sct">Press the button to check the sample.</span></div><ul class="iss" id="iss"></ul></div></div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Load the page in a frame</strong><span>The sample or your pasted HTML goes into an iframe with srcdoc, so its styles are real and can be measured.</span></li><li><strong>Run simple rules</strong><span>The script looks for missing lang and alt, skipped headings, unlabeled fields, empty buttons and vague link text.</span></li><li><strong>Measure real contrast</strong><span>For every piece of text it reads the computed colours, walks up to find the background and works out the WCAG contrast ratio.</span></li></ol></div>
+  <pre><code><span class="k">function</span> luminance([r, g, b]) {
+  <span class="k">return</span> [r, g, b].map((v) =&gt; { v /= 255; <span class="k">return</span> v &lt;= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; })
+    .reduce((s, v, i) =&gt; s + v * [0.2126, 0.7152, 0.0722][i], 0);
+}
+<span class="k">const</span> ratio = (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+<span class="k">if</span> (ratio &lt; 4.5) report(&quot;Low contrast&quot;, el);          <span class="c">// 3 for large text</span>
+
+doc.querySelectorAll(&quot;img:not([alt])&quot;).forEach((img) =&gt; report(&quot;Missing alt&quot;, img));</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Accessibility Checker. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/12-seo-site-tools/097-accessibility-checker">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+(() => {
+support(true, "Works everywhere");
+const SAMPLE = `<!doctype html><html><head><title>Sunny Café</title><style>body{font-family:Arial,sans-serif;margin:0;padding:20px;color:#222}.hero{background:#FFD166;padding:20px;border-radius:12px}.light{color:#aaa}.btn{background:#eee;color:#bbb;border:0;padding:10px 14px;border-radius:8px}img{max-width:100%;border-radius:10px}</style></head><body><h1>Sunny Café</h1><div class="hero"><h3>Fresh coffee every day</h3><p class="light">Open 7am to 5pm, seven days a week.</p><button class="btn">Order</button> <button><svg width="16" height="16"><circle cx="8" cy="8" r="6"/></svg></button></div><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&q=60&auto=format&fit=crop"><h2>Menu</h2><p>See our full menu <a href="#">click here</a>.</p><h4>Opening times</h4><form><input type="email" placeholder="Your email"><label for="nm">Name</label><input id="nm"><button type="submit">Join</button></form><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300&q=60&auto=format&fit=crop" alt="Yellow armchair by the window"></body></html>`;
+const fr = $("#fr");
+function lum(c) { const m = c.match(/\d+(\.\d+)?/g); if (!m) return null; const [r, g, b, a] = m.map(Number); if (a === 0) return null; return [r, g, b].map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }).reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0); }
+function bgOf(el, win) { while (el) { const b = win.getComputedStyle(el).backgroundColor; const l = lum(b); if (l !== null && !/, 0\)$/.test(b)) return l; el = el.parentElement; } return 1; }
+function check() { const d = fr.contentDocument, w = fr.contentWindow, I = [], add = (sev, el, t, fix) => I.push({ sev, el, t, fix });
+  if (!d.documentElement.getAttribute("lang")) add("serious", d.documentElement, "Page has no language", 'Add lang="en" (or your language) to the html tag.');
+  d.querySelectorAll("img").forEach((i) => { if (!i.hasAttribute("alt")) add("critical", i, "Image has no alt text", "Describe the image in an alt attribute, or use alt=\"\" if it is decoration."); });
+  let last = 0; d.querySelectorAll("h1,h2,h3,h4,h5,h6").forEach((h) => { const n = +h.tagName[1]; if (last && n > last + 1) add("moderate", h, `Heading jumps from h${last} to h${n}`, `Use h${last + 1} here, or restyle it with CSS.`); last = n; });
+  if (d.querySelectorAll("h1").length !== 1) add("moderate", d.body, `Page has ${d.querySelectorAll("h1").length} h1 headings`, "Use exactly one h1 for the main title.");
+  d.querySelectorAll("input,select,textarea").forEach((f) => { if (f.type === "hidden" || f.type === "submit") return; const lab = (f.id && d.querySelector(`label[for="${f.id}"]`)) || f.closest("label") || f.getAttribute("aria-label") || f.getAttribute("aria-labelledby"); if (!lab) add("critical", f, "Form field has no label", "Add a label element linked with for and id. A placeholder is not a label."); });
+  d.querySelectorAll("button,a[href]").forEach((b) => { const name = (b.textContent || "").trim() || b.getAttribute("aria-label") || b.querySelector("img[alt]")?.alt; if (!name) add("critical", b, `${b.tagName === "A" ? "Link" : "Button"} has no text`, "Add visible text or an aria-label that says what it does."); else if (b.tagName === "A" && /^(click here|here|read more|more|link)$/i.test(name)) add("moderate", b, `Vague link text: "${name}"`, "Say where the link goes, like See our full menu."); });
+  d.querySelectorAll("body *").forEach((el) => { if (!el.childNodes.length || ![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) return; const cs = w.getComputedStyle(el), fg = lum(cs.color); if (fg === null) return; const bg = bgOf(el, w), ratio = (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05), size = parseFloat(cs.fontSize), bold = +cs.fontWeight >= 700, large = size >= 24 || (bold && size >= 18.66), need = large ? 3 : 4.5; if (ratio < need) add("serious", el, `Low contrast: ${ratio.toFixed(2)} to 1`, `Needs at least ${need} to 1. Darken the text or lighten the background.`); });
+  const W = { critical: 10, serious: 6, moderate: 3 }, C = { critical: "#DC2626", serious: "#EA580C", moderate: "#CA8A04" }; const score = Math.max(0, 100 - I.reduce((a, i) => a + W[i.sev], 0));
+  $("#sc").textContent = score; $("#sc").style.color = score > 85 ? "var(--ok)" : score > 60 ? "var(--warn)" : "var(--err)"; $("#sct").textContent = `${I.length} issue${I.length === 1 ? "" : "s"} found. Score out of 100.`;
+  $("#iss").innerHTML = I.map((i, k) => `<li><button type="button" data-k="${k}" style="--c:${C[i.sev]}"><b>${i.t}</b><span>${i.sev[0].toUpperCase() + i.sev.slice(1)}. ${esc(i.fix)}</span><br><code>&lt;${i.el.tagName.toLowerCase()}${i.el.id ? " id=" + i.el.id : ""}${i.el.className && typeof i.el.className === "string" ? ' class="' + i.el.className + '"' : ""}&gt;</code></button></li>`).join("") || '<li style="color:var(--ok)">No issues found by these checks. Still test with a keyboard and a screen reader.</li>';
+  $("#iss")._I = I; }
+function load(html) { fr.srcdoc = html; fr.onload = () => setTimeout(check, 300); }
+$("#iss").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; const el = $("#iss")._I[+b.dataset.k].el; fr.contentDocument.querySelectorAll("[data-hl]").forEach((x) => { x.style.outline = ""; x.removeAttribute("data-hl"); }); el.setAttribute("data-hl", ""); el.style.outline = "4px solid #DC2626"; el.style.outlineOffset = "3px"; el.scrollIntoView({ block: "center", behavior: "smooth" }); };
+$("#run").onclick = () => load(SAMPLE); $("#tgl").onclick = () => { const on = $("#paste").classList.toggle("on"); $("#tgl").setAttribute("aria-expanded", on); if (on && !$("#src").value) $("#src").value = SAMPLE; };
+$("#runp").onclick = () => { const h = $("#src").value.trim(); if (!h) return toast("Paste some HTML first"); load(/<html/i.test(h) ? h : `<!doctype html><html><body>${h}</body></html>`); };
+load(SAMPLE);
+})();
+</script>
+</body>
+</html>

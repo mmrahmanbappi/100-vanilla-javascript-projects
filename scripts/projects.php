@@ -122,6 +122,16 @@ $CATEGORIES = [
         'keywords' => 'javascript data table, svg charts javascript, markdown blog, lazy loading images, countdown timer, toast notifications, threaded comments, i18n javascript',
         'intro' => 'Most websites are really about showing content well. These ten projects cover tables you can sort and export, charts without a library, a tiny Markdown blog, fast loading images, timers, notifications, comment threads, multiple languages, a searchable FAQ and a before and after slider. Each one is a single HTML file with real content and photos, ready to copy into your own site.',
     ],
+    [
+        'num' => 12,
+        'slug' => '12-seo-site-tools',
+        'name' => 'SEO and Site Tools',
+        'ready' => true,
+        'title' => 'Free JavaScript SEO and Site Tools: Meta Tags, Schema, Sitemap, Favicon, SEO Audit',
+        'desc' => '10 free SEO and site tools in plain JavaScript with live demos: meta tag generator, OG image maker, schema builder, favicon and image tools, sitemap, accessibility and SEO checks.',
+        'keywords' => 'seo tools javascript, meta tag generator, schema json-ld generator, sitemap generator, favicon generator, accessibility checker, seo audit tool',
+        'intro' => 'The last step of building a website is making sure people and search engines can find it, share it and use it. These ten tools write your meta tags and structured data, make share images, favicons and responsive photos, build a sitemap, check accessibility and SEO, protect your contact form and count visits without cookies. Everything runs in the browser, so nothing you paste is uploaded.',
+    ],
 ];
 
 $PROJECTS = [
@@ -6225,6 +6235,675 @@ range.oninput = () => box.style.setProperty("--p", range.value + "%");',
             [
                 'Can I start at a different position?',
                 'Yes. Set the value on the range input and the --p variable, for example 30 for 30 percent.',
+            ],
+        ],
+    ],
+    [
+        'num' => 91,
+        'cat' => '12-seo-site-tools',
+        'slug' => '091-meta-tag-generator',
+        'name' => 'Meta Tag Generator',
+        'example' => 'a form that writes your title, description and social tags with live search and share previews',
+        'title' => 'Meta Tag Generator in JavaScript: SEO Title, Description, Open Graph and Twitter Previews',
+        'desc' => 'Free meta tag generator in plain JavaScript. Write your title and description with live length checks, see a search result and social card preview, and copy the finished meta tags.',
+        'keywords' => 'meta tag generator, seo meta tags, open graph generator, twitter card tags, meta description length, search result preview',
+        'runs' => 'Canvas text measuring',
+        'what' => [
+            'A meta tag writer. Type a title, description, URL and share image, and see a search result preview and a social share card update live.',
+            'Length bars measure the text in pixels, like search engines do, and warn you before a title or description gets cut off. The finished tags are ready to copy.',
+        ],
+        'when' => [
+            'Launching new pages',
+            'Fixing pages with poor click rates',
+            'Checking client sites',
+            'Teaching the basics of SEO',
+        ],
+        'features' => [
+            'Title and description length checks in pixels',
+            'Search result preview',
+            'Social share card preview',
+            'Open Graph and Twitter tags',
+            'Noindex option and one click copy',
+        ],
+        'steps' => [
+            [
+                'Measure in pixels',
+                'Search engines cut titles by width, not letters. Canvas measureText measures the text in the same font size to warn you before it gets cut.',
+            ],
+            [
+                'Preview both places',
+                'The search result and the share card update as you type, using the same truncation rules.',
+            ],
+            [
+                'Write clean tags',
+                'Values are escaped for HTML, the image tag only appears when there is an image, and the robots tag follows your noindex choice.',
+            ],
+        ],
+        'code' => 'const ctx = document.createElement("canvas").getContext("2d");
+ctx.font = "20px Arial";
+const tooLong = ctx.measureText(title).width > 580;   // about where results cut off
+
+const tags = `
+<title>${title}</title>
+<meta name="description" content="${description}">
+<meta property="og:title" content="${title}">
+<meta property="og:image" content="${image}">
+<meta name="twitter:card" content="summary_large_image">`;',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'How long should a title be?',
+                'Aim for about 50 to 60 characters. Wide letters take more room, which is why the tool measures pixels.',
+            ],
+            [
+                'Does the meta description affect ranking?',
+                'Not directly, but a clear description gets more clicks, and that matters.',
+            ],
+            [
+                'What size should the share image be?',
+                '1200 by 630 pixels works well on every major platform.',
+            ],
+        ],
+    ],
+    [
+        'num' => 92,
+        'cat' => '12-seo-site-tools',
+        'slug' => '092-og-image-maker',
+        'name' => 'OG Image Maker',
+        'example' => 'a canvas tool that makes 1200 by 630 share images with your title and brand',
+        'title' => 'Open Graph Image Generator in JavaScript: Make Social Share Images on Canvas',
+        'desc' => 'Free Open Graph image maker in plain JavaScript. Pick a layout, type a title, choose colours or a photo background, and download a 1200 by 630 PNG ready for social sharing.',
+        'keywords' => 'og image generator, open graph image maker, social share image, canvas image generator, twitter card image, blog cover image',
+        'runs' => 'Canvas 2D and toBlob',
+        'what' => [
+            'A small design tool for social share images. Choose one of three layouts, type a title, a small label and your site name, pick a colour and a background photo.',
+            'The title wraps and shrinks to fit, the preview updates instantly, and one click downloads a 1200 by 630 PNG you can use as your og:image.',
+        ],
+        'when' => [
+            'Blog posts and articles',
+            'Product and landing pages',
+            'Event announcements',
+            'Any page that gets shared',
+        ],
+        'features' => [
+            'Three layouts: photo split, bold colour and card',
+            'Automatic title wrapping and sizing',
+            'Five colours and four photos',
+            'Full size 1200 by 630 export',
+            'Works offline once loaded',
+        ],
+        'steps' => [
+            [
+                'Draw at full size',
+                'The canvas is 1200 by 630 pixels, the standard share size, and CSS only shrinks the preview. The download is always sharp.',
+            ],
+            [
+                'Wrap and shrink the title',
+                'Words are measured one by one to break lines. If the title needs more than four lines, the font gets smaller until it fits.',
+            ],
+            [
+                'Photos without tainting',
+                'The background photo loads with crossOrigin set to anonymous, so the canvas can still be exported as a PNG.',
+            ],
+        ],
+        'code' => 'function wrap(text, maxWidth, size) {
+  ctx.font = `800 ${size}px sans-serif`;
+  const lines = []; let line = "";
+  for (const word of text.split(" ")) {
+    const test = line ? line + " " + word : word;
+    if (ctx.measureText(test).width > maxWidth && line) { lines.push(line); line = word; }
+    else line = test;
+  }
+  lines.push(line);
+  return lines.length > 4 ? wrap(text, maxWidth, size - 6) : lines;
+}
+canvas.toBlob((blob) => download(blob, "share-image.png"));',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Why 1200 by 630?',
+                'It is the size most social networks and chat apps use for large link previews.',
+            ],
+            [
+                'Can I make these automatically for every post?',
+                'Yes. The same drawing code runs in a build script with a canvas library, or in a serverless function.',
+            ],
+            [
+                'Why do some photos stop the download?',
+                'If a photo server does not allow cross origin use, the browser blocks export. Unsplash allows it.',
+            ],
+        ],
+    ],
+    [
+        'num' => 93,
+        'cat' => '12-seo-site-tools',
+        'slug' => '093-schema-json-ld-builder',
+        'name' => 'Schema JSON-LD Builder',
+        'example' => 'a form that writes structured data for businesses, products, articles, events and FAQs',
+        'title' => 'JSON-LD Schema Generator in JavaScript: LocalBusiness, Product, Article, Event and FAQ',
+        'desc' => 'Free JSON-LD schema builder in plain JavaScript. Pick a type, fill in a simple form and get valid structured data with required field checks, ready to paste into your page.',
+        'keywords' => 'json-ld generator, schema markup generator, structured data, localbusiness schema, product schema, faq schema',
+        'runs' => 'JSON.stringify and form state',
+        'what' => [
+            'A structured data builder for five common schema types: local business, product, article, event and FAQ page. Pick a type and fill in a short form.',
+            'The JSON-LD updates as you type, empty fields are left out, required fields are checked, and the finished script tag can be copied into your page.',
+        ],
+        'when' => [
+            'Local business websites',
+            'Online shop product pages',
+            'Blog posts and news articles',
+            'Event and FAQ pages',
+        ],
+        'features' => [
+            'Five schema types',
+            'Required field checks and simple validation',
+            'Clean output with empty values removed',
+            'Add and remove FAQ questions',
+            'Copy as a ready script tag',
+        ],
+        'steps' => [
+            [
+                'A form per type',
+                'Each schema type has its own short list of fields, with the required ones marked. Changing type redraws the form.',
+            ],
+            [
+                'Build and clean',
+                'Form values are placed into the right schema shape. A JSON.parse reviver then drops empty values and empty objects, so the output stays tidy.',
+            ],
+            [
+                'Check before you paste',
+                'Missing required fields and obvious mistakes, like a price that is not a number, are listed above the output.',
+            ],
+        ],
+        'code' => 'const product = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: form.name, image: form.image,
+  offers: { "@type": "Offer", price: form.price, priceCurrency: "GBP",
+            availability: "https://schema.org/InStock" }
+};
+// drop empty values
+const clean = JSON.parse(JSON.stringify(product), (k, v) => v === "" ? undefined : v);
+script.textContent = JSON.stringify(clean, null, 2);',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Where do I put the JSON-LD?',
+                'Anywhere in the page, usually in the head. It is invisible to visitors.',
+            ],
+            [
+                'Will this guarantee rich results?',
+                'No. It makes your page eligible. Search engines decide when to show rich results.',
+            ],
+            [
+                'How do I test my markup?',
+                'Paste your page address into your search engine\'s structured data testing tool, or into the Schema.org validator.',
+            ],
+        ],
+    ],
+    [
+        'num' => 94,
+        'cat' => '12-seo-site-tools',
+        'slug' => '094-favicon-generator',
+        'name' => 'Favicon Generator',
+        'example' => 'a tool that makes every favicon size and a web manifest from a letter or an image',
+        'title' => 'Favicon Generator in JavaScript: All Icon Sizes, Apple Touch Icon and Web Manifest',
+        'desc' => 'Free favicon generator in plain JavaScript. Make an icon from a letter or upload an image, preview it in a browser tab, download 16 to 512 pixel PNGs, and copy the HTML and manifest.',
+        'keywords' => 'favicon generator, favicon png sizes, apple touch icon, web app manifest icons, pwa icon generator, favicon from letter',
+        'runs' => 'Canvas 2D',
+        'what' => [
+            'A favicon maker. Type one or two letters, choose colours and a shape, or upload a square picture, and see the icon in a pretend browser tab.',
+            'It makes six PNG sizes from 16 to 512 pixels for tabs, phones and app installs, and gives you the HTML link tags and a web manifest file.',
+        ],
+        'when' => [
+            'New websites and landing pages',
+            'Web apps you want people to install',
+            'Client projects that need a quick icon',
+            'Replacing a blurry old favicon',
+        ],
+        'features' => [
+            'Letter icons with colour and shape choice',
+            'Upload your own square image',
+            'Six PNG sizes with separate downloads',
+            'Browser tab preview',
+            'HTML tags and web manifest',
+        ],
+        'steps' => [
+            [
+                'Draw once per size',
+                'Each size is drawn fresh on its own canvas, not scaled down from a big one, so small icons stay crisp.',
+            ],
+            [
+                'Shapes with clip',
+                'A rounded rectangle, circle or square clip is applied before drawing, so letters and photos fit the chosen shape.',
+            ],
+            [
+                'Code that goes with it',
+                'The tool writes the link tags for the head and a web manifest for phones and app installs.',
+            ],
+        ],
+        'code' => 'function icon(size, letter, bg, fg) {
+  const c = document.createElement("canvas");
+  c.width = c.height = size;
+  const x = c.getContext("2d");
+  x.beginPath(); x.roundRect(0, 0, size, size, size * 0.22); x.clip();
+  x.fillStyle = bg; x.fillRect(0, 0, size, size);
+  x.fillStyle = fg; x.textAlign = "center"; x.textBaseline = "middle";
+  x.font = `800 ${size * 0.62}px sans-serif`;
+  x.fillText(letter, size / 2, size / 2);
+  return c.toDataURL("image/png");
+}',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Do I still need a favicon.ico file?',
+                'Most browsers now use PNG icons from link tags. An .ico file in the site root is only a fallback for very old browsers.',
+            ],
+            [
+                'Which sizes matter most?',
+                '32 pixels for browser tabs, 180 for iPhones and 192 and 512 for Android and installs.',
+            ],
+            [
+                'What is a maskable icon?',
+                'An icon with extra padding so Android can crop it into circles or other shapes without cutting off the design.',
+            ],
+        ],
+    ],
+    [
+        'num' => 95,
+        'cat' => '12-seo-site-tools',
+        'slug' => '095-responsive-image-maker',
+        'name' => 'Responsive Image Maker',
+        'example' => 'a tool that resizes one photo into several sizes and writes the srcset code',
+        'title' => 'Responsive Image Generator in JavaScript: Resize to srcset Sizes and WebP in the Browser',
+        'desc' => 'Free responsive image maker in plain JavaScript. Drop in one photo, get it resized to several widths as WebP or JPEG, compare file sizes and copy ready srcset and picture code.',
+        'keywords' => 'responsive images generator, srcset generator, resize image javascript, webp converter, picture element, image optimization tool',
+        'runs' => 'Canvas toBlob and createImageBitmap',
+        'what' => [
+            'An image resizer for the web. Start with the sample photo or drop in your own, choose widths, a format and quality, and get resized files in a few seconds.',
+            'A table shows each file size and how much smaller it is than the original. The tool also writes the srcset or picture code so each device loads the right size.',
+        ],
+        'when' => [
+            'Preparing photos for a website',
+            'Shops with product images',
+            'Blogs and portfolios',
+            'Speeding up slow pages',
+        ],
+        'features' => [
+            'Four widths from 400 to 1600 pixels',
+            'WebP, JPEG or AVIF output',
+            'Quality slider with size comparison',
+            'Individual downloads',
+            'Ready srcset and picture code',
+        ],
+        'steps' => [
+            [
+                'Decode once',
+                'createImageBitmap decodes the photo a single time. Every size is then drawn from that bitmap onto a canvas of the right width.',
+            ],
+            [
+                'Encode to modern formats',
+                'canvas.toBlob saves each size as WebP, JPEG or AVIF at the quality you choose, and the file sizes are shown so you can compare.',
+            ],
+            [
+                'Let the browser choose',
+                'The srcset and sizes code lists every file with its width. Each device then downloads only the size it needs.',
+            ],
+        ],
+        'code' => 'const bitmap = await createImageBitmap(file);
+for (const w of [400, 800, 1200]) {
+  const c = document.createElement("canvas");
+  c.width = w; c.height = Math.round(bitmap.height * w / bitmap.width);
+  c.getContext("2d").drawImage(bitmap, 0, 0, c.width, c.height);
+  const blob = await new Promise((r) => c.toBlob(r, "image/webp", 0.75));
+}
+// <img srcset="photo-400.webp 400w, photo-800.webp 800w, photo-1200.webp 1200w"
+//      sizes="(max-width: 700px) 100vw, 700px">',
+        'browsers' => 'Works in all modern browsers. AVIF export depends on the browser; the tool falls back to WebP.',
+        'faq' => [
+            [
+                'Are my photos uploaded?',
+                'No. Everything happens in your browser. The photo never leaves your device.',
+            ],
+            [
+                'Which format should I use?',
+                'WebP works everywhere today and is usually 25 to 35 percent smaller than JPEG. AVIF is smaller still where supported.',
+            ],
+            [
+                'What does the sizes attribute do?',
+                'It tells the browser how wide the image will be shown, so it can pick the best file before the page layout is ready.',
+            ],
+        ],
+    ],
+    [
+        'num' => 96,
+        'cat' => '12-seo-site-tools',
+        'slug' => '096-sitemap-generator',
+        'name' => 'Sitemap Generator',
+        'example' => 'a tool that turns a list of pages into sitemap.xml and robots.txt',
+        'title' => 'Sitemap Generator in JavaScript: sitemap.xml and robots.txt from a List of Pages',
+        'desc' => 'Free sitemap generator in plain JavaScript. Paste your page paths or full URLs, clean and sort them, set last modified dates and priorities, and download sitemap.xml and robots.txt.',
+        'keywords' => 'sitemap generator, xml sitemap, robots.txt generator, sitemap.xml maker, seo sitemap tool, submit sitemap',
+        'runs' => 'XML building and Blob downloads',
+        'what' => [
+            'A sitemap builder. Enter your domain and paste your pages as paths or full URLs, one per line. The tool cleans the list and shows what it removed and why.',
+            'It writes a valid sitemap.xml with optional last changed dates, frequency and priority, plus a robots.txt that blocks private paths and points search engines to the sitemap.',
+        ],
+        'when' => [
+            'New sites before launch',
+            'Static sites without a CMS',
+            'Fixing sitemaps with errors',
+            'Learning how sitemaps work',
+        ],
+        'features' => [
+            'Paths or full URLs',
+            'Removes duplicates, other domains and query strings',
+            'Blocked paths moved to robots.txt',
+            'Optional lastmod, changefreq and priority',
+            'Download or copy both files',
+        ],
+        'steps' => [
+            [
+                'Resolve every line',
+                'new URL(line, domain) turns paths like /menu into full addresses. Lines that cannot be parsed are reported.',
+            ],
+            [
+                'Clean the list',
+                'Other domains, duplicates, query strings and blocked paths are removed, and each removal is explained.',
+            ],
+            [
+                'Write both files',
+                'The sitemap lists every page with optional date, frequency and priority. robots.txt blocks the paths you chose and points to the sitemap.',
+            ],
+        ],
+        'code' => 'const base = new URL("https://example.com");
+const pages = lines.map((l) => new URL(l, base))
+  .filter((u) => u.host === base.host);
+
+const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${pages.map((u) => `  <url><loc>${u.href}</loc><lastmod>${today}</lastmod></url>`).join("\\n")}
+</urlset>`;
+const robots = `User-agent: *\\nDisallow: /admin\\n\\nSitemap: ${base.origin}/sitemap.xml`;',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Where do I put sitemap.xml?',
+                'In the root of your site, so it opens at yoursite.com/sitemap.xml. Then submit that address in your search engine\'s webmaster tools.',
+            ],
+            [
+                'Do priority and changefreq matter?',
+                'Most search engines ignore them today. lastmod is useful if it is accurate.',
+            ],
+            [
+                'Should blocked pages be in the sitemap?',
+                'No. A sitemap should only list pages you want found, so blocked paths are left out.',
+            ],
+        ],
+    ],
+    [
+        'num' => 97,
+        'cat' => '12-seo-site-tools',
+        'slug' => '097-accessibility-checker',
+        'name' => 'Accessibility Checker',
+        'example' => 'a checker that finds missing alt text, low contrast, heading gaps and unlabeled fields',
+        'title' => 'Accessibility Checker in JavaScript: Alt Text, Contrast, Headings, Labels and Link Text',
+        'desc' => 'Free accessibility checker in plain JavaScript. Scan a sample page or paste your HTML to find missing alt text, low colour contrast, skipped headings, unlabeled fields and vague links.',
+        'keywords' => 'accessibility checker, wcag checker, color contrast checker, alt text checker, a11y audit tool, accessibility testing javascript',
+        'runs' => 'getComputedStyle and WCAG contrast maths',
+        'what' => [
+            'An accessibility checker that scans a sample café page, or HTML you paste in, for common problems: missing alt text and language, skipped headings, fields without labels, empty buttons, vague links and low contrast.',
+            'Each issue gets a severity, a plain English fix and a button that highlights the element in the page. A simple score shows how much work is left.',
+        ],
+        'when' => [
+            'Checking a page before launch',
+            'Reviewing client or student work',
+            'Learning the most common accessibility mistakes',
+            'Quick checks between full audits',
+        ],
+        'features' => [
+            'Missing alt text and page language',
+            'Heading order and single h1',
+            'Labels for form fields',
+            'Button and link names, vague link text',
+            'WCAG contrast ratio for every text element',
+        ],
+        'steps' => [
+            [
+                'Load the page in a frame',
+                'The sample or your pasted HTML goes into an iframe with srcdoc, so its styles are real and can be measured.',
+            ],
+            [
+                'Run simple rules',
+                'The script looks for missing lang and alt, skipped headings, unlabeled fields, empty buttons and vague link text.',
+            ],
+            [
+                'Measure real contrast',
+                'For every piece of text it reads the computed colours, walks up to find the background and works out the WCAG contrast ratio.',
+            ],
+        ],
+        'code' => 'function luminance([r, g, b]) {
+  return [r, g, b].map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; })
+    .reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0);
+}
+const ratio = (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+if (ratio < 4.5) report("Low contrast", el);          // 3 for large text
+
+doc.querySelectorAll("img:not([alt])").forEach((img) => report("Missing alt", img));',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Does this replace a full accessibility audit?',
+                'No. Automated checks find around a third of issues. Always test with a keyboard and a screen reader too.',
+            ],
+            [
+                'What contrast ratio do I need?',
+                '4.5 to 1 for normal text and 3 to 1 for large text, which is 24 pixels, or about 19 pixels if bold.',
+            ],
+            [
+                'Is a placeholder a label?',
+                'No. Placeholders disappear when you type and many screen readers skip them. Use a real label.',
+            ],
+        ],
+    ],
+    [
+        'num' => 98,
+        'cat' => '12-seo-site-tools',
+        'slug' => '098-spam-proof-contact-form',
+        'name' => 'Spam-proof Contact Form',
+        'example' => 'a contact form that blocks bots with a honeypot, a timing check and simple content rules',
+        'title' => 'Spam Protection for Contact Forms in JavaScript: Honeypot, Timing and Content Checks',
+        'desc' => 'Free spam-proof contact form in plain JavaScript. A hidden honeypot field, a minimum fill time, link and keyword checks and a friendly rate limit, all without a captcha.',
+        'keywords' => 'contact form spam protection, honeypot field, stop form spam, no captcha form, bot detection javascript, contact form javascript',
+        'runs' => 'Honeypot fields and timing checks',
+        'what' => [
+            'A contact form protected against spam without a captcha. It uses a hidden honeypot field, a minimum time to fill in, link and keyword checks, a capital letters check and a simple rate limit.',
+            'A panel shows each check passing or failing and adds up a spam score. Try sending a normal message, then press Act like a bot to see it blocked.',
+        ],
+        'when' => [
+            'Contact and enquiry forms',
+            'Newsletter sign ups',
+            'Comment and review forms',
+            'Any form getting junk messages',
+        ],
+        'features' => [
+            'Invisible honeypot field',
+            'Minimum fill time',
+            'Link, keyword and capital letter checks',
+            'Rate limit per browser',
+            'Score based decision: send, review or block',
+        ],
+        'steps' => [
+            [
+                'A trap only bots see',
+                'The website field is moved far off screen and hidden from screen readers. People never fill it in, but many bots fill every field.',
+            ],
+            [
+                'Humans are not instant',
+                'Real people need several seconds to type a name, email and message. Forms sent faster than four seconds are suspicious.',
+            ],
+            [
+                'Score, do not just block',
+                'Each failed check adds points. High scores are blocked, middle scores are sent but marked for review, so real people are rarely lost.',
+            ],
+        ],
+        'code' => '<div style="position:absolute;left:-10000px" aria-hidden="true">
+  <input name="website" tabindex="-1" autocomplete="off">
+</div>
+
+const started = Date.now();
+form.onsubmit = (e) => {
+  let score = 0;
+  if (form.website.value) score += 60;                 // honeypot filled
+  if (Date.now() - started < 4000) score += 40;        // too fast
+  if ((msg.match(/https?:\\/\\//g) || []).length > 2) score += 30;
+  if (score >= 50) { e.preventDefault(); /* drop silently */ }
+};',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Is this enough to stop all spam?',
+                'It stops most simple bots. Repeat the same checks on your server, because bots can skip your JavaScript completely.',
+            ],
+            [
+                'Is the honeypot a problem for screen readers?',
+                'No. It is hidden with aria-hidden and taken out of the tab order, so assistive technology ignores it.',
+            ],
+            [
+                'Why not just use a captcha?',
+                'Captchas annoy real people and lower form completion. Try these quiet checks first and add a captcha only if spam continues.',
+            ],
+        ],
+    ],
+    [
+        'num' => 99,
+        'cat' => '12-seo-site-tools',
+        'slug' => '099-privacy-analytics-lite',
+        'name' => 'Privacy Analytics Lite',
+        'example' => 'a cookie free visit counter with a small dashboard of pages, sources and devices',
+        'title' => 'Privacy Friendly Analytics in JavaScript: Cookie Free Page Views and a Mini Dashboard',
+        'desc' => 'Free privacy friendly analytics in plain JavaScript. Count page views without cookies or personal data, respect Do Not Track and Global Privacy Control, and see pages, sources and devices on a small dashboard.',
+        'keywords' => 'privacy friendly analytics, cookie free analytics, simple web analytics, sendbeacon javascript, gdpr analytics, page view counter',
+        'runs' => 'navigator.sendBeacon and sessionStorage',
+        'what' => [
+            'A tiny, privacy friendly analytics system with a dashboard. Click pretend pages to record views, or add 200 simulated visits, and see views per day, top pages, sources and devices.',
+            'It uses no cookies and no personal data, skips visitors who send Do Not Track or Global Privacy Control, and shows the exact event that would be sent to your server.',
+        ],
+        'when' => [
+            'Small sites that want simple stats',
+            'Sites that want to avoid a cookie banner for analytics',
+            'Internal tools and prototypes',
+            'Learning how analytics works',
+        ],
+        'features' => [
+            'Page views, visits and views per visit',
+            '14 day bar chart',
+            'Top pages and sources',
+            'Device split',
+            'No cookies, respects Do Not Track and GPC',
+        ],
+        'steps' => [
+            [
+                'Count, do not identify',
+                'Each event holds only the page, where the visit came from, the device type and a random session id that lives until the tab closes. No cookies, no IP address.',
+            ],
+            [
+                'Respect the signal',
+                'If the browser sends Do Not Track or Global Privacy Control, the page view is simply not counted.',
+            ],
+            [
+                'Send without slowing the page',
+                'navigator.sendBeacon posts the event in the background, even while the page is closing, so it never delays navigation.',
+            ],
+        ],
+        'code' => 'if (navigator.doNotTrack !== "1" && !navigator.globalPrivacyControl) {
+  let session = sessionStorage.getItem("s");
+  if (!session) sessionStorage.setItem("s", session = crypto.randomUUID());
+  navigator.sendBeacon("/api/hit", JSON.stringify({
+    path: location.pathname,
+    referrer: document.referrer ? new URL(document.referrer).hostname : "Direct",
+    device: innerWidth < 600 ? "Phone" : "Desktop",
+    session
+  }));
+}',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Do I need a cookie banner for this?',
+                'This design stores nothing on the device beyond a tab session id and collects no personal data. Check your local rules, but many sites can use this style of analytics without consent.',
+            ],
+            [
+                'Where does the data go?',
+                'In the demo it stays in your browser. In a real site, sendBeacon posts it to a small endpoint that adds one row to a database.',
+            ],
+            [
+                'Why use sendBeacon?',
+                'It sends data in the background and keeps working while the page closes, so exits are still counted.',
+            ],
+        ],
+    ],
+    [
+        'num' => 100,
+        'cat' => '12-seo-site-tools',
+        'slug' => '100-page-seo-audit',
+        'name' => 'Page SEO Audit',
+        'example' => 'an on-page SEO checker that scores a page and lists what to fix',
+        'title' => 'On-page SEO Checker in JavaScript: Audit Titles, Headings, Images, Links and Schema',
+        'desc' => 'Free on-page SEO audit in plain JavaScript. Paste a page\'s HTML to check the title, description, headings, image alt text, links, canonical, Open Graph, schema and more, with a score and fixes.',
+        'keywords' => 'seo audit tool, on page seo checker, seo analyzer javascript, check meta tags, seo score, website seo checker',
+        'runs' => 'DOMParser',
+        'what' => [
+            'An on-page SEO checker. Paste any page source, or use the sample bakery page, and get a score out of 100 with passed checks, things to improve and failures.',
+            'It checks the title, description, headings, image alt text and sizes, language, mobile viewport, canonical, social tags, structured data, word count, links and noindex, with a short fix for each problem.',
+        ],
+        'when' => [
+            'Before publishing a page',
+            'Reviewing client sites',
+            'Checking pages that do not rank',
+            'Teaching on-page SEO',
+        ],
+        'features' => [
+            '16 on-page checks',
+            'Score ring with pass, improve and fail counts',
+            'Plain reasons and code snippets for fixes',
+            'Paste any HTML or audit the demo page itself',
+            'Nothing is uploaded',
+        ],
+        'steps' => [
+            [
+                'Parse without loading',
+                'DOMParser turns the pasted HTML into a document you can query, without running its scripts or loading its images.',
+            ],
+            [
+                'Sixteen quick rules',
+                'Title and description length, one h1 and heading order, alt text and image sizes, language, viewport, canonical, Open Graph, schema, word count, links and noindex.',
+            ],
+            [
+                'Score and sort',
+                'Passes count fully, warnings half. Failed checks come first, each with a short reason and, where useful, the code to add.',
+            ],
+        ],
+        'code' => 'const doc = new DOMParser().parseFromString(html, "text/html");
+const checks = [];
+const title = doc.querySelector("title")?.textContent.trim() || "";
+checks.push(title.length >= 30 && title.length <= 60 ? "pass" : "warn");
+checks.push(doc.querySelectorAll("h1").length === 1 ? "pass" : "fail");
+checks.push(doc.querySelectorAll("img:not([alt])").length ? "fail" : "pass");
+checks.push(doc.querySelector(\'link[rel="canonical"]\') ? "pass" : "warn");
+const score = checks.reduce((a, c) => a + (c === "pass" ? 1 : c === "warn" ? 0.5 : 0), 0) / checks.length * 100;',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Can it check a live URL?',
+                'Browsers block reading other sites directly. Open the page, view its source, and paste it here. A server version could fetch URLs for you.',
+            ],
+            [
+                'Does a score of 100 mean I will rank first?',
+                'No. These checks cover the basics on the page. Content quality, links and speed matter a lot too.',
+            ],
+            [
+                'Why is word count a warning, not a failure?',
+                'Some pages, like contact pages, are short on purpose. Thin content only matters on pages you want to rank.',
             ],
         ],
     ],

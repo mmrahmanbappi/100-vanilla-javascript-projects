@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meta Tag Generator Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Free meta tag generator in plain JavaScript. Write your title and description with live length checks, see a search result and social card preview, and copy the finished meta tags.">
+<meta name="keywords" content="meta tag generator, seo meta tags, open graph generator, twitter card tags, meta description length, search result preview">
+<meta property="og:title" content="Meta Tag Generator in JavaScript: SEO Title, Description, Open Graph and Twitter Previews">
+<meta property="og:description" content="Free meta tag generator in plain JavaScript. Write your title and description with live length checks, see a search result and social card preview, and copy the finished meta tags.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/091-meta-tag-generator/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/12-seo-site-tools/091-meta-tag-generator/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2563EB">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563EB'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Meta Tag Generator", "description": "Free meta tag generator in plain JavaScript. Write your title and description with live length checks, see a search result and social card preview, and copy the finished meta tags.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "meta tag generator, seo meta tags, open graph generator, twitter card tags, meta description length, search result preview"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* mobile header fix */
+.how>*{min-width:0}.how pre{overflow-x:auto;max-width:100%}
+
+@media (max-width:560px){.topbar{flex-wrap:wrap;gap:8px}.topbar nav{display:flex;flex-wrap:wrap;gap:6px 12px}.topbar nav span{display:none}.topbar nav a{margin-left:0}}
+.strip dd{overflow-wrap:anywhere}
+
+:root{--accent:#2563EB}
+.mt{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}.mt>*{min-width:0}.mf{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px}.mf textarea{min-height:80px;width:100%}
+.len{display:flex;align-items:center;gap:8px;font-size:13px;margin:-6px 0 10px}.len .b{flex:1;height:6px;background:var(--line);border-radius:6px;overflow:hidden}.len .b i{display:block;height:100%;transition:width .2s}.len.ok i{background:var(--ok)}.len.warn i{background:var(--warn)}.len.bad i{background:var(--err)}.len span{min-width:130px;text-align:right;color:var(--muted)}
+.serp{background:#fff;color:#202124;border:1px solid var(--line);border-radius:14px;padding:16px;font-family:Arial,sans-serif}.serp .u{font-size:13px;color:#4d5156;display:flex;gap:8px;align-items:center}.serp .u i{width:26px;height:26px;border-radius:50%;background:#e8eaed;display:grid;place-items:center;font-style:normal;font-size:12px}.serp .t{font-size:20px;color:#1a0dab;margin:6px 0 4px;line-height:1.3}.serp .d{font-size:14px;color:#4d5156;line-height:1.55}
+.card5{margin-top:14px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}.card5 .im{aspect-ratio:1.91/1;background:var(--sunk) center/cover;display:grid;place-items:center;color:var(--muted);font-size:14px}.card5 .tx{padding:10px 14px}.card5 small{color:var(--muted);text-transform:uppercase;font-size:12px}.card5 b{display:block;margin:2px 0}.card5 p{margin:0;font-size:14px;color:var(--muted)}
+.out{margin-top:14px}.out pre{max-height:260px;overflow:auto;font-size:13px;background:var(--ink);color:#d7f5e8;border-radius:12px;padding:14px;margin:0 0 10px;white-space:pre-wrap;word-break:break-all}
+@media (max-width:820px){.mt{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../">Vanilla JavaScript Projects</a>
+  <nav><span>Project 91 of 100</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 91, SEO and site tools</p>
+    <h1>Meta Tag Generator</h1>
+    <p class="lede">Write the tags that decide how your page looks in search results and when it is shared. The previews update as you type, so you can see what people will see.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A search result preview above code tags"><rect x="20" y="30" width="280" height="96" rx="12" fill="var(--panel)" stroke="var(--ink)" stroke-width="4"/><rect x="36" y="46" width="120" height="8" rx="4" fill="var(--line)"/><rect x="36" y="64" width="220" height="14" rx="4" fill="var(--accent)"/><g fill="var(--line)"><rect x="36" y="88" width="240" height="8" rx="4"/><rect x="36" y="104" width="190" height="8" rx="4"/></g><rect x="20" y="140" width="280" height="96" rx="12" fill="var(--ink)"/><g font-family="var(--code)" font-size="13" fill="#9fd"><text x="36" y="168">&lt;title&gt;...&lt;/title&gt;</text><text x="36" y="192">&lt;meta name="description"</text><text x="36" y="216">&lt;meta property="og:..."</text></g></svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>Canvas measureText</dd></div><div><dt>Output</dt><dd>HTML meta tags</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <h2 id="w-title">Write your tags</h2>
+  <p class="sub">Fill in the fields. Watch the length bars, the search preview and the share card. Copy the tags when they look right.</p>
+  <div class="mt"><form class="mf" id="mf"><label class="field">Page title<input id="t" value="Handmade Oak Furniture for Small Homes | Nookery"></label><div class="len" id="lt"><div class="b"><i></i></div><span></span></div>
+<label class="field">Meta description<textarea id="d">Solid oak chairs, tables and shelves that fold, stack and fit small flats. Made in Sheffield, delivered free in 5 days, with a 10 year guarantee.</textarea></label><div class="len" id="ld"><div class="b"><i></i></div><span></span></div>
+<label class="field">Page URL<input id="u" type="url" value="https://nookery.example/chairs/oak-fold-chair"></label><label class="field">Share image URL<input id="i" type="url" value="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=70&auto=format&fit=crop"></label>
+<label class="field">Site name<input id="s" value="Nookery"></label><label class="field">Type<select id="ty"><option>website</option><option selected>product</option><option>article</option></select></label><label class="field"><span><input type="checkbox" id="noi"> Hide this page from search engines (noindex)</span></label></form>
+<div><div class="serp" aria-label="Search result preview"><div class="u"><i id="fav">N</i><span><b id="ps"></b><br><span id="pu"></span></span></div><div class="t" id="pt"></div><div class="d" id="pd"></div></div>
+<div class="card5" aria-label="Social share preview"><div class="im" id="pi"></div><div class="tx"><small id="pdom"></small><b id="ptt"></b><p id="pdd"></p></div></div>
+<div class="out"><pre id="code"></pre><button class="btn primary" type="button" id="cp">Copy tags</button></div></div></div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Measure in pixels</strong><span>Search engines cut titles by width, not letters. Canvas measureText measures the text in the same font size to warn you before it gets cut.</span></li><li><strong>Preview both places</strong><span>The search result and the share card update as you type, using the same truncation rules.</span></li><li><strong>Write clean tags</strong><span>Values are escaped for HTML, the image tag only appears when there is an image, and the robots tag follows your noindex choice.</span></li></ol></div>
+  <pre><code><span class="k">const</span> ctx = document.createElement(&quot;canvas&quot;).getContext(&quot;2d&quot;);
+ctx.font = &quot;20px Arial&quot;;
+<span class="k">const</span> tooLong = ctx.measureText(title).width &gt; 580;   <span class="c">// about where results cut off</span>
+
+<span class="k">const</span> tags = `
+&lt;title&gt;${title}&lt;/title&gt;
+&lt;meta name=&quot;description&quot; content=&quot;${description}&quot;&gt;
+&lt;meta property=&quot;og:title&quot; content=&quot;${title}&quot;&gt;
+&lt;meta property=&quot;og:image&quot; content=&quot;${image}&quot;&gt;
+&lt;meta name=&quot;twitter:card&quot; content=&quot;summary_large_image&quot;&gt;`;</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Meta Tag Generator. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/12-seo-site-tools/091-meta-tag-generator">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+(() => {
+support(true, "Canvas text measuring available");
+const cv = document.createElement("canvas").getContext("2d");
+const px = (s, f) => { cv.font = f; return cv.measureText(s).width; };
+function trunc(s, maxPx, f) { if (px(s, f) <= maxPx) return s; while (s && px(s + " ...", f) > maxPx) s = s.slice(0, -1); return s.trimEnd() + " ..."; }
+function bar(el, n, w, maxW, lo) { const pct = Math.min(1, w / maxW), st = w > maxW ? "bad" : n < lo ? "warn" : "ok"; el.className = "len " + st; el.querySelector("i").style.width = pct * 100 + "%"; el.querySelector("span").textContent = `${n} chars, ${st === "bad" ? "will be cut off" : st === "warn" ? "a bit short" : "good length"}`; }
+const q = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+function draw() { const t = $("#t").value, d = $("#d").value, u = $("#u").value, i = $("#i").value, s = $("#s").value, ty = $("#ty").value;
+  const tw = px(t, "20px Arial"), dw = px(d, "14px Arial"); bar($("#lt"), t.length, tw, 580, 30); bar($("#ld"), d.length, dw, 920, 70);
+  let host = "", path = ""; try { const x = new URL(u); host = x.hostname; path = x.pathname.split("/").filter(Boolean).join(" › "); } catch { host = "example.com"; }
+  $("#ps").textContent = s || host; $("#pu").textContent = host + (path ? " › " + path : ""); $("#fav").textContent = (s || host)[0]?.toUpperCase() || "?"; $("#pt").textContent = trunc(t || "Page title", 580, "20px Arial"); $("#pd").textContent = trunc(d || "Add a description.", 920, "14px Arial");
+  $("#pi").style.backgroundImage = i ? `url("${i.replace(/"/g, "")}")` : ""; $("#pi").textContent = i ? "" : "No share image"; $("#pdom").textContent = host; $("#ptt").textContent = t; $("#pdd").textContent = trunc(d, 520, "14px Arial");
+  const tags = [`<title>${q(t)}</title>`, `<meta name="description" content="${q(d)}">`, `<link rel="canonical" href="${q(u)}">`, `<meta name="robots" content="${$("#noi").checked ? "noindex, nofollow" : "index, follow, max-image-preview:large"}">`, "", `<meta property="og:type" content="${ty}">`, `<meta property="og:site_name" content="${q(s)}">`, `<meta property="og:title" content="${q(t)}">`, `<meta property="og:description" content="${q(d)}">`, `<meta property="og:url" content="${q(u)}">`, i ? `<meta property="og:image" content="${q(i)}">` : "", "", `<meta name="twitter:card" content="${i ? "summary_large_image" : "summary"}">`, `<meta name="twitter:title" content="${q(t)}">`, `<meta name="twitter:description" content="${q(d)}">`, i ? `<meta name="twitter:image" content="${q(i)}">` : ""].filter((x, k, a) => x !== "" || a[k - 1] !== "");
+  $("#code").textContent = tags.join("\n"); }
+$("#mf").addEventListener("input", draw); $("#cp").onclick = () => copyText($("#code").textContent); draw();
+})();
+</script>
+</body>
+</html>
