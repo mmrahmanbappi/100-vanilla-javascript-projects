@@ -92,6 +92,16 @@ $CATEGORIES = [
         'keywords' => 'javascript website components, image slider javascript, mega menu, lightbox gallery, pricing table, cookie consent banner, vanilla js ui',
         'intro' => 'These are the parts almost every website needs: a menu that works on phones, a photo slider, a lightbox, pricing, reviews and a cookie banner. Each one is a single HTML file with no library, so you can copy it into any site. They work with a mouse, a keyboard and a thumb, and they respect people who prefer less motion.',
     ],
+    [
+        'num' => 9,
+        'slug' => '09-forms-input',
+        'name' => 'Forms and Input',
+        'ready' => true,
+        'title' => 'Free JavaScript Form Components: Multi-step Form, File Upload, Date Picker, OTP',
+        'desc' => '10 free form components in plain JavaScript with live demos: multi-step form, file upload, date range picker, autocomplete, OTP input, phone input and more.',
+        'keywords' => 'javascript form components, multi step form, file upload dropzone, date range picker, autocomplete search, otp input, signature pad',
+        'intro' => 'Forms are where visitors become customers, and small details decide whether they finish. These ten projects cover the fields websites need most: step by step sign up, file uploads, date ranges, search suggestions, verification codes, phone numbers, reviews, signatures and a small text editor. Each is one HTML file, works with a keyboard and checks input before it reaches your server.',
+    ],
 ];
 
 $PROJECTS = [
@@ -4192,6 +4202,680 @@ mq.addEventListener("change", () => apply(localStorage.getItem("theme") || "syst
             [
                 'Do I need two stylesheets?',
                 'No. Use CSS variables and change their values for the dark theme.',
+            ],
+        ],
+    ],
+    [
+        'num' => 61,
+        'cat' => '09-forms-input',
+        'slug' => '061-multi-step-form-wizard',
+        'name' => 'Multi-step Form Wizard',
+        'example' => 'a sign up form split into steps with checks, a progress bar and a saved draft',
+        'title' => 'Multi-step Form in Vanilla JavaScript: Wizard with Validation, Progress Bar and Saved Draft',
+        'desc' => 'Free multi-step form in plain JavaScript. Split a long form into steps, check each step before moving on, show progress, save a draft and review everything before sending.',
+        'keywords' => 'multi step form javascript, form wizard, step by step form, form validation, progress bar form, save form draft',
+        'runs' => 'Constraint Validation API',
+        'what' => [
+            'A long sign up form split into four short steps: personal details, address, plan and a final review. You cannot move on until the current step is filled in correctly.',
+            'Your answers are saved as you type, so closing the tab or reloading keeps your progress. The last step shows everything before you send it.',
+        ],
+        'when' => [
+            'Sign up and onboarding flows',
+            'Checkout and booking forms',
+            'Job and school applications',
+            'Quote and survey forms',
+        ],
+        'features' => [
+            'Four steps with a numbered progress bar',
+            'Built in browser validation per step',
+            'Clear error message and focus on the first problem',
+            'Draft saved and restored automatically',
+            'Review step before sending',
+        ],
+        'steps' => [
+            [
+                'Use the browser checks',
+                'required, type="email" and pattern do the checking. checkValidity() on each field of the current step decides if you can move on.',
+            ],
+            [
+                'Show one step at a time',
+                'Every step is a fieldset. Only the current one is visible, and the progress bar follows the step number.',
+            ],
+            [
+                'Save as you type',
+                'FormData turns the form into an object that is saved to localStorage on every change and restored on reload.',
+            ],
+        ],
+        'code' => 'next.onclick = () => {
+  const fields = [...steps[current].querySelectorAll("input, select")];
+  const bad = fields.find((f) => !f.checkValidity());
+  if (bad) { error.textContent = bad.validationMessage; bad.focus(); return; }
+  current++;
+  localStorage.setItem("draft", JSON.stringify(Object.fromEntries(new FormData(form))));
+  show(current);
+};',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Why split a form into steps?',
+                'People are more likely to finish a form when each part looks short and they can see how far they have come.',
+            ],
+            [
+                'Do I still need server side checks?',
+                'Yes. Browser checks help people fill the form in, but always check the data again on your server.',
+            ],
+            [
+                'Where is the draft stored?',
+                'In localStorage on the visitor\'s own device. It is removed after the form is sent.',
+            ],
+        ],
+    ],
+    [
+        'num' => 62,
+        'cat' => '09-forms-input',
+        'slug' => '062-file-upload-dropzone',
+        'name' => 'File Upload Dropzone',
+        'example' => 'a drag and drop uploader with previews, size limits and progress bars',
+        'title' => 'Drag and Drop File Upload in JavaScript: Previews, Progress Bars and Size Limits',
+        'desc' => 'Free file upload dropzone in plain JavaScript. Drag files in or pick them, see image previews, reject wrong types and big files, watch progress bars and remove files.',
+        'keywords' => 'drag and drop file upload javascript, file uploader, image upload preview, upload progress bar, dropzone without library, multiple file upload',
+        'runs' => 'File API and drag and drop events',
+        'what' => [
+            'A drag and drop upload box. Drop images or PDFs in, click to choose, or paste an image from the clipboard, and see each file listed with a preview.',
+            'Files that are too big or the wrong type are refused with a clear reason. Press Upload to see progress bars for each file.',
+        ],
+        'when' => [
+            'Contact forms with attachments',
+            'Job applications with a CV',
+            'Profile and product photo uploads',
+            'Support tickets with screenshots',
+        ],
+        'features' => [
+            'Drag and drop, click and paste',
+            'Instant image previews',
+            'Type and size checks with clear messages',
+            'Per file progress bars',
+            'Remove single files or clear all',
+        ],
+        'steps' => [
+            [
+                'Accept files three ways',
+                'Click opens the file picker, dropping uses the drop event, and pasting reads clipboard files. All three go to one add function.',
+            ],
+            [
+                'Check before upload',
+                'Each file is checked for type and size right away, so people see the problem before they wait for anything.',
+            ],
+            [
+                'Preview without uploading',
+                'URL.createObjectURL shows a local image preview instantly. The URL is revoked when the file is removed.',
+            ],
+        ],
+        'code' => 'zone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  for (const file of e.dataTransfer.files) {
+    if (!["image/png", "image/jpeg", "application/pdf"].includes(file.type)) continue;
+    if (file.size > 5 * 1024 * 1024) continue;           // 5 MB limit
+    const img = new Image();
+    img.src = URL.createObjectURL(file);                  // instant preview
+    list.append(img);
+  }
+});
+// real upload: fetch("/upload", { method: "POST", body: formData })',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Does this upload to a server?',
+                'The demo simulates the upload. To send files for real, add them to a FormData object and post it with fetch.',
+            ],
+            [
+                'Can I show real upload progress?',
+                'Yes. fetch does not report upload progress yet, so use XMLHttpRequest and its upload.onprogress event.',
+            ],
+            [
+                'Is the accept attribute enough?',
+                'No. It only filters the picker. Always check type and size in JavaScript and again on the server.',
+            ],
+        ],
+    ],
+    [
+        'num' => 63,
+        'cat' => '09-forms-input',
+        'slug' => '063-date-range-picker',
+        'name' => 'Date Range Picker',
+        'example' => 'a two month calendar for picking check in and check out dates',
+        'title' => 'Date Range Picker in Vanilla JavaScript: Two Month Calendar with Blocked Dates',
+        'desc' => 'Free date range picker in plain JavaScript. Two month calendar, blocked dates, minimum nights, hover preview, quick presets and keyboard navigation. No library.',
+        'keywords' => 'date range picker javascript, booking calendar, check in check out picker, calendar without library, vanilla js datepicker, blocked dates calendar',
+        'runs' => 'Date and Intl.DateTimeFormat',
+        'what' => [
+            'A booking style calendar showing two months side by side. Click a check in date and a check out date, and the range and number of nights appear.',
+            'Taken and past dates are crossed out, a range cannot include a taken night, and there is a two night minimum. Presets pick a weekend or a week in one click.',
+        ],
+        'when' => [
+            'Hotel and holiday rental booking',
+            'Car and equipment hire',
+            'Leave and holiday requests',
+            'Report and analytics date filters',
+        ],
+        'features' => [
+            'Two month view with previous and next',
+            'Blocked and past dates',
+            'Hover preview of the range',
+            'Minimum stay check',
+            'Keyboard navigation with arrow keys',
+        ],
+        'steps' => [
+            [
+                'Build the grid from dates',
+                'For each month the script works out which weekday the 1st falls on, adds empty cells, then one button per day.',
+            ],
+            [
+                'Two clicks make a range',
+                'The first click sets check in. The second sets check out if it is later, long enough and has no taken nights in between.',
+            ],
+            [
+                'Keyboard as a grid',
+                'Only one day is in the Tab order. Arrow keys move a day or a week, and the calendar moves to the next month when needed.',
+            ],
+        ],
+        'code' => 'function monthGrid(year, month) {
+  const firstWeekday = (new Date(year, month, 1).getDay() + 6) % 7; // Monday first
+  const days = new Date(year, month + 1, 0).getDate();              // days in month
+  const cells = Array(firstWeekday).fill(null);
+  for (let d = 1; d <= days; d++) cells.push(new Date(year, month, d));
+  return cells;
+}
+const nights = Math.round((checkOut - checkIn) / 86400000);',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Why not use input type date?',
+                'The native picker selects one date and cannot show taken dates or a range, which booking sites need.',
+            ],
+            [
+                'How do I load real taken dates?',
+                'Fetch them from your booking system and add each date to the blocked set before drawing.',
+            ],
+            [
+                'Does it handle time zones?',
+                'Dates are treated as local calendar days, which is what guests expect for check in and check out.',
+            ],
+        ],
+    ],
+    [
+        'num' => 64,
+        'cat' => '09-forms-input',
+        'slug' => '064-autocomplete-search',
+        'name' => 'Autocomplete Search',
+        'example' => 'a search box that suggests results as you type, with keyboard control',
+        'title' => 'Autocomplete Search in Vanilla JavaScript: Accessible Combobox with Fuzzy Matching',
+        'desc' => 'Free autocomplete search in plain JavaScript. Suggestions as you type with fuzzy matching, highlighted matches, arrow keys, Enter and Escape, recent searches and ARIA combobox.',
+        'keywords' => 'autocomplete javascript, search suggestions, typeahead, accessible combobox, fuzzy search javascript, vanilla js autocomplete',
+        'runs' => 'ARIA combobox and debounced input',
+        'what' => [
+            'A search box that suggests cities as you type. It matches the start of words first, then anywhere in the name, and forgives a missing letter.',
+            'Everything works with the keyboard, matching letters are highlighted, and your last five picks show as recent searches when the box is empty.',
+        ],
+        'when' => [
+            'Site search boxes',
+            'Picking a city, country or product',
+            'Tagging and mentions',
+            'Admin panels with long lists',
+        ],
+        'features' => [
+            'Suggestions as you type with a short debounce',
+            'Fuzzy matching that forgives small typos',
+            'Highlighted matching text',
+            'Arrow keys, Enter and Escape',
+            'Recent searches saved in the browser',
+        ],
+        'steps' => [
+            [
+                'Score every item',
+                'A starts-with match scores highest, then contains, then a loose letter-by-letter match that allows a small gap, so dhka still finds Dhaka.',
+            ],
+            [
+                'Combobox roles',
+                'The input has role combobox and points to the listbox. aria-activedescendant tells screen readers which option is highlighted while focus stays in the box.',
+            ],
+            [
+                'Wait a moment',
+                'A short debounce means the list only updates after a pause in typing, which matters when results come from a server.',
+            ],
+        ],
+        'code' => 'input.addEventListener("input", () => {
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    const q = input.value.trim().toLowerCase();
+    const results = data
+      .map((item) => [item, score(q, item.name)])
+      .filter(([, s]) => s > 0)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8);
+    render(results);
+  }, 120);
+});
+input.setAttribute("aria-activedescendant", "option-" + active);',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'How do I search a server instead?',
+                'Replace the local filter with a fetch to your search endpoint inside the debounced function, and cancel older requests with AbortController.',
+            ],
+            [
+                'What is aria-activedescendant?',
+                'It lets focus stay in the input while telling screen readers which suggestion is currently highlighted.',
+            ],
+            [
+                'How many suggestions should I show?',
+                'Between five and ten. More than that is hard to scan.',
+            ],
+        ],
+    ],
+    [
+        'num' => 65,
+        'cat' => '09-forms-input',
+        'slug' => '065-otp-code-input',
+        'name' => 'OTP Code Input',
+        'example' => 'a six box verification code input with paste, auto advance and a resend timer',
+        'title' => 'OTP Input in JavaScript: 6 Digit Verification Code Boxes with Paste and Resend Timer',
+        'desc' => 'Free OTP code input in plain JavaScript. Six boxes that move forward as you type, back on Backspace, accept a pasted code, fill from SMS autofill and show a resend timer.',
+        'keywords' => 'otp input javascript, verification code input, 6 digit code boxes, one time code autofill, 2fa code input, pin input',
+        'runs' => 'input events and autocomplete one-time-code',
+        'what' => [
+            'Six boxes for a verification code. Focus jumps forward as you type and back when you press Backspace, and a pasted code fills every box at once.',
+            'On phones the first box accepts SMS autofill. Wrong codes shake with a message and a count of tries left, and the resend link becomes active after 30 seconds.',
+        ],
+        'when' => [
+            'Two step sign in',
+            'Phone number and email checks',
+            'Payment confirmations',
+            'Password reset flows',
+        ],
+        'features' => [
+            'Auto advance and smart Backspace',
+            'Paste a whole code into any box',
+            'SMS autofill with one-time-code',
+            'Three tries then lock',
+            'Resend timer',
+        ],
+        'steps' => [
+            [
+                'One digit per box',
+                'Each box takes one digit and moves focus to the next. Backspace on an empty box goes back and clears the previous digit.',
+            ],
+            [
+                'Paste and autofill',
+                'Pasting or autofill can drop the whole code into one box. The script spreads the digits across all six.',
+            ],
+            [
+                'Limit tries and wait',
+                'Three wrong tries lock the boxes, and the resend link waits 30 seconds, like real sign in flows.',
+            ],
+        ],
+        'code' => 'inputs.forEach((box, i) => {
+  box.addEventListener("input", () => {
+    const digits = box.value.replace(/\\D/g, "");
+    if (digits.length > 1) return spread(digits, i);   // pasted or autofilled
+    box.value = digits;
+    if (digits && i < inputs.length - 1) inputs[i + 1].focus();
+  });
+  box.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace" && !box.value && i > 0) inputs[i - 1].focus();
+  });
+});
+// first box: <input autocomplete="one-time-code" inputmode="numeric">',
+        'browsers' => 'Works in all modern browsers. SMS code reading via WebOTP works in Chrome on Android.',
+        'faq' => [
+            [
+                'Why six separate inputs?',
+                'They make the length clear and each digit easy to check. The script makes them behave like one field.',
+            ],
+            [
+                'How does SMS autofill work?',
+                'autocomplete="one-time-code" lets phones offer the code from a new message above the keyboard.',
+            ],
+            [
+                'Should I check the code in JavaScript?',
+                'Only for the demo. Real codes must be checked on your server.',
+            ],
+        ],
+    ],
+    [
+        'num' => 66,
+        'cat' => '09-forms-input',
+        'slug' => '066-password-strength-meter',
+        'name' => 'Password Strength Meter',
+        'example' => 'a password box that rates strength, estimates crack time and suggests a strong password',
+        'title' => 'Password Strength Meter in JavaScript: Live Checklist, Crack Time and Generator',
+        'desc' => 'Free password strength meter in plain JavaScript. Live score, checklist, common password check, estimated crack time, show and hide button and a secure password generator.',
+        'keywords' => 'password strength meter javascript, password checker, password generator, password validation, crack time estimate, show hide password',
+        'runs' => 'crypto.getRandomValues',
+        'what' => [
+            'A password field with a four part strength meter, a live checklist and a plain English tip about what would make it stronger.',
+            'It spots common passwords even with swapped letters like p@ssw0rd, estimates how long an offline attack would take and can suggest a random password or a four word passphrase.',
+        ],
+        'when' => [
+            'Sign up and change password forms',
+            'Admin and staff account setup',
+            'Password managers and vaults',
+            'Security awareness training',
+        ],
+        'features' => [
+            'Four level strength meter',
+            'Live checklist of rules',
+            'Common password and pattern detection',
+            'Estimated crack time',
+            'Secure generator with a word option',
+        ],
+        'steps' => [
+            [
+                'Check the basics',
+                'Simple tests look for length, lower and upper case letters, numbers and symbols, and tick the checklist live.',
+            ],
+            [
+                'Estimate real strength',
+                'Length times the size of the character pool gives bits of entropy. Repeats, sequences, years and common words lower the score.',
+            ],
+            [
+                'Generate safely',
+                'The generator uses crypto.getRandomValues, not Math.random, so suggested passwords are truly unpredictable.',
+            ],
+        ],
+        'code' => 'function entropy(p) {
+  const pool = (/[a-z]/.test(p) ? 26 : 0) + (/[A-Z]/.test(p) ? 26 : 0)
+             + (/\\d/.test(p) ? 10 : 0) + (/[^A-Za-z0-9]/.test(p) ? 32 : 0);
+  return p.length * Math.log2(pool || 1);      // bits
+}
+function randomIndex(n) {
+  const a = new Uint32Array(1);
+  crypto.getRandomValues(a);                    // secure, unlike Math.random
+  return a[0] % n;
+}',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Is the password sent anywhere?',
+                'No. All checks run in your browser and nothing is stored.',
+            ],
+            [
+                'Why do long passwords score so well?',
+                'Each extra character multiplies the number of guesses needed. Length matters more than symbols.',
+            ],
+            [
+                'Should I block weak passwords?',
+                'It is a good idea to block the very weak level and common passwords, and allow the rest with a warning.',
+            ],
+        ],
+    ],
+    [
+        'num' => 67,
+        'cat' => '09-forms-input',
+        'slug' => '067-phone-input-country-codes',
+        'name' => 'Phone Input with Country Codes',
+        'example' => 'a phone number field with a searchable country list and automatic formatting',
+        'title' => 'International Phone Input in JavaScript: Country Codes, Formatting and Validation',
+        'desc' => 'Free international phone number input in plain JavaScript. Searchable country list with dial codes, formatting as you type, length checks and E.164 output for your server.',
+        'keywords' => 'phone number input javascript, country code dropdown, international phone input, phone formatting, e164 phone number, phone validation',
+        'runs' => 'Intl.DisplayNames',
+        'what' => [
+            'A phone field with a country picker. Choose a country from a searchable list or type a dial code, and the number is formatted the local way as you type.',
+            'The field tells you how many digits are missing, and shows the clean international version that you would send to your server or SMS service.',
+        ],
+        'when' => [
+            'Sign up and checkout forms',
+            'Delivery and booking contact details',
+            'SMS verification flows',
+            'International lead forms',
+        ],
+        'features' => [
+            'Searchable list of 28 countries with dial codes',
+            'Country names in the visitor\'s language',
+            'Formatting as you type with the cursor kept in place',
+            'Length check with helpful messages',
+            'E.164 output for servers',
+        ],
+        'steps' => [
+            [
+                'Country data in one list',
+                'Each country has an ISO code, dial code, a display mask and the expected number of digits. Names come from Intl.DisplayNames in the visitor\'s language.',
+            ],
+            [
+                'Format as you type',
+                'Only digits are kept, a leading 0 is dropped, and the mask adds spaces and brackets in the right places.',
+            ],
+            [
+                'Send one clean value',
+                'The server gets the number in E.164 format: a plus sign, the dial code and the digits, with no spaces.',
+            ],
+        ],
+        'code' => 'const names = new Intl.DisplayNames(["en"], { type: "region" });
+names.of("BD");                           // "Bangladesh"
+
+function format(digits, mask) {           // mask like "####-######"
+  let out = "", i = 0;
+  for (const ch of mask) {
+    if (i >= digits.length) break;
+    out += ch === "#" ? digits[i++] : ch;
+  }
+  return out;
+}
+const e164 = "+" + country.dial + digits; // "+8801712345678"',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'What is E.164?',
+                'The international phone format: a plus sign, country code and number with no spaces, like +447700900123. SMS services expect it.',
+            ],
+            [
+                'Why no flag emoji?',
+                'Flag emoji do not show on Windows, so the demo uses short country codes that look the same everywhere.',
+            ],
+            [
+                'Is a length check enough?',
+                'It catches most typos. For full checks, use a phone library on your server or verify the number with a code.',
+            ],
+        ],
+    ],
+    [
+        'num' => 68,
+        'cat' => '09-forms-input',
+        'slug' => '068-star-rating-review-form',
+        'name' => 'Star Rating and Review Form',
+        'example' => 'a review form with half star ratings, photos and a live rating summary',
+        'title' => 'Star Rating in JavaScript: Accessible Half Stars, Review Form and Rating Summary',
+        'desc' => 'Free star rating and review form in plain JavaScript. Half star ratings with radio buttons, hover preview, review text with a counter, photo previews and a live rating summary.',
+        'keywords' => 'star rating javascript, review form, half star rating, accessible rating, product reviews, rating summary bars',
+        'runs' => 'Radio inputs and FileReader',
+        'what' => [
+            'A product review form with half star ratings, a name, a comment with a character counter and up to four photos.',
+            'Next to it is a rating summary with the average score and a bar for each star level. Posting a review updates the summary and adds it to the top of the list.',
+        ],
+        'when' => [
+            'Product pages in online shops',
+            'Restaurant, hotel and service reviews',
+            'Course and app feedback',
+            'Internal quality surveys',
+        ],
+        'features' => [
+            'Half star rating built on radio inputs',
+            'Hover preview with word labels',
+            'Character counter and required checks',
+            'Photo previews before posting',
+            'Live average and star breakdown bars',
+        ],
+        'steps' => [
+            [
+                'Stars are radio buttons',
+                'Ten hidden radio inputs, one for each half star, make the rating work with a keyboard and screen readers for free.',
+            ],
+            [
+                'Paint on hover and change',
+                'Hovering previews a rating and the label changes to words like Great. Leaving restores the chosen value.',
+            ],
+            [
+                'Recalculate the summary',
+                'The average, star counts and bar widths are worked out again from the list every time a review is added.',
+            ],
+        ],
+        'code' => '<fieldset class="stars">
+  <legend>Your rating</legend>
+  <input type="radio" name="star" id="s1" value="0.5"><label for="s1">0.5 stars</label>
+  <!-- ... up to 5 -->
+</fieldset>
+
+stars.addEventListener("change", (e) => paint(+e.target.value));
+const avg = reviews.reduce((a, r) => a + r.stars, 0) / reviews.length;
+bar.style.width = (count / reviews.length) * 100 + "%";',
+        'browsers' => 'Works in all modern browsers.',
+        'faq' => [
+            [
+                'Why build stars from radio buttons?',
+                'Radio buttons already work with a keyboard and screen readers. The stars are just their labels styled.',
+            ],
+            [
+                'How do I save reviews?',
+                'Send the form data to your server with fetch. The demo keeps reviews in memory only.',
+            ],
+            [
+                'Should I show the average with decimals?',
+                'Show one decimal, like 4.3, and round the stars to the nearest half.',
+            ],
+        ],
+    ],
+    [
+        'num' => 69,
+        'cat' => '09-forms-input',
+        'slug' => '069-signature-pad',
+        'name' => 'Signature Pad',
+        'example' => 'a canvas where people sign with a finger, pen or mouse and save a PNG',
+        'title' => 'Signature Pad in JavaScript: Smooth Canvas Drawing, Undo, Trim and Save as PNG',
+        'desc' => 'Free signature pad in plain JavaScript. Sign with a finger, pen or mouse, smooth lines that respond to speed, undo, clear, trimmed PNG download and sharp on high resolution screens.',
+        'keywords' => 'signature pad javascript, canvas signature, draw signature online, e signature form, save signature png, touch signature',
+        'runs' => 'Canvas 2D and pointer events',
+        'what' => [
+            'A signature box that works with a finger, a stylus or a mouse. Lines are smooth and change thickness with speed and pen pressure, so signatures look natural.',
+            'You can pick an ink colour and pen size, undo strokes or clear. Saving trims the empty space and gives you a transparent PNG to download or send to your server.',
+        ],
+        'when' => [
+            'Delivery and service sign off',
+            'Contracts and consent forms',
+            'Visitor and staff check in',
+            'Waivers and permission slips',
+        ],
+        'features' => [
+            'Finger, stylus and mouse input',
+            'Speed and pressure sensitive lines',
+            'Ink colours and pen sizes',
+            'Undo and clear',
+            'Trimmed transparent PNG download',
+        ],
+        'steps' => [
+            [
+                'Sharp on every screen',
+                'The canvas is sized in real device pixels and scaled back, so lines stay crisp on phones and high resolution laptops.',
+            ],
+            [
+                'Smooth, ink-like lines',
+                'Points are joined with quadratic curves through their midpoints. Fast movement makes the line thinner, and pen pressure is used when available.',
+            ],
+            [
+                'Trim before saving',
+                'The script scans the pixels for the signature\'s edges and copies just that area, with a little padding, into a new PNG.',
+            ],
+        ],
+        'code' => 'canvas.addEventListener("pointermove", (e) => {
+  if (!drawing) return;
+  const p = point(e), last = pts.at(-1);
+  const speed = Math.hypot(p.x - last.x, p.y - last.y) / (p.t - last.t);
+  p.w = last.w * 0.6 + base * Math.max(0.45, 1.5 - speed * 0.6) * 0.4; // faster = thinner
+  const mid = { x: (last.x + p.x) / 2, y: (last.y + p.y) / 2 };
+  ctx.lineWidth = p.w;
+  ctx.quadraticCurveTo(last.x, last.y, mid.x, mid.y);
+  ctx.stroke();
+  pts.push(p);
+});',
+        'browsers' => 'Works in all modern browsers. Pressure works with pens that report it, such as Apple Pencil and Surface Pen.',
+        'faq' => [
+            [
+                'Is a drawn signature legally valid?',
+                'In many countries a drawn signature is accepted for everyday agreements. Check the rules for your country and use case.',
+            ],
+            [
+                'How do I send the signature to my server?',
+                'Use canvas.toBlob() and add the blob to a FormData object, then post it with fetch.',
+            ],
+            [
+                'Why does the page not scroll when I sign?',
+                'touch-action: none on the signing area stops the page from scrolling while you draw.',
+            ],
+        ],
+    ],
+    [
+        'num' => 70,
+        'cat' => '09-forms-input',
+        'slug' => '070-mini-rich-text-editor',
+        'name' => 'Mini Rich Text Editor',
+        'example' => 'a small editor with bold, headings, lists and links that exports clean HTML and Markdown',
+        'title' => 'Rich Text Editor in Vanilla JavaScript: Toolbar, Clean Paste, Autosave, HTML and Markdown',
+        'desc' => 'Free mini rich text editor in plain JavaScript. Bold, italic, headings, lists, quotes and links, keyboard shortcuts, clean paste, word count, autosave and HTML or Markdown export.',
+        'keywords' => 'rich text editor javascript, wysiwyg editor, contenteditable editor, markdown export, text editor without library, simple html editor',
+        'runs' => 'contenteditable and Selection API',
+        'what' => [
+            'A small rich text editor with a toolbar for bold, italic, underline, headings, quotes, lists and links, plus the usual keyboard shortcuts.',
+            'Text pasted from web pages or Word is cleaned to simple HTML. The editor saves as you type, counts words and exports clean HTML or Markdown.',
+        ],
+        'when' => [
+            'Comment and message boxes',
+            'Simple blog or news admin',
+            'Product descriptions in a shop admin',
+            'Notes and knowledge base tools',
+        ],
+        'features' => [
+            'Toolbar with active state',
+            'Headings, quotes, lists and safe links',
+            'Clean paste that strips styles and scripts',
+            'Word count, reading time and autosave',
+            'HTML and Markdown export',
+        ],
+        'steps' => [
+            [
+                'A div you can type in',
+                'contenteditable turns a normal div into an editor. The toolbar runs editing commands like bold and formatBlock on the current selection.',
+            ],
+            [
+                'Clean every paste',
+                'Pasted HTML is parsed with DOMParser, and only safe tags like p, b, a and lists are kept. Styles, classes and scripts are removed.',
+            ],
+            [
+                'Export two ways',
+                'The cleaned HTML is shown as is, and a small walker turns the same tree into Markdown.',
+            ],
+        ],
+        'code' => 'editor.addEventListener("paste", (e) => {
+  e.preventDefault();
+  const html = e.clipboardData.getData("text/html");
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  doc.querySelectorAll("*").forEach((el) => {
+    if (!ALLOWED.has(el.tagName)) el.replaceWith(...el.childNodes);
+    else [...el.attributes].forEach((a) => a.name !== "href" && el.removeAttribute(a.name));
+  });
+  document.execCommand("insertHTML", false, doc.body.innerHTML);
+});',
+        'browsers' => 'Works in all modern browsers. execCommand is marked as old in the specs but is still supported everywhere.',
+        'faq' => [
+            [
+                'Is execCommand safe to use?',
+                'It is still supported in every browser. For a very large editor you may want a dedicated library, but for simple formatting it works well.',
+            ],
+            [
+                'Can people paste harmful code?',
+                'Pasted content is cleaned to a short list of safe tags, and link addresses must start with http, https or mailto. Clean it again on your server.',
+            ],
+            [
+                'Where is the text saved?',
+                'In localStorage in your browser, half a second after you stop typing.',
             ],
         ],
     ],

@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Autocomplete Search Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Free autocomplete search in plain JavaScript. Suggestions as you type with fuzzy matching, highlighted matches, arrow keys, Enter and Escape, recent searches and ARIA combobox.">
+<meta name="keywords" content="autocomplete javascript, search suggestions, typeahead, accessible combobox, fuzzy search javascript, vanilla js autocomplete">
+<meta property="og:title" content="Autocomplete Search in Vanilla JavaScript: Accessible Combobox with Fuzzy Matching">
+<meta property="og:description" content="Free autocomplete search in plain JavaScript. Suggestions as you type with fuzzy matching, highlighted matches, arrow keys, Enter and Escape, recent searches and ARIA combobox.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/064-autocomplete-search/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/064-autocomplete-search/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4F46E5">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234F46E5'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Autocomplete Search", "description": "Free autocomplete search in plain JavaScript. Suggestions as you type with fuzzy matching, highlighted matches, arrow keys, Enter and Escape, recent searches and ARIA combobox.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "autocomplete javascript, search suggestions, typeahead, accessible combobox, fuzzy search javascript, vanilla js autocomplete"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* mobile header fix */
+@media (max-width:560px){.topbar{flex-wrap:wrap;gap:8px}.topbar nav{display:flex;flex-wrap:wrap;gap:6px 12px}.topbar nav span{display:none}.topbar nav a{margin-left:0}}
+.strip dd{overflow-wrap:anywhere}
+
+:root{--accent:#4F46E5}
+.ac{position:relative;max-width:560px}.ac input{width:100%;font:18px var(--body);padding:14px 16px 14px 46px;border:2px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink)}.ac svg.ic{position:absolute;left:16px;top:18px}
+.lb2{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(0,0,0,.12);list-style:none;margin:0;padding:6px;max-height:320px;overflow:auto;z-index:5}
+.lb2 li{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer}.lb2 li[aria-selected=true]{background:var(--sunk);outline:2px solid var(--accent)}.lb2 mark{background:transparent;color:var(--accent);font-weight:700}.lb2 small{color:var(--muted)}.lb2 .hd{font-size:12px;color:var(--muted);padding:6px 12px;cursor:default}
+.res2{margin-top:18px;min-height:60px}.res2 .card4{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;max-width:560px}.res2 b{font:800 22px var(--display)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../">Vanilla JavaScript Projects</a>
+  <nav><span>Project 64 of 100</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 64, Forms and input</p>
+    <h1>Autocomplete Search</h1>
+    <p class="lede">Suggestions that appear as you type, forgive small typos and work fully from the keyboard. The pattern behind every good site search.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A search box with a list of suggestions"><rect x="30" y="40" width="260" height="46" rx="23" fill="var(--panel)" stroke="var(--ink)" stroke-width="4"/><circle cx="60" cy="63" r="10" fill="none" stroke="var(--ink)" stroke-width="4"/><path d="M67 70l8 8" stroke="var(--ink)" stroke-width="4"/><rect x="86" y="58" width="60" height="10" rx="4" fill="var(--accent)"/><rect x="30" y="98" width="260" height="130" rx="14" fill="var(--panel)" stroke="var(--ink)" stroke-width="4"/><rect x="38" y="108" width="244" height="32" rx="8" fill="var(--accent)" opacity=".2"/><g fill="var(--line)"><rect x="54" y="120" width="120" height="8" rx="4" fill="var(--accent)"/><rect x="54" y="156" width="140" height="8" rx="4"/><rect x="54" y="192" width="100" height="8" rx="4"/></g></svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>ARIA combobox</dd></div><div><dt>Matching</dt><dd>Fuzzy scoring</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <h2 id="w-title">Search for a city</h2>
+  <p class="sub">Type a city or country, even with a small typo. Use Up, Down, Enter and Escape. Recent searches show when the box is empty.</p>
+  <div class="ac"><label for="q" class="sr-only">Search cities</label><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="2.5"/></svg>
+<input id="q" type="text" role="combobox" aria-expanded="false" aria-controls="lb" aria-autocomplete="list" autocomplete="off" placeholder="Try: lisbon, tokyo, dhka"><ul class="lb2" id="lb" role="listbox" aria-label="Suggestions" hidden></ul></div><p class="sr-only" id="live" aria-live="polite"></p><div class="res2" id="res"></div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Score every item</strong><span>A starts-with match scores highest, then contains, then a loose letter-by-letter match that allows a small gap, so dhka still finds Dhaka.</span></li><li><strong>Combobox roles</strong><span>The input has role combobox and points to the listbox. aria-activedescendant tells screen readers which option is highlighted while focus stays in the box.</span></li><li><strong>Wait a moment</strong><span>A short debounce means the list only updates after a pause in typing, which matters when results come from a server.</span></li></ol></div>
+  <pre><code>input.addEventListener(&quot;input&quot;, () =&gt; {
+  clearTimeout(timer);
+  timer = setTimeout(() =&gt; {
+    <span class="k">const</span> q = input.value.trim().toLowerCase();
+    <span class="k">const</span> results = data
+      .map((item) =&gt; [item, score(q, item.name)])
+      .filter(([, s]) =&gt; s &gt; 0)
+      .sort((a, b) =&gt; b[1] - a[1])
+      .slice(0, 8);
+    render(results);
+  }, 120);
+});
+input.setAttribute(&quot;aria-activedescendant&quot;, &quot;option-&quot; + active);</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Autocomplete Search. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/09-forms-input/064-autocomplete-search">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+(() => {
+support(true, "Works everywhere");
+const D = "Dhaka,Bangladesh,23M;Chittagong,Bangladesh,5.2M;Sylhet,Bangladesh,0.5M;London,United Kingdom,9M;Manchester,United Kingdom,2.8M;Edinburgh,United Kingdom,0.5M;Lisbon,Portugal,0.5M;Porto,Portugal,0.2M;Madrid,Spain,3.3M;Barcelona,Spain,1.6M;Paris,France,2.1M;Lyon,France,0.5M;Berlin,Germany,3.7M;Munich,Germany,1.5M;Hamburg,Germany,1.8M;Rome,Italy,2.8M;Milan,Italy,1.4M;Amsterdam,Netherlands,0.9M;Brussels,Belgium,1.2M;Vienna,Austria,1.9M;Prague,Czechia,1.3M;Warsaw,Poland,1.8M;Stockholm,Sweden,1M;Oslo,Norway,0.7M;Copenhagen,Denmark,0.6M;Dublin,Ireland,0.6M;Istanbul,Turkey,15M;Dubai,United Arab Emirates,3.5M;Doha,Qatar,1.2M;Riyadh,Saudi Arabia,7.6M;Cairo,Egypt,10M;Nairobi,Kenya,4.4M;Lagos,Nigeria,15M;Cape Town,South Africa,4.6M;Mumbai,India,20M;Delhi,India,32M;Bengaluru,India,13M;Kolkata,India,15M;Karachi,Pakistan,16M;Lahore,Pakistan,13M;Kathmandu,Nepal,1.4M;Colombo,Sri Lanka,0.8M;Bangkok,Thailand,10M;Singapore,Singapore,5.9M;Kuala Lumpur,Malaysia,1.8M;Jakarta,Indonesia,11M;Manila,Philippines,1.8M;Hanoi,Vietnam,8M;Tokyo,Japan,14M;Osaka,Japan,2.7M;Seoul,South Korea,9.7M;Beijing,China,21M;Shanghai,China,24M;Sydney,Australia,5.3M;Melbourne,Australia,5M;Auckland,New Zealand,1.7M;Toronto,Canada,2.8M;Vancouver,Canada,0.7M;New York,United States,8.3M;Los Angeles,United States,3.9M;Chicago,United States,2.7M;San Francisco,United States,0.8M;Mexico City,Mexico,9.2M;Sao Paulo,Brazil,12M;Buenos Aires,Argentina,3M".split(";").map((s) => s.split(","));
+function score(q, s) { s = s.toLowerCase(); if (s.startsWith(q)) return 100 - s.length / 10; const i = s.indexOf(q); if (i >= 0) return 70 - i; let j = 0, gaps = 0, last = -1; for (const ch of q) { const k = s.indexOf(ch, j); if (k < 0) return 0; if (last >= 0) gaps += k - last - 1; last = k; j = k + 1; } return gaps > 3 ? 0 : 40 - gaps * 5; }
+function mark(t, q) { const i = t.toLowerCase().indexOf(q); return i < 0 ? esc(t) : esc(t.slice(0, i)) + "<mark>" + esc(t.slice(i, i + q.length)) + "</mark>" + esc(t.slice(i + q.length)); }
+const inp = $("#q"), lb = $("#lb"); let items = [], act = -1, timer;
+const recent = () => store("ac-recent") || [];
+function open(list, header) { items = list; act = -1; lb.innerHTML = (header ? `<li class="hd" role="presentation">${header}</li>` : "") + (list.length ? list.map((c, i) => `<li role="option" id="op${i}" aria-selected="false" data-i="${i}"><span>${mark(c[0], inp.value.trim().toLowerCase())}, <small>${esc(c[1])}</small></span><small>${c[2]}</small></li>`).join("") : '<li class="hd" role="presentation">No matches. Check the spelling.</li>'); lb.hidden = false; inp.setAttribute("aria-expanded", "true"); inp.removeAttribute("aria-activedescendant"); $("#live").textContent = list.length ? `${list.length} suggestions` : "No suggestions"; }
+function close() { lb.hidden = true; inp.setAttribute("aria-expanded", "false"); inp.removeAttribute("aria-activedescendant"); }
+function run() { const q = inp.value.trim().toLowerCase(); if (!q) { const r = recent(); return r.length ? open(r, "Recent searches") : close(); } open(D.map((c) => [c, Math.max(score(q, c[0]), score(q, c[1]) * 0.8)]).filter((x) => x[1] > 0).sort((a, b) => b[1] - a[1]).slice(0, 8).map((x) => x[0])); }
+function move(n) { if (lb.hidden) run(); const opts = $$("li[role=option]", lb); if (!opts.length) return; act = (act + n + opts.length) % opts.length; opts.forEach((o, i) => o.setAttribute("aria-selected", i === act)); inp.setAttribute("aria-activedescendant", "op" + act); opts[act].scrollIntoView({ block: "nearest" }); }
+function choose(c) { inp.value = c[0]; close(); $("#res").innerHTML = `<div class="card4"><b>${esc(c[0])}</b><p>${esc(c[1])}. Population about ${c[2]}.</p></div>`; store("ac-recent", [c, ...recent().filter((r) => r[0] !== c[0])].slice(0, 5)); }
+inp.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(run, 120); });
+inp.addEventListener("focus", run);
+inp.addEventListener("keydown", (e) => { if (e.key === "ArrowDown") { e.preventDefault(); move(1); } else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); } else if (e.key === "Enter") { if (act >= 0) { e.preventDefault(); choose(items[act]); } else if (items[0]) choose(items[0]); } else if (e.key === "Escape") { if (!lb.hidden) close(); else inp.value = ""; } });
+lb.addEventListener("mousedown", (e) => { const li = e.target.closest("li[role=option]"); if (li) { e.preventDefault(); choose(items[+li.dataset.i]); } });
+document.addEventListener("click", (e) => { if (!e.target.closest(".ac")) close(); });
+})();
+</script>
+</body>
+</html>

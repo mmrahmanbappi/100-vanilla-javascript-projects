@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Multi-step Form Wizard Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Free multi-step form in plain JavaScript. Split a long form into steps, check each step before moving on, show progress, save a draft and review everything before sending.">
+<meta name="keywords" content="multi step form javascript, form wizard, step by step form, form validation, progress bar form, save form draft">
+<meta property="og:title" content="Multi-step Form in Vanilla JavaScript: Wizard with Validation, Progress Bar and Saved Draft">
+<meta property="og:description" content="Free multi-step form in plain JavaScript. Split a long form into steps, check each step before moving on, show progress, save a draft and review everything before sending.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/061-multi-step-form-wizard/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/061-multi-step-form-wizard/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2563EB">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563EB'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Multi-step Form Wizard", "description": "Free multi-step form in plain JavaScript. Split a long form into steps, check each step before moving on, show progress, save a draft and review everything before sending.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "multi step form javascript, form wizard, step by step form, form validation, progress bar form, save form draft"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* mobile header fix */
+@media (max-width:560px){.topbar{flex-wrap:wrap;gap:8px}.topbar nav{display:flex;flex-wrap:wrap;gap:6px 12px}.topbar nav span{display:none}.topbar nav a{margin-left:0}}
+.strip dd{overflow-wrap:anywhere}
+
+:root{--accent:#2563EB}
+.steps{display:flex;gap:6px;list-style:none;padding:0;margin:0 0 8px;counter-reset:s}.steps li{flex:1;font-size:14px;font-weight:700;color:var(--muted);counter-increment:s}.steps li::before{content:counter(s);display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--line);color:var(--ink);margin-right:8px;font-size:13px}
+.steps li.on{color:var(--ink)}.steps li.on::before,.steps li.done::before{background:var(--accent);color:#fff}.steps li.done::before{content:"✓"}
+.pbar{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-bottom:18px}.pbar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.wz{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;max-width:640px}.wz fieldset{border:0;padding:0;margin:0}.wz legend{font:800 22px var(--display);margin-bottom:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.g2>*{min-width:0}.err2{color:var(--err);font-size:14px;min-height:20px;margin:-6px 0 8px}.field input:invalid.touched,.field select:invalid.touched{border-color:var(--err)}
+.plans2{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.plans2 label{border:2px solid var(--line);border-radius:12px;padding:12px;cursor:pointer}.plans2 input{margin-right:6px}.plans2 label:has(input:checked){border-color:var(--accent);background:var(--sunk)}.plans2 b{display:block}
+.nav3{display:flex;justify-content:space-between;gap:10px;margin-top:18px}.rev dl{display:grid;grid-template-columns:140px 1fr;gap:6px 14px;margin:0}.rev dt{color:var(--muted)}.rev dd{margin:0;font-weight:700}.done2{text-align:center;padding:30px 10px}.done2 b{font:800 26px var(--display);display:block}
+@media (max-width:600px){.g2,.plans2{grid-template-columns:1fr}.steps li{font-size:0}.rev dl{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../">Vanilla JavaScript Projects</a>
+  <nav><span>Project 61 of 100</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 61, Forms and input</p>
+    <h1>Multi-step Form Wizard</h1>
+    <p class="lede">Long forms feel shorter in small steps. Each step is checked before you move on, and nothing is lost if you close the tab.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="Three numbered steps joined by a line with a form below"><path d="M60 60h200" stroke="var(--line)" stroke-width="6"/><path d="M60 60h100" stroke="var(--accent)" stroke-width="6"/><g font-family="var(--display)" font-weight="800" font-size="20" text-anchor="middle"><circle cx="60" cy="60" r="22" fill="var(--accent)"/><text x="60" y="67" fill="#fff">1</text><circle cx="160" cy="60" r="22" fill="var(--accent)"/><text x="160" y="67" fill="#fff">2</text><circle cx="260" cy="60" r="22" fill="var(--panel)" stroke="var(--ink)" stroke-width="4"/><text x="260" y="67" fill="var(--ink)">3</text></g><rect x="50" y="110" width="220" height="120" rx="14" fill="var(--panel)" stroke="var(--ink)" stroke-width="4"/><g fill="var(--line)"><rect x="70" y="130" width="180" height="16" rx="6"/><rect x="70" y="158" width="180" height="16" rx="6"/></g><rect x="170" y="194" width="80" height="22" rx="11" fill="var(--accent)"/></svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>Constraint Validation</dd></div><div><dt>Draft</dt><dd>localStorage</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <h2 id="w-title">Book a free trial</h2>
+  <p class="sub">Fill in each step. Try leaving a field empty. Reload the page halfway: your answers are still there.</p>
+  <ol class="steps" id="steps"><li>You</li><li>Address</li><li>Plan</li><li>Review</li></ol><div class="pbar" aria-hidden="true"><i id="pb"></i></div>
+<form class="wz" id="wz" novalidate>
+<fieldset data-s="0"><legend>About you</legend><div class="g2"><label class="field">First name<input name="first" required autocomplete="given-name"></label><label class="field">Last name<input name="last" required autocomplete="family-name"></label></div><label class="field">Email<input name="email" type="email" required autocomplete="email"></label><label class="field">Phone (optional)<input name="phone" type="tel" pattern="[0-9 +()-]{7,}" autocomplete="tel"></label></fieldset>
+<fieldset data-s="1" hidden><legend>Your address</legend><label class="field">Street<input name="street" required autocomplete="street-address"></label><div class="g2"><label class="field">City<input name="city" required autocomplete="address-level2"></label><label class="field">Postcode<input name="post" required minlength="3" autocomplete="postal-code"></label></div><label class="field">Country<select name="country" required autocomplete="country-name"><option value="">Choose a country</option><option>United Kingdom</option><option>United States</option><option>Bangladesh</option><option>India</option><option>Germany</option></select></label></fieldset>
+<fieldset data-s="2" hidden><legend>Choose a plan</legend><div class="plans2"><label><input type="radio" name="plan" value="Basic" required>  <b>Basic</b>Free for 14 days</label><label><input type="radio" name="plan" value="Plus"> <b>Plus</b>$12 a month after trial</label><label><input type="radio" name="plan" value="Pro"> <b>Pro</b>$29 a month after trial</label></div><label class="field" style="margin-top:12px"><span><input type="checkbox" name="terms" required> I agree to the terms</span></label></fieldset>
+<fieldset data-s="3" hidden class="rev"><legend>Check your details</legend><dl id="rv"></dl></fieldset>
+<p class="err2" id="err" role="alert"></p><div class="nav3"><button class="btn" type="button" id="back">Back</button><button class="btn primary" type="button" id="next">Next</button></div></form>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Use the browser checks</strong><span>required, type=&quot;email&quot; and pattern do the checking. checkValidity() on each field of the current step decides if you can move on.</span></li><li><strong>Show one step at a time</strong><span>Every step is a fieldset. Only the current one is visible, and the progress bar follows the step number.</span></li><li><strong>Save as you type</strong><span>FormData turns the form into an object that is saved to localStorage on every change and restored on reload.</span></li></ol></div>
+  <pre><code>next.onclick = () =&gt; {
+  <span class="k">const</span> fields = [...steps[current].querySelectorAll(&quot;input, select&quot;)];
+  <span class="k">const</span> bad = fields.find((f) =&gt; !f.checkValidity());
+  <span class="k">if</span> (bad) { error.textContent = bad.validationMessage; bad.focus(); <span class="k">return</span>; }
+  current++;
+  localStorage.setItem(&quot;draft&quot;, JSON.stringify(Object.fromEntries(<span class="k">new</span> FormData(form))));
+  show(current);
+};</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Multi-step Form Wizard. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/09-forms-input/061-multi-step-form-wizard">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+(() => {
+support(typeof HTMLFormElement.prototype.checkValidity === "function", "Constraint validation supported");
+const f = $("#wz"), sets = $$("fieldset", f), KEY = "wizard-draft"; let step = 0;
+function show() { sets.forEach((s, i) => s.hidden = i !== step); $$("#steps li").forEach((l, i) => { l.classList.toggle("on", i === step); l.classList.toggle("done", i < step); }); $("#pb").style.width = (step / (sets.length - 1)) * 100 + "%"; $("#back").style.visibility = step ? "visible" : "hidden"; $("#next").textContent = step === 3 ? "Send" : step === 2 ? "Review" : "Next"; $("#err").textContent = ""; if (step === 3) review(); const first = sets[step].querySelector("input,select"); if (first && step) first.focus(); }
+function valid() { const els = $$("input,select", sets[step]); els.forEach((e) => e.classList.add("touched")); const bad = els.find((e) => !e.checkValidity()); if (bad) { $("#err").textContent = (bad.closest("label")?.textContent.trim().split("\n")[0] || "This field") + ": " + bad.validationMessage; bad.focus(); return false; } return true; }
+function save() { store(KEY, { step, data: Object.fromEntries(new FormData(f)) }); }
+function review() { const d = Object.fromEntries(new FormData(f)); const L = [["Name", d.first + " " + d.last], ["Email", d.email], ["Phone", d.phone || "Not given"], ["Address", `${d.street}, ${d.city} ${d.post}, ${d.country}`], ["Plan", d.plan]]; $("#rv").innerHTML = L.map(([a, b]) => `<dt>${a}</dt><dd>${esc(b)}</dd>`).join(""); }
+$("#next").onclick = () => { if (step === 3) { localStorage.removeItem(KEY); f.innerHTML = `<div class="done2" role="status"><b>You're booked in</b><p>We sent a confirmation to your email. You can close this page.</p><button class="btn" type="button" onclick="location.reload()">Start again</button></div>`; $("#pb").style.width = "100%"; $$("#steps li").forEach((l) => l.className = "done"); return; } if (!valid()) return; step++; save(); show(); };
+$("#back").onclick = () => { step = Math.max(0, step - 1); save(); show(); };
+f.addEventListener("input", save);
+const d = store(KEY); if (d) { Object.entries(d.data || {}).forEach(([k, v]) => { const el = f.elements[k]; if (!el) return; if (el instanceof RadioNodeList) { [...el].forEach((r) => r.checked = r.value === v); } else if (el.type === "checkbox") el.checked = !!v; else el.value = v; }); step = d.step || 0; toast("Your draft was restored"); }
+show();
+})();
+</script>
+</body>
+</html>

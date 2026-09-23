@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free JavaScript Form Components: Multi-step Form, File Upload, Date Picker, OTP</title>
+<meta name="description" content="10 free form components in plain JavaScript with live demos: multi-step form, file upload, date range picker, autocomplete, OTP input, phone input and more.">
+<meta name="keywords" content="javascript form components, multi step form, file upload dropzone, date range picker, autocomplete search, otp input, signature pad">
+<meta name="author" content="mmrahmanbappi">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vanilla JavaScript Projects">
+<meta property="og:title" content="Free JavaScript Form Components: Multi-step Form, File Upload, Date Picker, OTP">
+<meta property="og:description" content="10 free form components in plain JavaScript with live demos: multi-step form, file upload, date range picker, autocomplete, OTP input, phone input and more.">
+<meta property="og:url" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/061-multi-step-form-wizard/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free JavaScript Form Components: Multi-step Form, File Upload, Date Picker, OTP">
+<meta name="twitter:description" content="10 free form components in plain JavaScript with live demos: multi-step form, file upload, date range picker, autocomplete, OTP input, phone input and more.">
+<meta name="twitter:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/061-multi-step-form-wizard/preview.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317191f'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'%3EJS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#fbfbf8;--ink:#17191f;--muted:#5a5f6b;--line:#e4e3dc;--blue:#2445d6;--card:#fff}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Instrument Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:17px}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.bar{border-bottom:1px solid var(--line);background:#fff}
+.bar div{max-width:1120px;margin:0 auto;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.bar a.logo{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);text-decoration:none}
+.bar nav a{margin-left:18px;color:var(--ink);font-weight:600;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.crumbs{font-size:.9rem;color:var(--muted);padding:22px 0 0}
+.crumbs a{color:var(--muted)}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin:14px 0 14px;max-width:22ch}
+h2{font-size:1.6rem;margin:0 0 14px}
+h3{font-size:1.15rem}
+.lead{font-size:1.15rem;color:var(--muted);max-width:62ch}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:#fff}
+.btn.main{background:var(--ink);color:#fff}
+.shot{display:block;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 50px rgba(20,20,40,.12)}
+.shot img{display:block;width:100%;height:auto}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:50px;padding:60px 0}
+.cols p{margin-bottom:14px;max-width:65ch}
+ul.list{padding-left:20px}
+ul.list li{margin-bottom:6px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.code{position:relative;margin:0 0 60px}
+pre{background:#1d2030;color:#e8eaf3;border-radius:14px;padding:24px;overflow-x:auto;font-size:.9rem;line-height:1.6}
+.copy{position:absolute;top:12px;right:12px;font:inherit;font-size:.85rem;font-weight:700;border:0;border-radius:8px;padding:6px 12px;background:#fff;color:var(--ink);cursor:pointer}
+ol.steps{padding-left:22px;max-width:65ch;margin-bottom:60px}
+ol.steps li{margin-bottom:8px}
+details{border-top:1px solid var(--line);padding:16px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{font-weight:700;cursor:pointer;font-size:1.05rem}
+details p{margin-top:10px;color:var(--muted);max-width:70ch}
+.faq{margin-bottom:60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;margin:26px 0 60px}
+.tile{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tile img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+.tile div{padding:14px 16px}
+.tile small{color:var(--muted)}
+.tile:hover{border-color:var(--ink)}
+.cat{margin:50px 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.soon{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:20px 0 70px}
+.soon div{border:1px dashed #c9c7bd;border-radius:12px;padding:18px;color:var(--muted)}
+.soon b{color:var(--ink);display:block}
+.pager{display:flex;justify-content:space-between;gap:16px;margin:0 0 60px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;color:var(--muted);font-size:.95rem}
+@media(max-width:820px){.cols{grid-template-columns:1fr;gap:30px;padding:40px 0}.bar nav a:first-child{display:none}}
+.support{font-size:.95rem;color:var(--muted);margin-top:14px}
+.how{padding-left:22px;max-width:65ch;margin-bottom:40px}.how li{margin-bottom:10px}.how b{display:block}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","@id":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/","name":"Free JavaScript Form Components: Multi-step Form, File Upload, Date Picker, OTP","description":"10 free form components in plain JavaScript with live demos: multi-step form, file upload, date range picker, autocomplete, OTP input, phone input and more.","isPartOf":{"@type":"WebSite","name":"Vanilla JavaScript Projects","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},"inLanguage":"en","mainEntity":{"@type":"ItemList","numberOfItems":10,"itemListElement":[{"@type":"ListItem","position":1,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/061-multi-step-form-wizard/","name":"Multi-step Form Wizard JavaScript Project"},{"@type":"ListItem","position":2,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/062-file-upload-dropzone/","name":"File Upload Dropzone JavaScript Project"},{"@type":"ListItem","position":3,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/","name":"Date Range Picker JavaScript Project"},{"@type":"ListItem","position":4,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/064-autocomplete-search/","name":"Autocomplete Search JavaScript Project"},{"@type":"ListItem","position":5,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/065-otp-code-input/","name":"OTP Code Input JavaScript Project"},{"@type":"ListItem","position":6,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/066-password-strength-meter/","name":"Password Strength Meter JavaScript Project"},{"@type":"ListItem","position":7,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/067-phone-input-country-codes/","name":"Phone Input with Country Codes JavaScript Project"},{"@type":"ListItem","position":8,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/068-star-rating-review-form/","name":"Star Rating and Review Form JavaScript Project"},{"@type":"ListItem","position":9,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/069-signature-pad/","name":"Signature Pad JavaScript Project"},{"@type":"ListItem","position":10,"url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/070-mini-rich-text-editor/","name":"Mini Rich Text Editor JavaScript Project"}]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},{"@type":"ListItem","position":2,"name":"Forms and Input","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/"}]}]}</script>
+</head>
+<body>
+<header class="bar"><div><a class="logo" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Vanilla JavaScript Projects</a><nav><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/#categories">Categories</a><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">GitHub</a></nav></div></header>
+<main class="wrap">
+<p class="crumbs"><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Home</a> / Forms and Input</p>
+<h1>Forms and Input JavaScript Projects</h1>
+<p class="lead">Forms are where visitors become customers, and small details decide whether they finish. These ten projects cover the fields websites need most: step by step sign up, file uploads, date ranges, search suggestions, verification codes, phone numbers, reviews, signatures and a small text editor. Each is one HTML file, works with a keyboard and checks input before it reaches your server.</p>
+<div class="grid"><a class="tile" href="061-multi-step-form-wizard/"><img src="061-multi-step-form-wizard/preview.png" alt="Multi-step Form Wizard JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>061. Multi-step Form Wizard</h3><small>A sign up form split into steps with checks, a progress bar and a saved draft</small></div></a><a class="tile" href="062-file-upload-dropzone/"><img src="062-file-upload-dropzone/preview.png" alt="File Upload Dropzone JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>062. File Upload Dropzone</h3><small>A drag and drop uploader with previews, size limits and progress bars</small></div></a><a class="tile" href="063-date-range-picker/"><img src="063-date-range-picker/preview.png" alt="Date Range Picker JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>063. Date Range Picker</h3><small>A two month calendar for picking check in and check out dates</small></div></a><a class="tile" href="064-autocomplete-search/"><img src="064-autocomplete-search/preview.png" alt="Autocomplete Search JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>064. Autocomplete Search</h3><small>A search box that suggests results as you type, with keyboard control</small></div></a><a class="tile" href="065-otp-code-input/"><img src="065-otp-code-input/preview.png" alt="OTP Code Input JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>065. OTP Code Input</h3><small>A six box verification code input with paste, auto advance and a resend timer</small></div></a><a class="tile" href="066-password-strength-meter/"><img src="066-password-strength-meter/preview.png" alt="Password Strength Meter JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>066. Password Strength Meter</h3><small>A password box that rates strength, estimates crack time and suggests a strong password</small></div></a><a class="tile" href="067-phone-input-country-codes/"><img src="067-phone-input-country-codes/preview.png" alt="Phone Input with Country Codes JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>067. Phone Input with Country Codes</h3><small>A phone number field with a searchable country list and automatic formatting</small></div></a><a class="tile" href="068-star-rating-review-form/"><img src="068-star-rating-review-form/preview.png" alt="Star Rating and Review Form JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>068. Star Rating and Review Form</h3><small>A review form with half star ratings, photos and a live rating summary</small></div></a><a class="tile" href="069-signature-pad/"><img src="069-signature-pad/preview.png" alt="Signature Pad JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>069. Signature Pad</h3><small>A canvas where people sign with a finger, pen or mouse and save a PNG</small></div></a><a class="tile" href="070-mini-rich-text-editor/"><img src="070-mini-rich-text-editor/preview.png" alt="Mini Rich Text Editor JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>070. Mini Rich Text Editor</h3><small>A small editor with bold, headings, lists and links that exports clean HTML and Markdown</small></div></a></div>
+</main>
+<footer>Free under the MIT license. Made by <a href="https://github.com/mmrahmanbappi">mmrahmanbappi</a>. <a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">Star the repo on GitHub</a> to help more people find these projects.</footer>
+<script>document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.nextElementSibling.innerText).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy code',1500)})})</script>
+</body>
+</html>

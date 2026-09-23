@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Signature Pad Live Demo | Vanilla JavaScript Project</title>
+<meta name="description" content="Free signature pad in plain JavaScript. Sign with a finger, pen or mouse, smooth lines that respond to speed, undo, clear, trimmed PNG download and sharp on high resolution screens.">
+<meta name="keywords" content="signature pad javascript, canvas signature, draw signature online, e signature form, save signature png, touch signature">
+<meta property="og:title" content="Signature Pad in JavaScript: Smooth Canvas Drawing, Undo, Trim and Save as PNG">
+<meta property="og:description" content="Free signature pad in plain JavaScript. Sign with a finger, pen or mouse, smooth lines that respond to speed, undo, clear, trimmed PNG download and sharp on high resolution screens.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/069-signature-pad/preview.png">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/069-signature-pad/demo.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1E40AF">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231E40AF'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'>JS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Signature Pad", "description": "Free signature pad in plain JavaScript. Sign with a finger, pen or mouse, smooth lines that respond to speed, undo, clear, trimmed PNG download and sharp on high resolution screens.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isAccessibleForFree": true, "keywords": "signature pad javascript, canvas signature, draw signature online, e signature form, save signature png, touch signature"}</script>
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --sunk:#F5F7F9; --ink:#16213A; --muted:#5B6679; --line:#C9D1DC;
+  --ok:#0F7B4F; --err:#B42318; --warn:#A15C00;
+  --accent-ink:#fff;
+  --r-lg:18px; --r-md:10px; --r-sm:6px;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --code:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+    --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --panel:#162033; --sunk:#111a2a; --ink:#E6EBF2; --muted:#98A4B7; --line:#2B3852;
+  --ok:#3DD68C; --err:#FF7A6E; --warn:#F2B84B;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img,svg,canvas,video{max-width:100%;display:block}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;font:700 17px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px}
+.topbar nav{display:flex;gap:18px;align-items:center;color:var(--muted)}
+.topbar nav a{color:var(--muted);text-decoration:none}
+.topbar nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:28px 0 36px}
+.hero .count{font:600 15px/1 var(--display);color:var(--accent);margin:0 0 14px}
+.hero h1{font:800 clamp(38px,6vw,68px)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px;font-variation-settings:"wdth" 90}
+.hero p.lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0}
+.hero .art{justify-self:end;width:100%;max-width:340px}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px}.hero .art{justify-self:start;max-width:220px;order:-1}}
+
+/* status strip: what runs where */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r-md);background:var(--panel);margin:0 0 20px}
+.strip div{padding:12px 16px;border-left:1px solid var(--line)}
+.strip div:first-child{border-left:0}
+.strip dt{font-size:13px;color:var(--muted);margin:0 0 2px}
+.strip dd{margin:0;font-weight:700;font-size:15px}
+.strip dd.yes{color:var(--ok)} .strip dd.no{color:var(--err)} .strip dd.maybe{color:var(--warn)}
+@media (max-width:760px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(3){border-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* workspace */
+.workspace{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:0 1px 0 var(--line),0 18px 40px -28px color-mix(in srgb,var(--ink) 40%,transparent)}
+.workspace h2{font:700 22px/1.2 var(--display);margin:0 0 4px;letter-spacing:-.01em}
+.workspace .sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:var(--r-sm);padding:10px 16px;font:700 15px/1 var(--body);cursor:pointer;min-height:42px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn svg{width:18px;height:18px}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted);font-weight:700}
+input[type=text],input[type=search],input[type=number],textarea,select{font:16px/1.5 var(--body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:140px}
+select{width:auto;min-height:42px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* status pill + progress */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line)}
+.pill[data-state=busy]::before{background:var(--warn);animation:blink 1s infinite}
+.pill[data-state=ok]::before{background:var(--ok)}
+.pill[data-state=err]::before{background:var(--err)}
+.pill[data-state=err]{color:var(--err)}
+@keyframes blink{50%{opacity:.3}}
+.progress{height:8px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress[hidden]{display:none}
+
+/* notes, dropzone, chips */
+.note{border-left:4px solid var(--accent);background:var(--sunk);padding:12px 16px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:15px;margin:14px 0}
+.note.err{border-color:var(--err)}
+.drop{border:2px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;color:var(--muted);cursor:pointer;background:var(--sunk)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;font:15px var(--body);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;background:none;width:76px;height:76px}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* how it works */
+.how{padding:44px 0 20px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px}
+.how h2{font:700 28px/1.15 var(--display);letter-spacing:-.02em;margin:0 0 16px}
+.how ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.how li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.how li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font:700 15px/26px var(--display);text-align:center}
+.how li strong{display:block}
+.how li span{color:var(--muted);font-size:15px}
+pre{background:#0F1A2C;color:#D7E0EE;border-radius:var(--r-md);padding:18px;overflow-x:auto;font:13.5px/1.6 var(--code);margin:0}
+pre .c{color:#7F8FA8} pre .k{color:#8FB8FF} pre .s{color:#A6E3A1}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.foot a{color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* mobile header fix */
+@media (max-width:560px){.topbar{flex-wrap:wrap;gap:8px}.topbar nav{display:flex;flex-wrap:wrap;gap:6px 12px}.topbar nav span{display:none}.topbar nav a{margin-left:0}}
+.strip dd{overflow-wrap:anywhere}
+
+:root{--accent:#1E40AF}
+.sp{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;max-width:760px}.cw{position:relative;border:2px dashed var(--line);border-radius:12px;background:#fff;touch-action:none}
+.cw canvas{display:block;width:100%;height:260px;cursor:crosshair;border-radius:10px}.cw .ln{position:absolute;left:30px;right:30px;bottom:56px;border-bottom:2px solid #d9dde5;pointer-events:none}.cw .hint{position:absolute;left:30px;bottom:30px;font-size:14px;color:#8a90a0;pointer-events:none}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}.pens{display:flex;gap:6px}.pens button{width:32px;height:32px;border-radius:50%;border:3px solid transparent;cursor:pointer}.pens button[aria-pressed=true]{border-color:var(--ink)}
+.tools label{display:flex;gap:6px;align-items:center;font-size:15px}.tools input[type=range]{accent-color:var(--accent);width:100px}.outp{margin-top:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}.outp img{max-height:90px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <a class="brand" href="../../">Vanilla JavaScript Projects</a>
+  <nav><span>Project 69 of 100</span><a href="./">About this project</a><a href="../../">All projects</a><button class="theme-btn" type="button" aria-label="Switch light or dark theme">Theme</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <p class="count">Project 69, Forms and input</p>
+    <h1>Signature Pad</h1>
+    <p class="lede">Collect a real signature on any device. Lines get thinner when you sign fast, just like ink, and the saved image is trimmed and ready to use.</p>
+  </div>
+  <div class="art"><svg viewBox="0 0 320 260" role="img" aria-label="A signature line with a pen"><rect x="20" y="50" width="280" height="160" rx="16" fill="var(--panel)" stroke="var(--ink)" stroke-width="4"/><path d="M50 160c20-60 40-60 40-20s10 30 30-10 20-30 30 0 20 20 40-10 30 10 50 0" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M44 182h232" stroke="var(--line)" stroke-width="3" stroke-dasharray="6 6"/><path d="M240 60l40 40-70 70-50 10 10-50z" fill="var(--ink)"/></svg></div>
+</section>
+<dl class="strip">
+  <div><dt>Main API</dt><dd>Canvas 2D</dd></div><div><dt>Input</dt><dd>Pointer events</dd></div><div><dt>Dependencies</dt><dd>None</dd></div>
+  <div><dt>Your browser</dt><dd id="support" class="maybe">Checking</dd></div>
+</dl>
+<section class="workspace" aria-labelledby="w-title">
+  <h2 id="w-title">Sign here</h2>
+  <p class="sub">Sign with your finger, a stylus or the mouse. Change the pen, undo strokes and download the signature as a PNG.</p>
+  <div class="sp"><div class="cw" id="cw"><canvas id="cv" aria-label="Signature area. Draw with a mouse, finger or pen." role="img"></canvas><span class="ln"></span><span class="hint" id="hint">Sign above the line</span></div>
+<div class="tools"><div class="pens" role="group" aria-label="Ink colour"><button type="button" style="background:#111827" data-c="#111827" aria-label="Black ink" aria-pressed="true"></button><button type="button" style="background:#1E40AF" data-c="#1E40AF" aria-label="Blue ink" aria-pressed="false"></button><button type="button" style="background:#9F1239" data-c="#9F1239" aria-label="Red ink" aria-pressed="false"></button></div>
+<label>Pen <input type="range" id="pw2" min="1" max="6" step="0.5" value="2.5"></label><button class="btn" type="button" id="un">Undo</button><button class="btn" type="button" id="cl2">Clear</button><button class="btn primary" type="button" id="sv">Save signature</button></div>
+<div class="outp" id="outp" aria-live="polite"></div></div>
+</section>
+<section class="how" aria-labelledby="how-title">
+  <div><h2 id="how-title">How it works</h2><ol><li><strong>Sharp on every screen</strong><span>The canvas is sized in real device pixels and scaled back, so lines stay crisp on phones and high resolution laptops.</span></li><li><strong>Smooth, ink-like lines</strong><span>Points are joined with quadratic curves through their midpoints. Fast movement makes the line thinner, and pen pressure is used when available.</span></li><li><strong>Trim before saving</strong><span>The script scans the pixels for the signature&#x27;s edges and copies just that area, with a little padding, into a new PNG.</span></li></ol></div>
+  <pre><code>canvas.addEventListener(&quot;pointermove&quot;, (e) =&gt; {
+  <span class="k">if</span> (!drawing) <span class="k">return</span>;
+  <span class="k">const</span> p = point(e), last = pts.at(-1);
+  <span class="k">const</span> speed = Math.hypot(p.x - last.x, p.y - last.y) / (p.t - last.t);
+  p.w = last.w * 0.6 + base * Math.max(0.45, 1.5 - speed * 0.6) * 0.4; <span class="c">// faster = thinner</span>
+  <span class="k">const</span> mid = { x: (last.x + p.x) / 2, y: (last.y + p.y) / 2 };
+  ctx.lineWidth = p.w;
+  ctx.quadraticCurveTo(last.x, last.y, mid.x, mid.y);
+  ctx.stroke();
+  pts.push(p);
+});</code></pre>
+</section>
+</main>
+<footer class="foot"><span>Signature Pad. Free and open source, MIT license. Your data stays in your browser.</span><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/09-forms-input/069-signature-pad">Source on GitHub</a></footer>
+</div>
+<script>
+// Shared helpers (same in every Browser AI Lab project)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function setStatus(el, state, text) { el.dataset.state = state; el.textContent = text; }
+function setProgress(el, frac) {
+  if (frac == null) { el.hidden = true; return; }
+  el.hidden = false; el.firstElementChild.style.width = Math.round(Math.min(1, frac) * 100) + "%";
+}
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+}
+async function copyText(text) { try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } catch { toast("Copy failed. Select the text and press Ctrl+C."); } }
+function store(key, val) { try { if (val === undefined) return JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify(val)); } catch { return null; } }
+function support(ok, text) { const d = $("#support"); d.className = ok === true ? "yes" : ok === false ? "no" : "maybe"; d.textContent = text; }
+// Tiny, safe markdown: code blocks, inline code, bold, lists, line breaks
+function md(src) {
+  const parts = String(src).split(/```/);
+  return parts.map((p, i) => {
+    if (i % 2) return "<pre><code>" + esc(p.replace(/^\w*\n/, "")) + "</code></pre>";
+    let h = esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(?:^|\n)(?:[-*] .+(?:\n|$))+/g, (m) => "\n<ul>" + m.trim().split("\n").map((l) => "<li>" + l.replace(/^[-*] /, "") + "</li>").join("") + "</ul>\n");
+    return h.replace(/\n{2,}/g, "<br><br>").replace(/\n/g, "<br>");
+  }).join("");
+}
+// Theme toggle (remembers choice)
+(function () {
+  const saved = store("bal-theme"); if (saved) document.documentElement.dataset.theme = saved;
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".theme-btn")) return;
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const cur = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; store("bal-theme", next);
+  });
+})();
+// Drop zone wiring: calls onFile(file)
+function dropzone(el, input, onFile) {
+  el.addEventListener("click", () => input.click());
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => input.files[0] && onFile(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => el.addEventListener(ev, (e) => { e.preventDefault(); el.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => el.addEventListener(ev, () => el.classList.remove("over")));
+  el.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && onFile(f); });
+  window.addEventListener("paste", (e) => { const f = [...(e.clipboardData?.files || [])][0]; f && onFile(f); });
+}
+
+</script>
+<script>
+(() => {
+const cv = $("#cv"), ctx = cv.getContext("2d"); support(!!window.PointerEvent, "Pointer events supported");
+let strokes = [], cur = null, color = "#111827";
+function size() { const r = cv.getBoundingClientRect(), d = devicePixelRatio || 1; cv.width = r.width * d; cv.height = r.height * d; ctx.setTransform(d, 0, 0, d, 0, 0); redraw(); }
+function seg(s) { const p = s.pts; if (p.length < 2) { ctx.fillStyle = s.c; ctx.beginPath(); ctx.arc(p[0].x, p[0].y, s.w / 2, 0, 7); ctx.fill(); return; } ctx.strokeStyle = s.c; ctx.lineCap = ctx.lineJoin = "round";
+  for (let i = 1; i < p.length; i++) { const a = p[i - 1], b = p[i], m = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }; ctx.lineWidth = b.w; ctx.beginPath(); const pm = i > 1 ? { x: (p[i - 2].x + a.x) / 2, y: (p[i - 2].y + a.y) / 2 } : a; ctx.moveTo(pm.x, pm.y); ctx.quadraticCurveTo(a.x, a.y, m.x, m.y); ctx.stroke(); } }
+function redraw() { ctx.clearRect(0, 0, cv.width, cv.height); strokes.forEach(seg); $("#hint").hidden = strokes.length > 0; }
+function pt(e) { const r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top, t: performance.now() }; }
+cv.addEventListener("pointerdown", (e) => { cv.setPointerCapture(e.pointerId); const p = pt(e), base = +$("#pw2").value; p.w = base * (e.pressure && e.pointerType === "pen" ? 0.5 + e.pressure : 1); cur = { c: color, w: base, pts: [p] }; strokes.push(cur); redraw(); });
+cv.addEventListener("pointermove", (e) => { if (!cur) return; const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e]; for (const ev of evs) { const p = pt(ev), l = cur.pts[cur.pts.length - 1], dist = Math.hypot(p.x - l.x, p.y - l.y); if (dist < 1) continue; const v = dist / Math.max(1, p.t - l.t); const target = cur.w * Math.max(0.45, Math.min(1.4, 1.5 - v * 0.6)) * (ev.pressure && ev.pointerType === "pen" ? 0.5 + ev.pressure : 1); p.w = l.w * 0.6 + target * 0.4; cur.pts.push(p); } redraw(); });
+["pointerup", "pointercancel"].forEach((ev) => cv.addEventListener(ev, () => cur = null));
+$$(".pens button").forEach((b) => b.onclick = () => { color = b.dataset.c; $$(".pens button").forEach((x) => x.setAttribute("aria-pressed", x === b)); });
+$("#un").onclick = () => { strokes.pop(); redraw(); }; $("#cl2").onclick = () => { strokes = []; redraw(); $("#outp").innerHTML = ""; };
+$("#sv").onclick = () => { if (!strokes.length) return toast("Please sign first"); const d = devicePixelRatio || 1, img = ctx.getImageData(0, 0, cv.width, cv.height).data; let x0 = cv.width, y0 = cv.height, x1 = 0, y1 = 0;
+  for (let y = 0; y < cv.height; y++) for (let x = 0; x < cv.width; x++) if (img[(y * cv.width + x) * 4 + 3] > 10) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  const pad = 10 * d, w = x1 - x0 + pad * 2, h = y1 - y0 + pad * 2, out = document.createElement("canvas"); out.width = w; out.height = h; out.getContext("2d").drawImage(cv, x0 - pad, y0 - pad, w, h, 0, 0, w, h);
+  const url = out.toDataURL("image/png"); $("#outp").innerHTML = `<img src="${url}" alt="Your saved signature"><a class="btn" href="${url}" download="signature.png">Download PNG</a><span class="small muted">${Math.round(w)} by ${Math.round(h)} pixels, transparent background</span>`; };
+new ResizeObserver(size).observe(cv); size();
+})();
+</script>
+</body>
+</html>

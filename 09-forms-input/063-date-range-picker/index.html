@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Date Range Picker in Vanilla JavaScript: Two Month Calendar with Blocked Dates</title>
+<meta name="description" content="Free date range picker in plain JavaScript. Two month calendar, blocked dates, minimum nights, hover preview, quick presets and keyboard navigation. No library.">
+<meta name="keywords" content="date range picker javascript, booking calendar, check in check out picker, calendar without library, vanilla js datepicker, blocked dates calendar">
+<meta name="author" content="mmrahmanbappi">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vanilla JavaScript Projects">
+<meta property="og:title" content="Date Range Picker in Vanilla JavaScript: Two Month Calendar with Blocked Dates">
+<meta property="og:description" content="Free date range picker in plain JavaScript. Two month calendar, blocked dates, minimum nights, hover preview, quick presets and keyboard navigation. No library.">
+<meta property="og:url" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Date Range Picker in Vanilla JavaScript: Two Month Calendar with Blocked Dates">
+<meta name="twitter:description" content="Free date range picker in plain JavaScript. Two month calendar, blocked dates, minimum nights, hover preview, quick presets and keyboard navigation. No library.">
+<meta name="twitter:image" content="https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/preview.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317191f'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='white'%3EJS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#fbfbf8;--ink:#17191f;--muted:#5a5f6b;--line:#e4e3dc;--blue:#2445d6;--card:#fff}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Instrument Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:17px}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.bar{border-bottom:1px solid var(--line);background:#fff}
+.bar div{max-width:1120px;margin:0 auto;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.bar a.logo{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);text-decoration:none}
+.bar nav a{margin-left:18px;color:var(--ink);font-weight:600;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.crumbs{font-size:.9rem;color:var(--muted);padding:22px 0 0}
+.crumbs a{color:var(--muted)}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin:14px 0 14px;max-width:22ch}
+h2{font-size:1.6rem;margin:0 0 14px}
+h3{font-size:1.15rem}
+.lead{font-size:1.15rem;color:var(--muted);max-width:62ch}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:#fff}
+.btn.main{background:var(--ink);color:#fff}
+.shot{display:block;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 50px rgba(20,20,40,.12)}
+.shot img{display:block;width:100%;height:auto}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:50px;padding:60px 0}
+.cols p{margin-bottom:14px;max-width:65ch}
+ul.list{padding-left:20px}
+ul.list li{margin-bottom:6px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.code{position:relative;margin:0 0 60px}
+pre{background:#1d2030;color:#e8eaf3;border-radius:14px;padding:24px;overflow-x:auto;font-size:.9rem;line-height:1.6}
+.copy{position:absolute;top:12px;right:12px;font:inherit;font-size:.85rem;font-weight:700;border:0;border-radius:8px;padding:6px 12px;background:#fff;color:var(--ink);cursor:pointer}
+ol.steps{padding-left:22px;max-width:65ch;margin-bottom:60px}
+ol.steps li{margin-bottom:8px}
+details{border-top:1px solid var(--line);padding:16px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{font-weight:700;cursor:pointer;font-size:1.05rem}
+details p{margin-top:10px;color:var(--muted);max-width:70ch}
+.faq{margin-bottom:60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;margin:26px 0 60px}
+.tile{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tile img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+.tile div{padding:14px 16px}
+.tile small{color:var(--muted)}
+.tile:hover{border-color:var(--ink)}
+.cat{margin:50px 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.soon{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:20px 0 70px}
+.soon div{border:1px dashed #c9c7bd;border-radius:12px;padding:18px;color:var(--muted)}
+.soon b{color:var(--ink);display:block}
+.pager{display:flex;justify-content:space-between;gap:16px;margin:0 0 60px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);padding:30px 22px;text-align:center;color:var(--muted);font-size:.95rem}
+@media(max-width:820px){.cols{grid-template-columns:1fr;gap:30px;padding:40px 0}.bar nav a:first-child{display:none}}
+.support{font-size:.95rem;color:var(--muted);margin-top:14px}
+.how{padding-left:22px;max-width:65ch;margin-bottom:40px}.how li{margin-bottom:10px}.how b{display:block}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/","name":"Date Range Picker in Vanilla JavaScript: Two Month Calendar with Blocked Dates","description":"Free date range picker in plain JavaScript. Two month calendar, blocked dates, minimum nights, hover preview, quick presets and keyboard navigation. No library.","isPartOf":{"@type":"WebSite","name":"Vanilla JavaScript Projects","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/preview.png","width":1280,"height":800},"datePublished":"2026-09-23","dateModified":"2026-09-23","inLanguage":"en"},{"@type":"SoftwareSourceCode","name":"Date Range Picker in Vanilla JavaScript","description":"Free date range picker in plain JavaScript. Two month calendar, blocked dates, minimum nights, hover preview, quick presets and keyboard navigation. No library.","image":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/preview.png","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/","codeRepository":"https://github.com/mmrahmanbappi/vanilla-javascript-projects","programmingLanguage":["JavaScript","HTML","CSS"],"runtimePlatform":"Web browser","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"keywords":"date range picker javascript, booking calendar, check in check out picker, calendar without library, vanilla js datepicker, blocked dates calendar","author":{"@type":"Person","name":"mmrahmanbappi","url":"https://github.com/mmrahmanbappi"}},{"@type":"SoftwareApplication","name":"Date Range Picker","url":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/demo.html","applicationCategory":"DeveloperApplication","operatingSystem":"Any modern web browser","image":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/preview.png","description":"Free date range picker in plain JavaScript. Two month calendar, blocked dates, minimum nights, hover preview, quick presets and keyboard navigation. No library.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/"},{"@type":"ListItem","position":2,"name":"Forms and Input","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/"},{"@type":"ListItem","position":3,"name":"Date Range Picker","item":"https://mmrahmanbappi.github.io/vanilla-javascript-projects/09-forms-input/063-date-range-picker/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why not use input type date?","acceptedAnswer":{"@type":"Answer","text":"The native picker selects one date and cannot show taken dates or a range, which booking sites need."}},{"@type":"Question","name":"How do I load real taken dates?","acceptedAnswer":{"@type":"Answer","text":"Fetch them from your booking system and add each date to the blocked set before drawing."}},{"@type":"Question","name":"Does it handle time zones?","acceptedAnswer":{"@type":"Answer","text":"Dates are treated as local calendar days, which is what guests expect for check in and check out."}}]}]}</script>
+</head>
+<body>
+<header class="bar"><div><a class="logo" href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Vanilla JavaScript Projects</a><nav><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/#categories">Categories</a><a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">GitHub</a></nav></div></header>
+<main class="wrap">
+<p class="crumbs"><a href="https://mmrahmanbappi.github.io/vanilla-javascript-projects/">Home</a> / <a href="../">Forms and Input</a> / Date Range Picker</p>
+<h1>Date Range Picker in JavaScript, Free with Live Demo</h1>
+<p class="lead">Free date range picker in plain JavaScript. Two month calendar, blocked dates, minimum nights, hover preview, quick presets and keyboard navigation. No library.</p>
+<div class="actions"><a class="btn main" href="demo.html">Open live demo</a><a class="btn" href="demo.html" download="date-range-picker.html">Download HTML file</a><a class="btn" href="https://github.com/mmrahmanbappi/vanilla-javascript-projects/tree/main/09-forms-input/063-date-range-picker">View code on GitHub</a></div>
+<a class="shot" href="demo.html"><img src="preview.png" alt="Date Range Picker JavaScript project: a two month calendar for picking check in and check out dates" width="1280" height="800"></a>
+<p class="support">Runs on: Date and Intl.DateTimeFormat. Works in all modern browsers.</p>
+<section class="cols"><div><h2>What is the Date Range Picker?</h2><p>A booking style calendar showing two months side by side. Click a check in date and a check out date, and the range and number of nights appear.</p><p>Taken and past dates are crossed out, a range cannot include a taken night, and there is a two night minimum. Presets pick a weekend or a week in one click.</p></div>
+<div class="box"><h3>Good for</h3><ul class="list"><li>Hotel and holiday rental booking</li><li>Car and equipment hire</li><li>Leave and holiday requests</li><li>Report and analytics date filters</li></ul></div></section>
+<section><h2>What this project does</h2><ul class="list" style="margin-bottom:40px"><li>Two month view with previous and next</li><li>Blocked and past dates</li><li>Hover preview of the range</li><li>Minimum stay check</li><li>Keyboard navigation with arrow keys</li></ul></section>
+<section><h2>How it works</h2><ol class="how"><li><b>Build the grid from dates</b>For each month the script works out which weekday the 1st falls on, adds empty cells, then one button per day.</li><li><b>Two clicks make a range</b>The first click sets check in. The second sets check out if it is later, long enough and has no taken nights in between.</li><li><b>Keyboard as a grid</b>Only one day is in the Tab order. Arrow keys move a day or a week, and the calendar moves to the next month when needed.</li></ol></section>
+<section><h2>The key JavaScript</h2><p style="margin-bottom:14px">This is the heart of the project. The full file has the rest, including the screen layout and error handling.</p>
+<div class="code"><button class="copy" type="button">Copy code</button><pre><code>function monthGrid(year, month) {
+  const firstWeekday = (new Date(year, month, 1).getDay() + 6) % 7; // Monday first
+  const days = new Date(year, month + 1, 0).getDate();              // days in month
+  const cells = Array(firstWeekday).fill(null);
+  for (let d = 1; d &lt;= days; d++) cells.push(new Date(year, month, d));
+  return cells;
+}
+const nights = Math.round((checkOut - checkIn) / 86400000);</code></pre></div></section>
+<section><h2>How to use it</h2><ol class="steps"><li>Click Download HTML file above.</li><li>Open the file in a code editor, like VS Code.</li><li>Run it from a local server with <code>npx serve .</code> so the camera, microphone and AI features are allowed.</li><li>Change the text and colors, then upload it to GitHub Pages, Netlify or your own site. It is one file with no build step.</li></ol></section>
+<section class="faq"><h2>Questions people ask</h2><details><summary>Why not use input type date?</summary><p>The native picker selects one date and cannot show taken dates or a range, which booking sites need.</p></details><details><summary>How do I load real taken dates?</summary><p>Fetch them from your booking system and add each date to the blocked set before drawing.</p></details><details><summary>Does it handle time zones?</summary><p>Dates are treated as local calendar days, which is what guests expect for check in and check out.</p></details></section>
+<nav class="pager" aria-label="More projects"><a href="../062-file-upload-dropzone/">Previous: File Upload Dropzone</a><a href="../064-autocomplete-search/">Next: Autocomplete Search</a></nav>
+<section><h2>More Forms and Input projects</h2><div class="grid"><a class="tile" href="../061-multi-step-form-wizard/"><img src="../061-multi-step-form-wizard/preview.png" alt="Multi-step Form Wizard JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>061. Multi-step Form Wizard</h3><small>A sign up form split into steps with checks, a progress bar and a saved draft</small></div></a><a class="tile" href="../062-file-upload-dropzone/"><img src="../062-file-upload-dropzone/preview.png" alt="File Upload Dropzone JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>062. File Upload Dropzone</h3><small>A drag and drop uploader with previews, size limits and progress bars</small></div></a><a class="tile" href="../064-autocomplete-search/"><img src="../064-autocomplete-search/preview.png" alt="Autocomplete Search JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>064. Autocomplete Search</h3><small>A search box that suggests results as you type, with keyboard control</small></div></a><a class="tile" href="../065-otp-code-input/"><img src="../065-otp-code-input/preview.png" alt="OTP Code Input JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>065. OTP Code Input</h3><small>A six box verification code input with paste, auto advance and a resend timer</small></div></a><a class="tile" href="../066-password-strength-meter/"><img src="../066-password-strength-meter/preview.png" alt="Password Strength Meter JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>066. Password Strength Meter</h3><small>A password box that rates strength, estimates crack time and suggests a strong password</small></div></a><a class="tile" href="../067-phone-input-country-codes/"><img src="../067-phone-input-country-codes/preview.png" alt="Phone Input with Country Codes JavaScript project preview" loading="lazy" width="1280" height="800"><div><h3>067. Phone Input with Country Codes</h3><small>A phone number field with a searchable country list and automatic formatting</small></div></a></div></section>
+</main>
+<footer>Free under the MIT license. Made by <a href="https://github.com/mmrahmanbappi">mmrahmanbappi</a>. <a href="https://github.com/mmrahmanbappi/vanilla-javascript-projects">Star the repo on GitHub</a> to help more people find these projects.</footer>
+<script>document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.nextElementSibling.innerText).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy code',1500)})})</script>
+</body>
+</html>
